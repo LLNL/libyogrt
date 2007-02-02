@@ -7,7 +7,6 @@ AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([src/yogrt.h])
 AC_CONFIG_HEADER([config.h])
 
-
 AC_DISABLE_STATIC
 
 # Automake support

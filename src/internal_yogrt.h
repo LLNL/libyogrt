@@ -7,11 +7,11 @@
 LICENSE
  ***************************************************************************/
 
-#ifndef INTERNAL_UGRT_H
-#define INTERNAL_UGRT_H 1
+#ifndef INTERNAL_YOGRT_H
+#define INTERNAL_YOGRT_H 1
 
 #include <time.h>
 
 long _internal_get_rem_time(time_t now, time_t last_update, long cached);
 
-#endif /* !UGRT_H */
+#endif /* !YOGRT_H */
