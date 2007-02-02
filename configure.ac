@@ -31,8 +31,4 @@ AC_CONFIG_FILES([Makefile
                  src/none/Makefile
                  src/slurm/Makefile])
  	
-#Xsed="sed -e s/^X//"
-#LTLIBOBJS=`echo X"$LIBOBJS"|\
-#           [$Xsed -e "s,\.[^.]* ,.lo ,g;s,\.[^.]*$,.lo,"]`
-#LTALLOCA=`echo X"$ALLOCA"|[$Xsed -e "s,\.$[^.]*,.lo,g"]`
 AC_OUTPUT
