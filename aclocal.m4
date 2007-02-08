@@ -7247,3 +7247,4 @@ AC_SUBST([am__untar])
 ]) # _AM_PROG_TAR
 
 m4_include([config/x_ac_meta.m4])
+m4_include([config/x_ac_slurm.m4])

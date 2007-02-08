@@ -7,6 +7,8 @@ AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([src/yogrt.h])
 AC_CONFIG_HEADER([config.h])
 
+AC_CANONICAL_HOST
+AC_CANONICAL_SYSTEM
 AC_DISABLE_STATIC
 
 # Automake support
@@ -17,14 +19,10 @@ AM_MAINTAINER_MODE
 AC_PROG_CC
 AC_PROG_LIBTOOL
 
-# Checks for libraries.
-
-# Checks for header files.
-
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_INLINE
 
-# Checks for library functions.
+X_AC_SLURM
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
