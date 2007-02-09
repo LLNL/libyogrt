@@ -31,7 +31,7 @@ LICENSE
  * Exactly how often yogrt_get_time() will talk to the resource manager
  * may be modified with the functions below.
  */
-extern long yogrt_get_time(void);
+extern int yogrt_get_time(void);
 
 /*
  * The following functions allow the user to fine tune the internal behavior
@@ -44,17 +44,17 @@ extern long yogrt_get_time(void);
  * the resource manager again to ask for the latest "reamining time" value.
  *
  * There are actually two update intervals that may be set.  The first,
- * "update_interval1", is used as long as the remaining time is greater than
+ * "interval1", is used as long as the remaining time is greater than
  * "interval2_start" seconds.  Once the remaining time is less than
  * "interval2_start" seconds, yogrt_get_time() will use the second update
- * interval, "update_interval2".
+ * interval, "interval2".
  *
  * It should be noted that yogrt_get_time() can and will switch back to using
- * update_interval1 if the resource manager sufficiently increases the 
+ * interval1 if the resource manager sufficiently increases the 
  * remaining time of a job.
  */
-extern void yogrt_set_update_interval1(long seconds);
-extern void yogrt_set_update_interval2(long seconds);
-extern void yogrt_set_interval2_start(long seconds_before_end);
+extern void yogrt_set_interval1(int seconds);
+extern void yogrt_set_interval2(int seconds);
+extern void yogrt_set_interval2_start(int seconds_before_end);
 
 #endif /* !YOGRT_H */

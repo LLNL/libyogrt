@@ -9,11 +9,27 @@ LICENSE
 
 #include "internal_yogrt.h"
 
-long _internal_get_rem_time(time_t now, time_t last_update, long cached)
+char *internal_backend_name(void)
 {
-	if (cached == -1) {
-		return 7200; /* 2 hours */
-	} else {
-		return (cached - (now - last_update));
-	}
+	return "none";
 }
+
+int internal_get_rem_time(time_t now, time_t last_update, int cached)
+{
+	int rem;
+
+	if (cached == -1) {
+		debug("\"none\" implementation must be intialized with YOGRT_DEFAULT_LIMIT\n");
+		return -1;
+	}
+
+	rem = (cached - (now - last_update));
+/* 	debug2("\"none\" implementation reports remaining time of %d sec.\n", rem); */
+	return rem;
+}
+
+int internal_get_rank(void)
+{
+	return 0;
+}
+

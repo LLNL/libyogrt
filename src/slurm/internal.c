@@ -14,8 +14,16 @@ LICENSE
 
 static uint32_t jobid = NO_VAL;
 
-long _internal_get_rem_time(time_t now, time_t last_update, long cached)
+char *internal_backend_name(void)
 {
+	return "SLURM";
+}
+
+int internal_get_rem_time(time_t now, time_t last_update, int cached)
+{
+	int rem;
+
+	/* Get job id from environment on the first call */
 	if (jobid == NO_VAL) {
 		char *id;
 		if ((id = getenv("SLURM_JOB_ID")) != NULL) {
@@ -28,5 +36,19 @@ long _internal_get_rem_time(time_t now, time_t last_update, long cached)
 	if (jobid == NO_VAL)
 		return -1;
 
-	return slurm_get_rem_time(jobid);
+	rem = (int)slurm_get_rem_time(jobid);
+	debug2("SLURM reports remaining time of %d sec.\n", rem);
+	return rem;
+}
+
+int internal_get_rank(void)
+{
+	int rank = 0;
+	char *r;
+
+	if ((r = getenv("SLURM_PROCID")) != NULL) {
+		rank = (int)atol(r);
+	}
+
+	return rank;
 }
