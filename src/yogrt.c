@@ -14,7 +14,7 @@ LICENSE
 #include "internal_yogrt.h"
 
 int verbosity = 0;
-static int initialized = 0;
+static int initialized = 0; /* flag */
 static int rank = 0;
 
 static int interval1 = 900; /* 15 minutes */
@@ -23,6 +23,8 @@ static int interval2_start = 1800; /* 30 minutes before the end */
 
 static int cached_time_rem = -1;
 static time_t last_update = (time_t)-1; /* of cached_time_rem */
+static int last_update_failed = 0; /* flag */
+#define FAILED_UPDATE_INTERVAL 300
 
 #define REMAINING(now) (cached_time_rem - ((now) - last_update))
 
@@ -39,7 +41,7 @@ static inline void init_yogurt(void)
 		debug("Backend implementation is \"%s\".\n",
 		      internal_backend_name());
 		if (p != NULL) {
-			debug("Found YOGURT_DEBUG=%d\n", verbosity);
+			debug("Found YOGRT_DEBUG=%d\n", verbosity);
 		}
 		if ((p = getenv("YOGRT_INTERVAL1")) != NULL) {
 			interval1 = atol(p);
@@ -70,20 +72,27 @@ static inline void init_yogurt(void)
  */
 static inline int need_update(time_t now)
 {
+	int rem = REMAINING(now);
+	int last = now - last_update;
+	int rc;
+
 	if (last_update == -1) {
 		/* first time yogrt_get_time has been called */
-		return 1;
+		rc = 1;
+	} else if ((rem >= interval2_start) && (last >= interval1)) {
+		rc = 1;
+	} else if ((rem < interval2_start) && (last >= interval2)) {
+		rc = 1;
+	} else if (last_update_failed && (last >= FAILED_UPDATE_INTERVAL)) {
+		/* update sooner than the normal interval
+		   would require if the last update failed */
+		debug("Last update failed, trying again early.\n");
+		rc = 1;
 	} else {
-		if (REMAINING(now) >= interval2_start) {
-			if ((now - last_update) >= interval1)
-				return 1;
-		} else {
-			if ((now - last_update) >= interval2)
-				return 1;
-		}
+		rc = 0;
 	}
 
-	return 0;
+	return rc;
 }
 
 int yogrt_get_time(void)
@@ -102,7 +111,14 @@ int yogrt_get_time(void)
 	if (need_update(now)) {
 		rem = internal_get_rem_time(now, last_update, cached_time_rem);
 		if (rem != -1) {
+			last_update_failed = 0;
 			cached_time_rem = rem;
+			last_update = now;
+		} else {
+			debug("Update failed, will try again in"
+			      " at least %d sec.\n", FAILED_UPDATE_INTERVAL);
+			last_update_failed = 1;
+			cached_time_rem -= (now - last_update);
 			last_update = now;
 		}
 	}
@@ -141,4 +157,19 @@ void yogrt_set_interval2_start(int seconds_before_end)
 	init_yogurt();
 	interval2_start = seconds_before_end;
 	debug("interval2_start changed to %d\n", interval2);
+}
+
+int yogrt_get_interval1(void)
+{
+	return interval1;
+}
+
+int yogrt_get_interval2(void)
+{
+	return interval2;
+}
+
+int yogrt_get_interval2_start(void)
+{
+	return interval2_start;
 }

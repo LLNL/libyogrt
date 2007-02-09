@@ -57,4 +57,19 @@ extern void yogrt_set_interval1(int seconds);
 extern void yogrt_set_interval2(int seconds);
 extern void yogrt_set_interval2_start(int seconds_before_end);
 
+/*
+ * Report the current value of update interval1.
+ */
+extern int yogrt_get_interval1(void);
+
+/*
+ * Report the current value of update interval2.
+ */
+extern int yogrt_get_interval2(void);
+
+/*
+ * Report the current value of interval2_start.
+ */
+extern int yogrt_get_interval2_start(void);
+
 #endif /* !YOGRT_H */
