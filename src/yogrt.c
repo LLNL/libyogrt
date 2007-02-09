@@ -28,7 +28,7 @@ static int last_update_failed = 0; /* flag */
 
 #define REMAINING(now) (cached_time_rem - ((now) - last_update))
 
-static inline void init_yogurt(void)
+static inline void init_yogrt(void)
 {
 	if (initialized == 0) {
 		char *p;
@@ -101,7 +101,7 @@ int yogrt_get_time(void)
 	int rem;
 	int rc;
 
-	init_yogurt();
+	init_yogrt();
 
 	if (rank != 0) {
 		debug("This is not task rank 0.  Returning -1.\n");
@@ -140,36 +140,39 @@ int yogrt_get_time(void)
 
 void yogrt_set_interval1(int seconds)
 {
-	init_yogurt();
+	init_yogrt();
 	interval1 = seconds;
 	debug("interval1 changed to %d\n", interval1);
 }
 
 void yogrt_set_interval2(int seconds)
 {
-	init_yogurt();
+	init_yogrt();
 	interval2 == seconds;
 	debug("interval1 changed to %d\n", interval2);
 }
 
 void yogrt_set_interval2_start(int seconds_before_end)
 {
-	init_yogurt();
+	init_yogrt();
 	interval2_start = seconds_before_end;
 	debug("interval2_start changed to %d\n", interval2);
 }
 
 int yogrt_get_interval1(void)
 {
+	init_yogrt();
 	return interval1;
 }
 
 int yogrt_get_interval2(void)
 {
+	init_yogrt();
 	return interval2;
 }
 
 int yogrt_get_interval2_start(void)
 {
+	init_yogrt();
 	return interval2_start;
 }
