@@ -29,9 +29,9 @@ main(int argc, char *argv[])
 	}
 	gettimeofday(tv3, NULL);
 
-	t1 = tv1->tv_sec + (tv1->tv_usec * 0.000001);
-	t2 = tv2->tv_sec + (tv2->tv_usec * 0.000001);
-	t3 = tv3->tv_sec + (tv3->tv_usec * 0.000001);
+	t1 = tv1->tv_sec + (tv1->tv_usec * (double)0.000001);
+	t2 = tv2->tv_sec + (tv2->tv_usec * (double)0.000001);
+	t3 = tv3->tv_sec + (tv3->tv_usec * (double)0.000001);
 
 	printf("yogrt_get_time first call:\n\t%.03f msec\n", (t2 - t1) * 1000);
 	printf("yogrt_get_time cached timing:\n");
