@@ -58,9 +58,9 @@ am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgincludedir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
-libyogrt_la_DEPENDENCIES = ../yogrt.lo @LTLIBOBJS@
-am_libyogrt_la_OBJECTS = internal.lo
-libyogrt_la_OBJECTS = $(am_libyogrt_la_OBJECTS)
+libyogrt_none_la_DEPENDENCIES = ../yogrt.lo @LTLIBOBJS@
+am_libyogrt_none_la_OBJECTS = internal.lo
+libyogrt_none_la_OBJECTS = $(am_libyogrt_none_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -72,8 +72,8 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libyogrt_la_SOURCES)
-DIST_SOURCES = $(libyogrt_la_SOURCES)
+SOURCES = $(libyogrt_none_la_SOURCES)
+DIST_SOURCES = $(libyogrt_none_la_SOURCES)
 pkgincludeHEADERS_INSTALL = $(INSTALL_HEADER)
 HEADERS = $(pkginclude_HEADERS)
 ETAGS = etags
@@ -201,10 +201,10 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 INCLUDES = -I$(top_srcdir)/src
-lib_LTLIBRARIES = libyogrt.la
-libyogrt_la_SOURCES = internal.c
-libyogrt_la_LIBADD = ../yogrt.lo @LTLIBOBJS@
-libyogrt_la_LDFLAGS = \
+lib_LTLIBRARIES = libyogrt-none.la
+libyogrt_none_la_SOURCES = internal.c
+libyogrt_none_la_LIBADD = ../yogrt.lo @LTLIBOBJS@
+libyogrt_none_la_LDFLAGS = \
 	-no-undefined \
 	-export-symbols-regex "^yogrt_.*" \
 	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
@@ -270,8 +270,8 @@ clean-libLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libyogrt.la: $(libyogrt_la_OBJECTS) $(libyogrt_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(libyogrt_la_LDFLAGS) $(libyogrt_la_OBJECTS) $(libyogrt_la_LIBADD) $(LIBS)
+libyogrt-none.la: $(libyogrt_none_la_OBJECTS) $(libyogrt_none_la_DEPENDENCIES) 
+	$(LINK) -rpath $(libdir) $(libyogrt_none_la_LDFLAGS) $(libyogrt_none_la_OBJECTS) $(libyogrt_none_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

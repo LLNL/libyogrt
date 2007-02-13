@@ -17,6 +17,11 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 %configure
 make
 
+%install slurm
+rm -rf $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT
+DESTDIR="$RPM_BUILD_ROOT" make install
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -27,6 +32,8 @@ Group: System Environment/Base
 %files none
 %defattr(-,root,root,-)
 %doc
+%{_includedir}/yogrt.h
+%{_libdir}/libyogrt-none*
 
 %package slurm
 Summary: libyogrt SLURM implementation
@@ -35,15 +42,8 @@ Group: System Environment/Base
 %files slurm
 %defattr(-,root,root,-)
 %doc
-
-%install none
-rm -rf $RPM_BUILD_ROOT
-touch $RPM_BUILD_ROOT/foo
-
-%install slurm
-rm -rf $RPM_BUILD_ROOT
-touch $RPM_BUILD_ROOT/bar
-
+%{_includedir}/yogrt.h
+%{_libdir}/libyogrt-slurm*
 
 %description
 A simple wrapper library that provides a unified get-remaining-time
