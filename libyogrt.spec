@@ -35,6 +35,7 @@ rm -rf $RPM_BUILD_ROOT
 Summary: libyogrt none implementation
 Group: System Environment/Base
 Provides: libyogrt
+Conflicts: libyogrt-slurm
 
 %description none
 A simple wrapper library that provides a unified get-remaining-time
@@ -71,6 +72,7 @@ fi
 Summary: libyogrt SLURM implementation
 Group: System Environment/Base
 Provides: libyogrt
+Conflicts: libyogrt-none
 
 %description slurm
 A simple wrapper library that provides a unified get-remaining-time
