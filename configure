@@ -20198,7 +20198,7 @@ echo "$as_me: WARNING: unable to locate slurm installation" >&2;}
 
 
 
-if test -n "$x_ac_cv_slurm_dir"; then
+if test -n "$x_ac_cv_slurm_dir" || test "$ac_cv_lib_slurm_slurm_get_rem_time" = yes; then
   WITH_SLURM_TRUE=
   WITH_SLURM_FALSE='#'
 else
