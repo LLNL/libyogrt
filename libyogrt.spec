@@ -50,22 +50,28 @@ provides the "none" libyogurt wrapper.
 
 %post none
 sub=none
-if [ -e %{_libdir}/libyogrt-${sub}.so ]; then
-	lib=%{_libdir}/libyogrt-${sub}.so
+%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
+suf="so"
+%else
+suf="a"
+%endif
+lib=%{_libdir}/libyogrt-${sub}.${suf}
+if [ -e $lib ]; then
 	if [ -L $lib ]; then
-		ln -sf `readlink $lib` %{_libdir}/libyogrt.so
+		ln -sf `readlink $lib` %{_libdir}/libyogrt.${suf}
 	else
-		ln -sf $lib %{_libdir}/libyogrt.so
-	fi
-elif [ -e %{_libdir}/libyogrt-${sub}.a ]; then
-	lib=%{_libdir}/libyogrt-${sub}.a
-	if [ -L $lib ]; then
-		ln -sf `readlink $lib` %{_libdir}/libyogrt.a
-	else
-		ln -sf $lib %{_libdir}/libyogrt.a
+		ln -sf $lib %{_libdir}/libyogrt.${suf}
 	fi
 fi
-	
+
+%postun none
+%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
+suf="so"
+%else
+suf="a"
+%endif
+rm -f %{_libdir}/libyogrt.${suf}
+
 ######################################################################
 # slurm subpackage 
 %package slurm
@@ -87,21 +93,27 @@ provides the SLURM libyogurt wrapper.
 
 %post slurm
 sub=slurm
-if [ -e %{_libdir}/libyogrt-${sub}.so ]; then
-	lib=%{_libdir}/libyogrt-${sub}.so
+%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
+suf="so"
+%else
+suf="a"
+%endif
+lib=%{_libdir}/libyogrt-${sub}.${suf}
+if [ -e $lib ]; then
 	if [ -L $lib ]; then
-		ln -sf `readlink $lib` %{_libdir}/libyogrt.so
+		ln -sf `readlink $lib` %{_libdir}/libyogrt.${suf}
 	else
-		ln -sf $lib %{_libdir}/libyogrt.so
-	fi
-elif [ -e %{_libdir}/libyogrt-${sub}.a ]; then
-	lib=%{_libdir}/libyogrt-${sub}.a
-	if [ -L $lib ]; then
-		ln -sf `readlink $lib` %{_libdir}/libyogrt.a
-	else
-		ln -sf $lib %{_libdir}/libyogrt.a
+		ln -sf $lib %{_libdir}/libyogrt.${suf}
 	fi
 fi
+
+%postun slurm
+%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
+suf="so"
+%else
+suf="a"
+%endif
+rm -f %{_libdir}/libyogrt.${suf}
 
 %changelog
 * Mon Feb 12 2007 Christopher J. Morrone <morrone@conon.llnl.gov> - 
