@@ -9,9 +9,6 @@ Packager: Christopher J. Morrone <morrone2@llnl.gov>
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
-%description
-A simple wrapper library that provides a unified get-remaining-time
-interface for multiple parallel job scheduling systems.
 
 %prep
 %setup -q
@@ -20,16 +17,45 @@ interface for multiple parallel job scheduling systems.
 %configure
 make
 
-%install
-rm -rf $RPM_BUILD_ROOT
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%package none
+Summary: libyogrt none implementation
+Group: System Environment/Base
+
+%files none
 %defattr(-,root,root,-)
 %doc
 
+%package slurm
+Summary: libyogrt SLURM implementation
+Group: System Environment/Base
+
+%files slurm
+%defattr(-,root,root,-)
+%doc
+
+%install none
+rm -rf $RPM_BUILD_ROOT
+touch $RPM_BUILD_ROOT/foo
+
+%install slurm
+rm -rf $RPM_BUILD_ROOT
+touch $RPM_BUILD_ROOT/bar
+
+
+%description
+A simple wrapper library that provides a unified get-remaining-time
+interface for multiple parallel job scheduling systems.
+
+%description none
+A simple wrapper library that provides a unified get-remaining-time
+interface for multiple parallel job scheduling systems.
+
+%description slurm
+A simple wrapper library that provides a unified get-remaining-time
+interface for multiple parallel job scheduling systems.
 
 %changelog
 * Mon Feb 12 2007 Christopher J. Morrone <morrone@conon.llnl.gov> - 
