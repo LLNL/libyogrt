@@ -10,6 +10,10 @@ Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 
+%description
+A simple wrapper library that provides a unified get-remaining-time
+interface for multiple parallel job scheduling systems.
+
 %prep
 %setup -q
 
@@ -25,9 +29,17 @@ DESTDIR="$RPM_BUILD_ROOT" make install
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+######################################################################
+# none subpackage 
 %package none
 Summary: libyogrt none implementation
 Group: System Environment/Base
+Provides: libyogrt
+
+%description none
+A simple wrapper library that provides a unified get-remaining-time
+interface for multiple parallel job scheduling systems.  This package
+provides the "none" libyogurt wrapper.
 
 %files none
 %defattr(-,root,root,-)
@@ -35,9 +47,35 @@ Group: System Environment/Base
 %{_includedir}/yogrt.h
 %{_libdir}/libyogrt-none*
 
+%post none
+sub=none
+if [ -e %{_libdir}/libyogrt-${sub}.so ]; then
+	lib=%{_libdir}/libyogrt-${sub}.so
+	if [ -L $lib ]; then
+		ln -sf `readlink $lib` %{_libdir}/libyogrt.so
+	else
+		ln -sf $lib %{_libdir}/libyogrt.so
+	fi
+elif [ -e %{_libdir}/libyogrt-${sub}.a ]; then
+	lib=%{_libdir}/libyogrt-${sub}.a
+	if [ -L $lib ]; then
+		ln -sf `readlink $lib` %{_libdir}/libyogrt.a
+	else
+		ln -sf $lib %{_libdir}/libyogrt.a
+	fi
+fi
+	
+######################################################################
+# slurm subpackage 
 %package slurm
 Summary: libyogrt SLURM implementation
 Group: System Environment/Base
+Provides: libyogrt
+
+%description slurm
+A simple wrapper library that provides a unified get-remaining-time
+interface for multiple parallel job scheduling systems.  This package
+provides the SLURM libyogurt wrapper.
 
 %files slurm
 %defattr(-,root,root,-)
@@ -45,17 +83,23 @@ Group: System Environment/Base
 %{_includedir}/yogrt.h
 %{_libdir}/libyogrt-slurm*
 
-%description
-A simple wrapper library that provides a unified get-remaining-time
-interface for multiple parallel job scheduling systems.
-
-%description none
-A simple wrapper library that provides a unified get-remaining-time
-interface for multiple parallel job scheduling systems.
-
-%description slurm
-A simple wrapper library that provides a unified get-remaining-time
-interface for multiple parallel job scheduling systems.
+%post slurm
+sub=slurm
+if [ -e %{_libdir}/libyogrt-${sub}.so ]; then
+	lib=%{_libdir}/libyogrt-${sub}.so
+	if [ -L $lib ]; then
+		ln -sf `readlink $lib` %{_libdir}/libyogrt.so
+	else
+		ln -sf $lib %{_libdir}/libyogrt.so
+	fi
+elif [ -e %{_libdir}/libyogrt-${sub}.a ]; then
+	lib=%{_libdir}/libyogrt-${sub}.a
+	if [ -L $lib ]; then
+		ln -sf `readlink $lib` %{_libdir}/libyogrt.a
+	else
+		ln -sf $lib %{_libdir}/libyogrt.a
+	fi
+fi
 
 %changelog
 * Mon Feb 12 2007 Christopher J. Morrone <morrone@conon.llnl.gov> - 
