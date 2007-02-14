@@ -24,7 +24,7 @@ int internal_get_rem_time(time_t now, time_t last_update, int cached)
 	long dontcare;
 	int status, rc;
 
-	if (lrmgettime(&dontcare, &dontcare, &dontcare, &rem, &status) != 0) {
+	if (lrmgettime(&dontcare, &dontcare, &dontcare, &rem, &status) == 0) {
 		debug("lrmgettime failed: %d\n", status);
 		return -1;
 	}
