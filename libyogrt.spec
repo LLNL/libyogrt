@@ -35,7 +35,7 @@ rm -rf $RPM_BUILD_ROOT
 Summary: libyogrt none implementation
 Group: System Environment/Base
 Provides: libyogrt
-Conflicts: libyogrt-slurm
+Conflicts: libyogrt-slurm libyogrt-lcrm
 
 %description none
 A simple wrapper library that provides a unified get-remaining-time
@@ -78,7 +78,7 @@ rm -f %{_libdir}/libyogrt.${suf}
 Summary: libyogrt SLURM implementation
 Group: System Environment/Base
 Provides: libyogrt
-Conflicts: libyogrt-none
+Conflicts: libyogrt-none libyogrt-lcrm
 
 %description slurm
 A simple wrapper library that provides a unified get-remaining-time
@@ -108,6 +108,49 @@ if [ -e $lib ]; then
 fi
 
 %postun slurm
+%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
+suf="so"
+%else
+suf="a"
+%endif
+rm -f %{_libdir}/libyogrt.${suf}
+
+######################################################################
+# lcrm subpackage 
+%package lcrm
+Summary: libyogrt LCRM implementation
+Group: System Environment/Base
+Provides: libyogrt
+Conflicts: libyogrt-none libyogrt-slurm
+
+%description lcrm
+A simple wrapper library that provides a unified get-remaining-time
+interface for multiple parallel job scheduling systems.  This package
+provides the LCRM libyogurt wrapper.
+
+%files lcrm
+%defattr(-,root,root,-)
+%doc
+%{_includedir}/yogrt.h
+%{_libdir}/libyogrt-lcrm*
+
+%post lcrm
+sub=lcrm
+%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
+suf="so"
+%else
+suf="a"
+%endif
+lib=%{_libdir}/libyogrt-${sub}.${suf}
+if [ -e $lib ]; then
+	if [ -L $lib ]; then
+		ln -sf `readlink $lib` %{_libdir}/libyogrt.${suf}
+	else
+		ln -sf $lib %{_libdir}/libyogrt.${suf}
+	fi
+fi
+
+%postun lcrm
 %ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
 suf="so"
 %else
