@@ -20347,11 +20347,11 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef __cplusplus
 extern "C"
 #endif
-char lcrm_get_rem_time ();
+char lrmgettime ();
 int
 main ()
 {
-return lcrm_get_rem_time ();
+return lrmgettime ();
   ;
   return 0;
 }
