@@ -20333,7 +20333,7 @@ else
             test -d "$d/$bit" || continue
 
             _x_ac_lcrm_libs_save="$LIBS"
-            LIBS="-L$d/$bit -llcrm $LIBS"
+            LIBS="-L$d/$bit -llrm $LIBS"
             cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF

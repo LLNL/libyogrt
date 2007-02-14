@@ -46,7 +46,7 @@ AC_DEFUN([X_AC_LCRM], [
             test -d "$d/$bit" || continue
         
             _x_ac_lcrm_libs_save="$LIBS"
-            LIBS="-L$d/$bit -llcrm $LIBS"
+            LIBS="-L$d/$bit -llrm $LIBS"
             AC_LINK_IFELSE(
               AC_LANG_CALL([], [lrmgettime]),
               AS_VAR_SET([x_ac_cv_lcrm_dir], [$d]))
