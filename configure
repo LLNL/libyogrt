@@ -872,6 +872,10 @@ SLURM_CPPFLAGS
 SLURM_LDFLAGS
 WITH_SLURM_TRUE
 WITH_SLURM_FALSE
+LCRM_CPPFLAGS
+LCRM_LDFLAGS
+WITH_LCRM_TRUE
+WITH_LCRM_FALSE
 LIBOBJS
 LTLIBOBJS'
 ac_subst_files=''
@@ -1485,6 +1489,7 @@ Optional Packages:
                           both]
   --with-tags[=TAGS]      include additional configurations [automatic]
   --with-slurm=PATH       Specify path to slurm installation
+  --with-lcrm=PATH        Specify path to lcrm installation
 
 Some influential environment variables:
   CC          C compiler command
@@ -4600,7 +4605,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4603 "configure"' > conftest.$ac_ext
+  echo '#line 4608 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -7559,11 +7564,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7562: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7567: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7566: \$? = $ac_status" >&5
+   echo "$as_me:7571: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -7827,11 +7832,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7830: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7835: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7834: \$? = $ac_status" >&5
+   echo "$as_me:7839: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -7931,11 +7936,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7934: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7939: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:7938: \$? = $ac_status" >&5
+   echo "$as_me:7943: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10372,7 +10377,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 10375 "configure"
+#line 10380 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -10472,7 +10477,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 10475 "configure"
+#line 10480 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12840,11 +12845,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12843: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12848: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:12847: \$? = $ac_status" >&5
+   echo "$as_me:12852: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -12944,11 +12949,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12947: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12952: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:12951: \$? = $ac_status" >&5
+   echo "$as_me:12956: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -14505,11 +14510,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14508: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14513: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14512: \$? = $ac_status" >&5
+   echo "$as_me:14517: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -14609,11 +14614,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14612: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14617: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14616: \$? = $ac_status" >&5
+   echo "$as_me:14621: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -16828,11 +16833,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16831: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16836: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:16835: \$? = $ac_status" >&5
+   echo "$as_me:16840: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -17096,11 +17101,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17099: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:17104: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:17103: \$? = $ac_status" >&5
+   echo "$as_me:17108: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -17200,11 +17205,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:17203: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:17208: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:17207: \$? = $ac_status" >&5
+   echo "$as_me:17212: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -20208,7 +20213,238 @@ fi
 
 
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/none/Makefile src/slurm/Makefile"
+
+  _x_ac_lcrm_dirs="/dpcs"
+  _x_ac_lcrm_libs="lib"
+
+
+# Check whether --with-lcrm was given.
+if test "${with_lcrm+set}" = set; then
+  withval=$with_lcrm; _x_ac_lcrm_dirs="$withval"
+     with_lcrm=yes
+else
+  with_lcrm=no
+fi
+
+
+  if test "$with_lcrm" = no; then
+    # Check for LCRM library in the default location.
+
+{ echo "$as_me:$LINENO: checking for lrmgettime in -llrm" >&5
+echo $ECHO_N "checking for lrmgettime in -llrm... $ECHO_C" >&6; }
+if test "${ac_cv_lib_lrm_lrmgettime+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-llrm  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char lrmgettime ();
+int
+main ()
+{
+return lrmgettime ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_lrm_lrmgettime=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_lib_lrm_lrmgettime=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_lib_lrm_lrmgettime" >&5
+echo "${ECHO_T}$ac_cv_lib_lrm_lrmgettime" >&6; }
+if test $ac_cv_lib_lrm_lrmgettime = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBLRM 1
+_ACEOF
+
+  LIBS="-llrm $LIBS"
+
+fi
+
+  fi
+
+  if test "$ac_cv_lib_lrm_lrmgettime" != yes; then
+    { echo "$as_me:$LINENO: checking for lcrm installation" >&5
+echo $ECHO_N "checking for lcrm installation... $ECHO_C" >&6; }
+if test "${x_ac_cv_lcrm_dir+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+
+        for d in $_x_ac_lcrm_dirs; do
+          test -d "$d" || continue
+          test -d "$d/include" || continue
+          test -f "$d/include/liblrm.h" || continue
+          for bit in $_x_ac_lcrm_libs; do
+            test -d "$d/$bit" || continue
+
+            _x_ac_lcrm_libs_save="$LIBS"
+            LIBS="-L$d/$bit -llcrm $LIBS"
+            cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char lcrm_get_rem_time ();
+int
+main ()
+{
+return lcrm_get_rem_time ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  x_ac_cv_lcrm_dir=$d
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+fi
+
+rm -f core conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+            LIBS="$_x_ac_lcrm_libs_save"
+            test -n "$x_ac_cv_lcrm_dir" && break
+          done
+          test -n "$x_ac_cv_lcrm_dir" && break
+        done
+
+fi
+{ echo "$as_me:$LINENO: result: $x_ac_cv_lcrm_dir" >&5
+echo "${ECHO_T}$x_ac_cv_lcrm_dir" >&6; }
+  fi
+
+  if test "$with_lcrm" = no \
+     && test "$ac_cv_lib_lrm_lrmgettime" = yes; then
+    LCRM_CPPFLAGS=""
+    LCRM_LDFLAGS=""
+  elif test -n "$x_ac_cv_lcrm_dir"; then
+    LCRM_CPPFLAGS="-I$x_ac_cv_lcrm_dir/include"
+    LCRM_LDFLAGS="-L$x_ac_cv_lcrm_dir/$bit"
+  else
+    if test "$with_lcrm" = yes; then
+      { { echo "$as_me:$LINENO: error: lcrm is not in specified location!" >&5
+echo "$as_me: error: lcrm is not in specified location!" >&2;}
+   { (exit 1); exit 1; }; }
+    else
+      { echo "$as_me:$LINENO: WARNING: unable to locate lcrm installation" >&5
+echo "$as_me: WARNING: unable to locate lcrm installation" >&2;}
+    fi
+  fi
+
+
+
+
+
+
+if test -n "$x_ac_cv_lcrm_dir" || test "$ac_cv_lib_lrm_lrmgettime" = yes; then
+  WITH_LCRM_TRUE=
+  WITH_LCRM_FALSE='#'
+else
+  WITH_LCRM_TRUE='#'
+  WITH_LCRM_FALSE=
+fi
+
+
+
+ac_config_files="$ac_config_files Makefile src/Makefile src/none/Makefile src/slurm/Makefile src/lcrm/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -20339,6 +20575,13 @@ if test -z "${WITH_SLURM_TRUE}" && test -z "${WITH_SLURM_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"WITH_SLURM\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 echo "$as_me: error: conditional \"WITH_SLURM\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${WITH_LCRM_TRUE}" && test -z "${WITH_LCRM_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"WITH_LCRM\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"WITH_LCRM\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -20801,6 +21044,7 @@ do
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/none/Makefile") CONFIG_FILES="$CONFIG_FILES src/none/Makefile" ;;
     "src/slurm/Makefile") CONFIG_FILES="$CONFIG_FILES src/slurm/Makefile" ;;
+    "src/lcrm/Makefile") CONFIG_FILES="$CONFIG_FILES src/lcrm/Makefile" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
@@ -21024,11 +21268,15 @@ SLURM_CPPFLAGS!$SLURM_CPPFLAGS$ac_delim
 SLURM_LDFLAGS!$SLURM_LDFLAGS$ac_delim
 WITH_SLURM_TRUE!$WITH_SLURM_TRUE$ac_delim
 WITH_SLURM_FALSE!$WITH_SLURM_FALSE$ac_delim
+LCRM_CPPFLAGS!$LCRM_CPPFLAGS$ac_delim
+LCRM_LDFLAGS!$LCRM_LDFLAGS$ac_delim
+WITH_LCRM_TRUE!$WITH_LCRM_TRUE$ac_delim
+WITH_LCRM_FALSE!$WITH_LCRM_FALSE$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 25; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 29; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

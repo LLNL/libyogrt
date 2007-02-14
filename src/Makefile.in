@@ -39,7 +39,8 @@ target_triplet = @target@
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/config/x_ac_meta.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/config/x_ac_lcrm.m4 \
+	$(top_srcdir)/config/x_ac_meta.m4 \
 	$(top_srcdir)/config/x_ac_slurm.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
@@ -56,7 +57,7 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	uninstall-recursive
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = none slurm
+DIST_SUBDIRS = none lcrm slurm
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMDEP_FALSE = @AMDEP_FALSE@
@@ -92,6 +93,8 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+LCRM_CPPFLAGS = @LCRM_CPPFLAGS@
+LCRM_LDFLAGS = @LCRM_LDFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
@@ -126,6 +129,8 @@ SLURM_CPPFLAGS = @SLURM_CPPFLAGS@
 SLURM_LDFLAGS = @SLURM_LDFLAGS@
 STRIP = @STRIP@
 VERSION = @VERSION@
+WITH_LCRM_FALSE = @WITH_LCRM_FALSE@
+WITH_LCRM_TRUE = @WITH_LCRM_TRUE@
 WITH_SLURM_FALSE = @WITH_SLURM_FALSE@
 WITH_SLURM_TRUE = @WITH_SLURM_TRUE@
 ac_ct_CC = @ac_ct_CC@
@@ -179,8 +184,9 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
+@WITH_LCRM_TRUE@SLURM_DIR = lcrm
 @WITH_SLURM_TRUE@SLURM_DIR = slurm
-SUBDIRS = none $(SLURM_DIR)
+SUBDIRS = none $(SLURM_DIR) $(LCRM_DIR)
 all: all-recursive
 
 .SUFFIXES:
