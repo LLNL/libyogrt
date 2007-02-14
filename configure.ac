@@ -23,10 +23,12 @@ AC_PROG_LIBTOOL
 AC_C_INLINE
 
 X_AC_SLURM
+X_AC_LCRM
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/none/Makefile
-                 src/slurm/Makefile])
+                 src/slurm/Makefile
+                 src/lcrm/Makefile])
  	
 AC_OUTPUT
