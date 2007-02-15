@@ -24,11 +24,13 @@ AC_C_INLINE
 
 X_AC_SLURM
 X_AC_LCRM
+X_AC_MOAB
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/none/Makefile
                  src/slurm/Makefile
-                 src/lcrm/Makefile])
- 	
+                 src/lcrm/Makefile
+                 src/moab/Makefile])
+
 AC_OUTPUT

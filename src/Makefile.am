@@ -2,7 +2,10 @@ if WITH_SLURM
   SLURM_DIR = slurm
 endif
 if WITH_LCRM
-  SLURM_DIR = lcrm
+  LCRM_DIR = lcrm
+endif
+if WITH_MOAB
+  MOAB_DIR = moab
 endif
 
-SUBDIRS = none $(SLURM_DIR) $(LCRM_DIR)
+SUBDIRS = none $(SLURM_DIR) $(LCRM_DIR) $(MOAB_DIR)
