@@ -20452,8 +20452,8 @@ fi
 
 
   MOAB_LIBADD="-lcmoab -lmoab -lminit -lpthread -lm -lmcom"
-  _x_ac_moab_dirs="/dpcs"
-  _x_ac_moab_libs="lib"
+  _x_ac_moab_dirs="/usr /dpcs"
+  _x_ac_moab_libs="lib64 lib"
 
 
 # Check whether --with-moab was given.
@@ -20468,13 +20468,13 @@ fi
   if test "$with_moab" = no; then
     # Check for MOAB library in the default location.
 
-{ echo "$as_me:$LINENO: checking for MCCJobGetRemainingTime in -lmoab" >&5
-echo $ECHO_N "checking for MCCJobGetRemainingTime in -lmoab... $ECHO_C" >&6; }
-if test "${ac_cv_lib_moab_MCCJobGetRemainingTime+set}" = set; then
+{ echo "$as_me:$LINENO: checking for MCCJobGetRemainingTime in -lcmoab" >&5
+echo $ECHO_N "checking for MCCJobGetRemainingTime in -lcmoab... $ECHO_C" >&6; }
+if test "${ac_cv_lib_cmoab_MCCJobGetRemainingTime+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   ac_check_lib_save_LIBS=$LIBS
-LIBS="-lmoab  $LIBS"
+LIBS="-lcmoab  $LIBS"
 cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -20531,32 +20531,32 @@ eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  ac_cv_lib_moab_MCCJobGetRemainingTime=yes
+  ac_cv_lib_cmoab_MCCJobGetRemainingTime=yes
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-	ac_cv_lib_moab_MCCJobGetRemainingTime=no
+	ac_cv_lib_cmoab_MCCJobGetRemainingTime=no
 fi
 
 rm -f core conftest.err conftest.$ac_objext \
       conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_moab_MCCJobGetRemainingTime" >&5
-echo "${ECHO_T}$ac_cv_lib_moab_MCCJobGetRemainingTime" >&6; }
-if test $ac_cv_lib_moab_MCCJobGetRemainingTime = yes; then
+{ echo "$as_me:$LINENO: result: $ac_cv_lib_cmoab_MCCJobGetRemainingTime" >&5
+echo "${ECHO_T}$ac_cv_lib_cmoab_MCCJobGetRemainingTime" >&6; }
+if test $ac_cv_lib_cmoab_MCCJobGetRemainingTime = yes; then
   cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBMOAB 1
+#define HAVE_LIBCMOAB 1
 _ACEOF
 
-  LIBS="-lmoab $LIBS"
+  LIBS="-lcmoab $LIBS"
 
 fi
 
   fi
 
-  if test "$ac_cv_lib_moab_MCCJobGetRemainingTime" != yes; then
+  if test "$ac_cv_lib_cmoab_MCCJobGetRemainingTime" != yes; then
     { echo "$as_me:$LINENO: checking for moab installation" >&5
 echo $ECHO_N "checking for moab installation... $ECHO_C" >&6; }
 if test "${x_ac_cv_moab_dir+set}" = set; then
@@ -20651,7 +20651,7 @@ echo "${ECHO_T}$x_ac_cv_moab_dir" >&6; }
   fi
 
   if test "$with_moab" = no \
-     && test "$ac_cv_lib_moab_MCCJobGetRemainingTime" = yes; then
+     && test "$ac_cv_lib_cmoab_MCCJobGetRemainingTime" = yes; then
     MOAB_CPPFLAGS=""
     MOAB_LDFLAGS=""
   elif test -n "$x_ac_cv_moab_dir"; then
@@ -20674,7 +20674,7 @@ echo "$as_me: WARNING: unable to locate moab installation" >&2;}
 
 
 
-if test -n "$x_ac_cv_moab_dir" || test "$ac_cv_lib_moab_MCCJobGetRemainingTime" = yes; then
+if test -n "$x_ac_cv_moab_dir" || test "$ac_cv_lib_cmoab_MCCJobGetRemainingTime" = yes; then
   WITH_MOAB_TRUE=
   WITH_MOAB_FALSE='#'
 else
