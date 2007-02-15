@@ -20451,8 +20451,8 @@ fi
 
 
 
-  MOAB_LIBADD="-lcmoab -lmoab -lminit -lpthread -lm -lmcom"
-  _x_ac_moab_dirs="/usr /dpcs"
+  MOAB_LIBADD="-lcmoab -lmoab -lminit -lmcom -lmrmi -lpthread -lm"
+  _x_ac_moab_dirs="/usr"
   _x_ac_moab_libs="lib64 lib"
 
 
@@ -20474,7 +20474,7 @@ if test "${ac_cv_lib_cmoab_MCCJobGetRemainingTime+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   ac_check_lib_save_LIBS=$LIBS
-LIBS="-lcmoab  $LIBS"
+LIBS="-lcmoab $MOAB_LIBADD $LIBS"
 cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
