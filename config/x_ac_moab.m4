@@ -19,8 +19,8 @@
 AC_DEFUN([X_AC_MOAB], [
 
   MOAB_LIBADD="-lcmoab -lmoab -lminit -lpthread -lm -lmcom"
-  _x_ac_moab_dirs="/dpcs"
-  _x_ac_moab_libs="lib"
+  _x_ac_moab_dirs="/usr /dpcs"
+  _x_ac_moab_libs="lib64 lib"
 
   AC_ARG_WITH(
     [moab],
@@ -31,7 +31,7 @@ AC_DEFUN([X_AC_MOAB], [
 
   if test "$with_moab" = no; then
     # Check for MOAB library in the default location.
-    AC_CHECK_LIB([moab], [MCCJobGetRemainingTime])
+    AC_CHECK_LIB([cmoab], [MCCJobGetRemainingTime])
   fi
 
   if test "$ac_cv_lib_moab_MCCJobGetRemainingTime" != yes; then
