@@ -25,7 +25,7 @@ int internal_get_rem_time(time_t now, time_t last_update, int cached)
 	int status, rc;
 
 	if (lrmgettime(&dontcare, &dontcare, &dontcare, &rem, &status) == 0) {
-		debug("lrmgettime failed: %d\n", status);
+		debug("LCRM call lrmgettime failed: %d\n", status);
 		return -1;
 	}
 
