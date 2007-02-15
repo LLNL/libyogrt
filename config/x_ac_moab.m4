@@ -34,7 +34,7 @@ AC_DEFUN([X_AC_MOAB], [
     AC_CHECK_LIB([cmoab], [MCCJobGetRemainingTime])
   fi
 
-  if test "$ac_cv_lib_moab_MCCJobGetRemainingTime" != yes; then
+  if test "$ac_cv_lib_cmoab_MCCJobGetRemainingTime" != yes; then
     AC_CACHE_CHECK(
       [for moab installation],
       [x_ac_cv_moab_dir],
@@ -61,7 +61,7 @@ AC_DEFUN([X_AC_MOAB], [
   fi
 
   if test "$with_moab" = no \
-     && test "$ac_cv_lib_moab_MCCJobGetRemainingTime" = yes; then
+     && test "$ac_cv_lib_cmoab_MCCJobGetRemainingTime" = yes; then
     MOAB_CPPFLAGS=""
     MOAB_LDFLAGS=""
   elif test -n "$x_ac_cv_moab_dir"; then
@@ -80,5 +80,5 @@ AC_DEFUN([X_AC_MOAB], [
   AC_SUBST(MOAB_LDFLAGS)
 
   AM_CONDITIONAL(WITH_MOAB,
-	test -n "$x_ac_cv_moab_dir" || test "$ac_cv_lib_moab_MCCJobGetRemainingTime" = yes)
+	test -n "$x_ac_cv_moab_dir" || test "$ac_cv_lib_cmoab_MCCJobGetRemainingTime" = yes)
 ])
