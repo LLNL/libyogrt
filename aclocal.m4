@@ -7248,4 +7248,5 @@ AC_SUBST([am__untar])
 
 m4_include([config/x_ac_lcrm.m4])
 m4_include([config/x_ac_meta.m4])
+m4_include([config/x_ac_moab.m4])
 m4_include([config/x_ac_slurm.m4])

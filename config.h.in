@@ -9,6 +9,9 @@
 /* Define to 1 if you have the `lrm' library (-llrm). */
 #undef HAVE_LIBLRM
 
+/* Define to 1 if you have the `moab' library (-lmoab). */
+#undef HAVE_LIBMOAB
+
 /* Define to 1 if you have the `slurm' library (-lslurm). */
 #undef HAVE_LIBSLURM
 

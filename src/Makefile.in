@@ -41,6 +41,7 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/config/x_ac_lcrm.m4 \
 	$(top_srcdir)/config/x_ac_meta.m4 \
+	$(top_srcdir)/config/x_ac_moab.m4 \
 	$(top_srcdir)/config/x_ac_slurm.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
@@ -57,7 +58,7 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	uninstall-recursive
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = none lcrm slurm
+DIST_SUBDIRS = none slurm lcrm moab
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMDEP_FALSE = @AMDEP_FALSE@
@@ -114,6 +115,9 @@ META_LT_REVISION = @META_LT_REVISION@
 META_NAME = @META_NAME@
 META_RELEASE = @META_RELEASE@
 META_VERSION = @META_VERSION@
+MOAB_CPPFLAGS = @MOAB_CPPFLAGS@
+MOAB_LDFLAGS = @MOAB_LDFLAGS@
+MOAB_LIBADD = @MOAB_LIBADD@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
@@ -131,6 +135,8 @@ STRIP = @STRIP@
 VERSION = @VERSION@
 WITH_LCRM_FALSE = @WITH_LCRM_FALSE@
 WITH_LCRM_TRUE = @WITH_LCRM_TRUE@
+WITH_MOAB_FALSE = @WITH_MOAB_FALSE@
+WITH_MOAB_TRUE = @WITH_MOAB_TRUE@
 WITH_SLURM_FALSE = @WITH_SLURM_FALSE@
 WITH_SLURM_TRUE = @WITH_SLURM_TRUE@
 ac_ct_CC = @ac_ct_CC@
@@ -184,9 +190,10 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
-@WITH_LCRM_TRUE@SLURM_DIR = lcrm
 @WITH_SLURM_TRUE@SLURM_DIR = slurm
-SUBDIRS = none $(SLURM_DIR) $(LCRM_DIR)
+@WITH_LCRM_TRUE@LCRM_DIR = lcrm
+@WITH_MOAB_TRUE@MOAB_DIR = moab
+SUBDIRS = none $(SLURM_DIR) $(LCRM_DIR) $(MOAB_DIR)
 all: all-recursive
 
 .SUFFIXES:
