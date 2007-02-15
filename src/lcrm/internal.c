@@ -20,12 +20,18 @@ char *internal_backend_name(void)
 
 int internal_get_rem_time(time_t now, time_t last_update, int cached)
 {
-	long rem;
+	long rem = 0;
+	int status = 0;
 	long dontcare;
-	int status, rc;
 
-	if (lrmgettime(&dontcare, &dontcare, &dontcare, &rem, &status) == 0) {
-		debug("LCRM call lrmgettime failed: %d\n", status);
+	if (0 == lrmgettime(&dontcare, &dontcare, &dontcare, &rem, &status)) {
+		if (status == 0) {
+			debug("LCRM lrmgettime polled too soon: rem = %ld\n",
+			      rem);
+		} else {
+			debug("LCRM lrmgettime failed: status = %d, rem = %ld\n",
+			      status, rem);
+		}
 		return -1;
 	}
 
