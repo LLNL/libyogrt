@@ -58,7 +58,7 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	uninstall-recursive
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = none slurm lcrm moab
+DIST_SUBDIRS = none slurm lcrm
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMDEP_FALSE = @AMDEP_FALSE@
@@ -192,7 +192,9 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 @WITH_SLURM_TRUE@SLURM_DIR = slurm
 @WITH_LCRM_TRUE@LCRM_DIR = lcrm
-@WITH_MOAB_TRUE@MOAB_DIR = moab
+#if WITH_MOAB
+#  MOAB_DIR = moab
+#endif
 SUBDIRS = none $(SLURM_DIR) $(LCRM_DIR) $(MOAB_DIR)
 all: all-recursive
 

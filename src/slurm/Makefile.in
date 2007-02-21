@@ -57,12 +57,13 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgincludedir)"
-libLTLIBRARIES_INSTALL = $(INSTALL)
-LTLIBRARIES = $(lib_LTLIBRARIES)
-libyogrt_slurm_la_DEPENDENCIES = ../yogrt.lo @LTLIBOBJS@
-am_libyogrt_slurm_la_OBJECTS = libyogrt_slurm_la-internal.lo
-libyogrt_slurm_la_OBJECTS = $(am_libyogrt_slurm_la_OBJECTS)
+am__installdirs = "$(DESTDIR)$(slurmlibdir)" \
+	"$(DESTDIR)$(pkgincludedir)"
+slurmlibLTLIBRARIES_INSTALL = $(INSTALL)
+LTLIBRARIES = $(slurmlib_LTLIBRARIES)
+libyogrt_la_DEPENDENCIES = ../yogrt.lo @LTLIBOBJS@
+am_libyogrt_la_OBJECTS = libyogrt_la-internal.lo
+libyogrt_la_OBJECTS = $(am_libyogrt_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -74,8 +75,8 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libyogrt_slurm_la_SOURCES)
-DIST_SOURCES = $(libyogrt_slurm_la_SOURCES)
+SOURCES = $(libyogrt_la_SOURCES)
+DIST_SOURCES = $(libyogrt_la_SOURCES)
 pkgincludeHEADERS_INSTALL = $(INSTALL_HEADER)
 HEADERS = $(pkginclude_HEADERS)
 ETAGS = etags
@@ -212,11 +213,12 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 INCLUDES = -I$(top_srcdir)/src
-lib_LTLIBRARIES = libyogrt-slurm.la
-libyogrt_slurm_la_SOURCES = internal.c
-libyogrt_slurm_la_LIBADD = ../yogrt.lo @LTLIBOBJS@ -lslurm
-libyogrt_slurm_la_CPPFLAGS = $(SLURM_CPPFLAGS)
-libyogrt_slurm_la_LDFLAGS = $(SLURM_LDFLAGS) \
+slurmlibdir = $(libdir)/libyogrt/slurm
+slurmlib_LTLIBRARIES = libyogrt.la
+libyogrt_la_SOURCES = internal.c
+libyogrt_la_LIBADD = ../yogrt.lo @LTLIBOBJS@ -lslurm
+libyogrt_la_CPPFLAGS = $(SLURM_CPPFLAGS)
+libyogrt_la_LDFLAGS = $(SLURM_LDFLAGS) \
 	-no-undefined \
 	-export-symbols-regex "^yogrt_.*" \
 	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
@@ -255,35 +257,35 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+install-slurmlibLTLIBRARIES: $(slurmlib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
-	test -z "$(libdir)" || $(mkdir_p) "$(DESTDIR)$(libdir)"
-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	test -z "$(slurmlibdir)" || $(mkdir_p) "$(DESTDIR)$(slurmlibdir)"
+	@list='$(slurmlib_LTLIBRARIES)'; for p in $$list; do \
 	  if test -f $$p; then \
 	    f=$(am__strip_dir) \
-	    echo " $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(libdir)/$$f'"; \
-	    $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(libdir)/$$f"; \
+	    echo " $(LIBTOOL) --mode=install $(slurmlibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(slurmlibdir)/$$f'"; \
+	    $(LIBTOOL) --mode=install $(slurmlibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(slurmlibdir)/$$f"; \
 	  else :; fi; \
 	done
 
-uninstall-libLTLIBRARIES:
+uninstall-slurmlibLTLIBRARIES:
 	@$(NORMAL_UNINSTALL)
-	@set -x; list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	@set -x; list='$(slurmlib_LTLIBRARIES)'; for p in $$list; do \
 	  p=$(am__strip_dir) \
-	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(libdir)/$$p'"; \
-	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(libdir)/$$p"; \
+	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(slurmlibdir)/$$p'"; \
+	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(slurmlibdir)/$$p"; \
 	done
 
-clean-libLTLIBRARIES:
-	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+clean-slurmlibLTLIBRARIES:
+	-test -z "$(slurmlib_LTLIBRARIES)" || rm -f $(slurmlib_LTLIBRARIES)
+	@list='$(slurmlib_LTLIBRARIES)'; for p in $$list; do \
 	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
 	  test "$$dir" != "$$p" || dir=.; \
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libyogrt-slurm.la: $(libyogrt_slurm_la_OBJECTS) $(libyogrt_slurm_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(libyogrt_slurm_la_LDFLAGS) $(libyogrt_slurm_la_OBJECTS) $(libyogrt_slurm_la_LIBADD) $(LIBS)
+libyogrt.la: $(libyogrt_la_OBJECTS) $(libyogrt_la_DEPENDENCIES) 
+	$(LINK) -rpath $(slurmlibdir) $(libyogrt_la_LDFLAGS) $(libyogrt_la_OBJECTS) $(libyogrt_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -291,7 +293,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libyogrt_slurm_la-internal.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libyogrt_la-internal.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -314,12 +316,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
-libyogrt_slurm_la-internal.lo: internal.c
-@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libyogrt_slurm_la-internal.lo -MD -MP -MF "$(DEPDIR)/libyogrt_slurm_la-internal.Tpo" -c -o libyogrt_slurm_la-internal.lo `test -f 'internal.c' || echo '$(srcdir)/'`internal.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libyogrt_slurm_la-internal.Tpo" "$(DEPDIR)/libyogrt_slurm_la-internal.Plo"; else rm -f "$(DEPDIR)/libyogrt_slurm_la-internal.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='internal.c' object='libyogrt_slurm_la-internal.lo' libtool=yes @AMDEPBACKSLASH@
+libyogrt_la-internal.lo: internal.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libyogrt_la-internal.lo -MD -MP -MF "$(DEPDIR)/libyogrt_la-internal.Tpo" -c -o libyogrt_la-internal.lo `test -f 'internal.c' || echo '$(srcdir)/'`internal.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libyogrt_la-internal.Tpo" "$(DEPDIR)/libyogrt_la-internal.Plo"; else rm -f "$(DEPDIR)/libyogrt_la-internal.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='internal.c' object='libyogrt_la-internal.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libyogrt_slurm_la-internal.lo `test -f 'internal.c' || echo '$(srcdir)/'`internal.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libyogrt_la-internal.lo `test -f 'internal.c' || echo '$(srcdir)/'`internal.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -428,7 +430,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgincludedir)"; do \
+	for dir in "$(DESTDIR)$(slurmlibdir)" "$(DESTDIR)$(pkgincludedir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -457,7 +459,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
+clean-am: clean-generic clean-libtool clean-slurmlibLTLIBRARIES \
 	mostlyclean-am
 
 distclean: distclean-am
@@ -476,9 +478,9 @@ info: info-am
 
 info-am:
 
-install-data-am: install-pkgincludeHEADERS
+install-data-am: install-pkgincludeHEADERS install-slurmlibLTLIBRARIES
 
-install-exec-am: install-libLTLIBRARIES
+install-exec-am:
 
 install-info: install-info-am
 
@@ -504,22 +506,22 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-pkgincludeHEADERS
+uninstall-am: uninstall-info-am uninstall-pkgincludeHEADERS \
+	uninstall-slurmlibLTLIBRARIES
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool ctags distclean \
+	clean-libtool clean-slurmlibLTLIBRARIES ctags distclean \
 	distclean-compile distclean-generic distclean-libtool \
 	distclean-tags distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-exec \
-	install-exec-am install-info install-info-am \
-	install-libLTLIBRARIES install-man install-pkgincludeHEADERS \
+	install-exec-am install-info install-info-am install-man \
+	install-pkgincludeHEADERS install-slurmlibLTLIBRARIES \
 	install-strip installcheck installcheck-am installdirs \
 	maintainer-clean maintainer-clean-generic mostlyclean \
 	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
 	pdf pdf-am ps ps-am tags uninstall uninstall-am \
-	uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-pkgincludeHEADERS
+	uninstall-info-am uninstall-pkgincludeHEADERS \
+	uninstall-slurmlibLTLIBRARIES
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

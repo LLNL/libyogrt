@@ -46,7 +46,7 @@ provides the "none" libyogurt wrapper.
 %defattr(-,root,root,-)
 %doc
 %{_includedir}/yogrt.h
-%{_libdir}/libyogrt-none*
+%{_libdir}/libyogrt/none/*
 
 %post none
 sub=none
@@ -55,7 +55,7 @@ suf="so"
 %else
 suf="a"
 %endif
-lib=%{_libdir}/libyogrt-${sub}.${suf}
+lib=%{_libdir}/libyogrt/${sub}/libyogrt.${suf}
 if [ -e $lib ]; then
 	if [ -L $lib ]; then
 		ln -sf `readlink $lib` %{_libdir}/libyogrt.${suf}
@@ -89,7 +89,7 @@ provides the SLURM libyogurt wrapper.
 %defattr(-,root,root,-)
 %doc
 %{_includedir}/yogrt.h
-%{_libdir}/libyogrt-slurm*
+%{_libdir}/libyogrt/slurm/*
 
 %post slurm
 sub=slurm
@@ -98,7 +98,7 @@ suf="so"
 %else
 suf="a"
 %endif
-lib=%{_libdir}/libyogrt-${sub}.${suf}
+lib=%{_libdir}/libyogrt/${sub}/libyogrt.${suf}
 if [ -e $lib ]; then
 	if [ -L $lib ]; then
 		ln -sf `readlink $lib` %{_libdir}/libyogrt.${suf}
@@ -132,7 +132,7 @@ provides the LCRM libyogurt wrapper.
 %defattr(-,root,root,-)
 %doc
 %{_includedir}/yogrt.h
-%{_libdir}/libyogrt-lcrm*
+%{_libdir}/libyogrt/lcrm/*
 
 %post lcrm
 sub=lcrm
@@ -141,7 +141,7 @@ suf="so"
 %else
 suf="a"
 %endif
-lib=%{_libdir}/libyogrt-${sub}.${suf}
+lib=%{_libdir}/libyogrt/${sub}/libyogrt.${suf}
 if [ -e $lib ]; then
 	if [ -L $lib ]; then
 		ln -sf `readlink $lib` %{_libdir}/libyogrt.${suf}
