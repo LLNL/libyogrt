@@ -47,7 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 Summary: libyogrt none implementation
 Group: System Environment/Base
 Provides: libyogrt
-Conflicts: libyogrt-slurm libyogrt-lcrm
+Conflicts: libyogrt-slurm libyogrt-lcrm libyogrt-moab
 
 %description none
 A simple wrapper library that provides a unified get-remaining-time
@@ -83,7 +83,7 @@ done
 Summary: libyogrt SLURM implementation
 Group: System Environment/Base
 Provides: libyogrt
-Conflicts: libyogrt-none libyogrt-lcrm
+Conflicts: libyogrt-none libyogrt-lcrm libyogrt-moab
 
 %description slurm
 A simple wrapper library that provides a unified get-remaining-time
@@ -119,7 +119,7 @@ done
 Summary: libyogrt LCRM implementation
 Group: System Environment/Base
 Provides: libyogrt
-Conflicts: libyogrt-none libyogrt-slurm
+Conflicts: libyogrt-none libyogrt-slurm libyogrt-moab
 
 %description lcrm
 A simple wrapper library that provides a unified get-remaining-time
@@ -144,6 +144,42 @@ done
 %preun lcrm
 # Remove the symlinks to the library
 subpackage=lcrm
+lib_names=$(. %{_libdir}/libyogrt/${subpackage}/libyogrt.la; echo -n $library_names)
+for name in $lib_names; do
+	rm -f %{_libdir}/${name}
+done
+
+######################################################################
+# moab subpackage 
+%package moab
+Summary: libyogrt MOAB implementation
+Group: System Environment/Base
+Provides: libyogrt
+Conflicts: libyogrt-none libyogrt-slurm libyogrt-moab
+
+%description moab
+A simple wrapper library that provides a unified get-remaining-time
+interface for multiple parallel job scheduling systems.  This package
+provides the MOAB libyogurt wrapper.
+
+%files -f moab.files moab
+
+%post moab
+# Create the symlinks to the library
+subpackage=moab
+lib_names=$(. %{_libdir}/libyogrt/${subpackage}/libyogrt.la; echo -n $library_names)
+for name in $lib_names; do
+	lib=%{_libdir}/libyogrt/${subpackage}/${name}
+	if [ -L $lib ]; then
+		ln -sf `readlink $lib` %{_libdir}/${name}
+	elif [ -e $lib ]; then
+		ln -sf $lib %{_libdir}/${name}
+	fi
+done
+
+%preun moab
+# Remove the symlinks to the library
+subpackage=moab
 lib_names=$(. %{_libdir}/libyogrt/${subpackage}/libyogrt.la; echo -n $library_names)
 for name in $lib_names; do
 	rm -f %{_libdir}/${name}
