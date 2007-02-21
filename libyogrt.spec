@@ -9,7 +9,6 @@ Packager: Christopher J. Morrone <morrone2@llnl.gov>
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
-
 %description
 A simple wrapper library that provides a unified get-remaining-time
 interface for multiple parallel job scheduling systems.
@@ -49,28 +48,25 @@ provides the "none" libyogurt wrapper.
 %{_libdir}/libyogrt/none/*
 
 %post none
-sub=none
-%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
-suf="so"
-%else
-suf="a"
-%endif
-lib=%{_libdir}/libyogrt/${sub}/libyogrt.${suf}
-if [ -e $lib ]; then
+# Create the symlinks to the library
+subdir=none
+lib_names=$(. %{_libdir}/libyogrt/${subdir}/libyogrt.la; echo -n $library_names)
+for name in $lib_names; do
+	lib=%{_libdir}/libyogrt/${subdir}/${name}
 	if [ -L $lib ]; then
-		ln -sf `readlink $lib` %{_libdir}/libyogrt.${suf}
-	else
-		ln -sf $lib %{_libdir}/libyogrt.${suf}
+		ln -sf `readlink $lib` %{_libdir}/${name}
+	elif [ -e $lib ]; then
+		ln -sf $lib %{_libdir}/${name}
 	fi
-fi
+done
 
-%postun none
-%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
-suf="so"
-%else
-suf="a"
-%endif
-rm -f %{_libdir}/libyogrt.${suf}
+%preun none
+# Remove the symlinks to the library
+subdir=none
+lib_names=$(. %{_libdir}/libyogrt/${subdir}/libyogrt.la; echo -n $library_names)
+for name in $lib_names; do
+	rm -f %{_libdir}/${name}
+done
 
 ######################################################################
 # slurm subpackage 
@@ -92,28 +88,25 @@ provides the SLURM libyogurt wrapper.
 %{_libdir}/libyogrt/slurm/*
 
 %post slurm
-sub=slurm
-%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
-suf="so"
-%else
-suf="a"
-%endif
-lib=%{_libdir}/libyogrt/${sub}/libyogrt.${suf}
-if [ -e $lib ]; then
+# Create the symlinks to the library
+subdir=slurm
+lib_names=$(. %{_libdir}/libyogrt/${subdir}/libyogrt.la; echo -n $library_names)
+for name in $lib_names; do
+	lib=%{_libdir}/libyogrt/${subdir}/${name}
 	if [ -L $lib ]; then
-		ln -sf `readlink $lib` %{_libdir}/libyogrt.${suf}
-	else
-		ln -sf $lib %{_libdir}/libyogrt.${suf}
+		ln -sf `readlink $lib` %{_libdir}/${name}
+	elif [ -e $lib ]; then
+		ln -sf $lib %{_libdir}/${name}
 	fi
-fi
+done
 
-%postun slurm
-%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
-suf="so"
-%else
-suf="a"
-%endif
-rm -f %{_libdir}/libyogrt.${suf}
+%preun slurm
+# Remove the symlinks to the library
+subdir=slurm
+lib_names=$(. %{_libdir}/libyogrt/${subdir}/libyogrt.la; echo -n $library_names)
+for name in $lib_names; do
+	rm -f %{_libdir}/${name}
+done
 
 ######################################################################
 # lcrm subpackage 
@@ -135,28 +128,25 @@ provides the LCRM libyogurt wrapper.
 %{_libdir}/libyogrt/lcrm/*
 
 %post lcrm
-sub=lcrm
-%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
-suf="so"
-%else
-suf="a"
-%endif
-lib=%{_libdir}/libyogrt/${sub}/libyogrt.${suf}
-if [ -e $lib ]; then
+# Create the symlinks to the library
+subdir=lcrm
+lib_names=$(. %{_libdir}/libyogrt/${subdir}/libyogrt.la; echo -n $library_names)
+for name in $lib_names; do
+	lib=%{_libdir}/libyogrt/${subdir}/${name}
 	if [ -L $lib ]; then
-		ln -sf `readlink $lib` %{_libdir}/libyogrt.${suf}
-	else
-		ln -sf $lib %{_libdir}/libyogrt.${suf}
+		ln -sf `readlink $lib` %{_libdir}/${name}
+	elif [ -e $lib ]; then
+		ln -sf $lib %{_libdir}/${name}
 	fi
-fi
+done
 
-%postun lcrm
-%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
-suf="so"
-%else
-suf="a"
-%endif
-rm -f %{_libdir}/libyogrt.${suf}
+%preun lcrm
+# Remove the symlinks to the library
+subdir=lcrm
+lib_names=$(. %{_libdir}/libyogrt/${subdir}/libyogrt.la; echo -n $library_names)
+for name in $lib_names; do
+	rm -f %{_libdir}/${name}
+done
 
 %changelog
 * Mon Feb 12 2007 Christopher J. Morrone <morrone@conon.llnl.gov> - 
