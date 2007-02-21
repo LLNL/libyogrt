@@ -27,6 +27,7 @@ DESTDIR="$RPM_BUILD_ROOT" make install
 
 # Now determine file lists for each subpackage
 for subpackage in none slurm lcrm moab; do
+	touch ${subpackage}.files
 	if [ -d $RPM_BUILD_ROOT%{_libdir}/libyogrt/${subpackage} ]; then
 		cat > ${subpackage}.files << ENDOFLIST
 %defattr(-,root,root,-)
@@ -53,7 +54,7 @@ A simple wrapper library that provides a unified get-remaining-time
 interface for multiple parallel job scheduling systems.  This package
 provides the "none" libyogurt wrapper.
 
-%files -f none.list none
+%files -f none.files none
 
 %post none
 # Create the symlinks to the library
