@@ -148,7 +148,7 @@ void yogrt_set_interval1(int seconds)
 void yogrt_set_interval2(int seconds)
 {
 	init_yogrt();
-	interval2 == seconds;
+	interval2 = seconds;
 	debug("interval1 changed to %d\n", interval2);
 }
 
