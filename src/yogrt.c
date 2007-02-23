@@ -176,3 +176,85 @@ int yogrt_get_interval2_start(void)
 	init_yogrt();
 	return interval2_start;
 }
+
+/**********************************************************************
+ * Fortran wrappers (single underscore version)
+ **********************************************************************/
+int iyogrt_get_time_(void)
+{
+	return yogrt_get_time();
+}
+
+int iyogrt_set_interval1_(int *seconds)
+{
+	yogrt_set_interval1(*seconds);
+	return *seconds;
+}
+
+int iyogrt_set_interval2_(int *seconds)
+{
+	yogrt_set_interval2(*seconds);
+	return *seconds;
+}
+
+int iyogrt_set_interval2_start_(int *seconds_before_end)
+{
+	yogrt_set_interval2_start(*seconds_before_end);
+	return *seconds_before_end;
+}
+
+int iyogrt_get_interval1_(void)
+{
+	return yogrt_get_interval1();
+}
+
+int iyogrt_get_interval2_(void)
+{
+	return yogrt_get_interval2();
+}
+
+int iyogrt_get_interval2_start_(void)
+{
+	return yogrt_get_interval2_start();
+}
+
+/**********************************************************************
+ * Fortran wrappers (double underscore version)
+ **********************************************************************/
+int iyogrt_get_time__(void)
+{
+	return yogrt_get_time();
+}
+
+int iyogrt_set_interval1__(int *seconds)
+{
+	yogrt_set_interval1(*seconds);
+	return *seconds;
+}
+
+int iyogrt_set_interval2__(int *seconds)
+{
+	yogrt_set_interval2(*seconds);
+	return *seconds;
+}
+
+int iyogrt_set_interval2_start__(int *seconds_before_end)
+{
+	yogrt_set_interval2_start(*seconds_before_end);
+	return *seconds_before_end;
+}
+
+int iyogrt_get_interval1__(void)
+{
+	return yogrt_get_interval1();
+}
+
+int iyogrt_get_interval2__(void)
+{
+	return yogrt_get_interval2();
+}
+
+int iyogrt_get_interval2_start__(void)
+{
+	return yogrt_get_interval2_start();
+}
