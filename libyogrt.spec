@@ -17,8 +17,24 @@ interface for multiple parallel job scheduling systems.
 %setup -q
 
 %build
+%ifos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
+
+TOP="`pwd`"
+TMP="$TOP/aix"
+rm -rf "$TMP"
+for bits in 64 32; do
+	OBJECT_MODE=$bits
+	export OBJECT_MODE
+	%configure -C
+	mkdir -p "$TMP/bits/${bits}"
+	DESTDIR="$TMP/bits/${bits}" make install
+	make clean
+done
+exit 1
+%else
 %configure
 make
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
