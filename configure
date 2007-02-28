@@ -20684,7 +20684,7 @@ fi
 
 
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/none/Makefile src/slurm/Makefile src/lcrm/Makefile src/moab/Makefile"
+ac_config_files="$ac_config_files Makefile doc/Makefile doc/man/Makefile src/Makefile src/none/Makefile src/slurm/Makefile src/lcrm/Makefile src/moab/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -21288,6 +21288,8 @@ do
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+    "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
+    "doc/man/Makefile") CONFIG_FILES="$CONFIG_FILES doc/man/Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/none/Makefile") CONFIG_FILES="$CONFIG_FILES src/none/Makefile" ;;
     "src/slurm/Makefile") CONFIG_FILES="$CONFIG_FILES src/slurm/Makefile" ;;
