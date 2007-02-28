@@ -27,6 +27,8 @@ X_AC_LCRM
 X_AC_MOAB
 
 AC_CONFIG_FILES([Makefile
+                 doc/Makefile
+                 doc/man/Makefile
                  src/Makefile
                  src/none/Makefile
                  src/slurm/Makefile

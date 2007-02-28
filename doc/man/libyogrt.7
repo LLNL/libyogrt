@@ -1,0 +1,124 @@
+.TH LIBYOGRT 7
+
+.SH NAME
+libyogrt \- Your One Get Remaining Time library.
+
+.SH SYNOPSIS
+See the man page for each function for its synopsis.
+
+.SH DESCRIPTION
+libyogrt provides a simple API by which a parallel application can
+determine the ammount of time remaining before it will be terminated.
+libyogrt is designed as a layer above the system scheduler, allowing an
+application compiled against libyogrt to query its remaining time
+with Moab, SLURM, LCRM, and possibly other systems in the future.  The
+system administrator installs the correct version of libyogrt on each
+system to match that system's resource manager, so no effort on the part
+of the application programmer is required to move between systems
+with different resource mangers.
+
+yogrt_get_time() is the libyogrt call of primary interest.  yogrt_get_time()
+returns the amount of wall clock time remaining, in seconds, in the
+application's resource allocation.
+
+Performance paramount in the design of yogrt_get_time().  To acheive the
+speed required by high performance applicatins, yogrt_get_time() talks to
+the resource manager only rarely and maintains a cache of the remaining time.
+Most calls to yogrt_get_time() will only involve a time() library call and
+simple arithmetic to determine the current remaining time.
+
+.SH INTERNALS
+
+Most people will not need to change libyogrt's caching behavior, but should
+it be desireable, libyogrt provides both environment variables and library
+calls for adjusting its internal update intervals.
+
+By default, libyogrt will only ask the resource manager how much time remains
+in the resource allocation if time elapsed since the the successful query of
+the resource manager is greater than or equal to "interval1" seconds or
+"interval2" seconds.  A third variable, "interval2_start", determines
+which of the two intervals will be used.
+
+Normally, "interval1" will be used early in the run, while the time remaining
+in the resource allocation is greater than to "interval2_start" seconds.  Then,
+when the time remaining is less than or equal to "interval2_start" seconds,
+libyogrt will use "interval2" to determine how often it needs to query
+the resource manager.
+
+In other words, "interval2_start" is the number of seconds before the end
+of the job at which libyogrt switches from using "interval1" to using
+"interval2".
+
+The values of these three variables can be queried with the library calls
+yogrt_get_interval1(), yogrt_get_interval2(), yogrt_get_interval2_start().
+The values may be changed with the library calls, yogrt_set_interval1(),
+yogrt_set_interval2(), yogrt_set_interval2_start().
+
+The yogrt_get_* and yogrt_set_* calls may be called more than once if
+an application wishes to adjust the intervals several times.
+
+.SH ENVIRONMENT VARIABLES
+Before the first call is made into libyogrt, the values of "interval1",
+"interval2", and "interval2_start" may be initialized with the environment
+variables "YOGRT_INTERVAL1", "YOGRT_INTERVAL2", and "YOGRT_INTERVAL2_START".
+
+In addition, the libyogrt library can print debugging messages to stderr
+by setting the "YOGRT_DEBUG" environment variable to an integer value greater
+than 0.  Larger values will result in more verbose debugging messages (the
+current highest verbosity level is 3).
+
+Finally, the environment variable "YOGRT_DEFAULT_LIMIT" presets libyogrt's
+remaining time cache.  The value of YOGRT_DEFAULT_LIMIT should be an integer
+representing a period of time in seconds.  By setting this variable, the first
+time you call yogrt_get_time(), libyogrt will use the time specified in
+YOGRT_DEFAULT_LIMIT rather than contacting the resource manager.  Later,
+when yogrt_get_time() is called more than "interval1" (or possibly "interval2")
+seconds, yogrt_get_time() will beginning querying the resource manager as
+normal.  This has the interesting  possibility of allowing the user to
+completely avoid talking to the resource manager.
+
+For instance, if one were to set the enviroment variables
+"YOGRT_DEFAULT_LIMIT=3600" (one hour), "YOGRT_INTERVAL1=100000000" (essentially
+never query the resource manager), and "YOGRT_INTERVAL2_START=0" (never use
+interval2), libyogrt would count down from 3600 seconds on its own.
+
+(Be aware that the countdown starts the first time any call is made into
+the libyogrt library, not when the application begins running.  So if you
+plan yo exploit YOGRT_DEFAULT_LIMIT, you probably want to call yogrt_get_time()
+once right at the start of your application to get the clock started on the
+cache.)
+
+.SH EXAMPLE
+
+Consider the following values of the three internal libyogrt
+variables (and these are, in fact, the compiled-in default values):
+
+interval1 = 900
+interval2 = 300
+interval2_start = 1800
+
+And let us assume a parallel job with a resource allocation limit of two hours.
+
+When the application begins its run, no matter how many times the application
+calls yogrt_get_time(), libyogrt will only query the resource manager
+a maximum of every "interval1" seconds, which is 900 seconds (15 minutes).
+After 1.5 hours have elapsed, the "interval2_start" is triggered because
+fewer than 1800 seconds (30 minutes) remain.  At this point, no matter how
+often the application calls yogrt_get_time(), libyogrt will only query the
+resource manager a maximum of every "interval2" seconds, which is 300
+seconds (5 minutes).
+
+.SH NOTES
+yogrt_get_time() may only be called by task 0 of a parallel application.  When
+called from tasks other than task 0, yogrt_get_time() will return -1.  See
+"man yogrt_get_time" for details.
+
+libyogrt is available as a shared library only.
+
+libyogrt exports Fortran-compatible symbols for all library calls.  See
+the individual man pages for more information.
+
+.SH SEE ALSO
+yogrt_get_time,
+yogrt_set_interval1, yogrt_set_interval2, yogrt_set_interval2_start,
+yogrt_get_interval1, yogrt_get_interval2, yogrt_get_interval2_start

@@ -79,9 +79,9 @@ static inline int need_update(time_t now)
 	if (last_update == -1) {
 		/* first time yogrt_get_time has been called */
 		rc = 1;
-	} else if ((rem >= interval2_start) && (last >= interval1)) {
+	} else if ((rem > interval2_start) && (last >= interval1)) {
 		rc = 1;
-	} else if ((rem < interval2_start) && (last >= interval2)) {
+	} else if ((rem <= interval2_start) && (last >= interval2)) {
 		rc = 1;
 	} else if (last_update_failed && (last >= FAILED_UPDATE_INTERVAL)) {
 		/* update sooner than the normal interval
