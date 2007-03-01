@@ -1,7 +1,7 @@
       program ftest1
       integer foo
 
-      foo = iyogrt_get_time()
+      foo = iyogrt_remaining()
       write(*,*) 'remaining time =', foo
 
       stop

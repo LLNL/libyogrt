@@ -21,13 +21,13 @@ main(int argc, char *argv[])
 
 	while(1) {
 	 	gettimeofday(tv1, NULL);
-		rem = yogrt_get_time();
+		rem = yogrt_remaining();
 	 	gettimeofday(tv2, NULL);
 
 		t1 = tv1->tv_sec + (tv1->tv_usec * (double)0.000001);
 		t2 = tv2->tv_sec + (tv2->tv_usec * (double)0.000001);
 
-		printf("rem = %-8d, yogrt_get_time overhead: %.03f msec\n",
+		printf("rem = %-8d, yogrt_remaining overhead: %.03f msec\n",
 		       rem, (t2 - t1) * 1000);
 		sleep(1);
 	}

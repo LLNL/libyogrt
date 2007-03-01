@@ -23,7 +23,7 @@ main(int argc, char *argv[])
 	int rem;
 
 	while(1) {
-		rem = yogrt_get_time();
+		rem = yogrt_remaining();
 		if (rem <= 5)
 			break;
 		sleep(1);

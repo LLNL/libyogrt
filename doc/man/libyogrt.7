@@ -17,14 +17,14 @@ system to match that system's resource manager, so no effort on the part
 of the application programmer is required to move between systems
 with different resource mangers.
 
-yogrt_get_time() is the libyogrt call of primary interest.  yogrt_get_time()
+yogrt_remaining() is the libyogrt call of primary interest.  yogrt_remaining()
 returns the amount of wall clock time remaining, in seconds, in the
 application's resource allocation.
 
-Performance paramount in the design of yogrt_get_time().  To acheive the
-speed required by high performance applicatins, yogrt_get_time() talks to
+Performance paramount in the design of yogrt_remaining().  To acheive the
+speed required by high performance applicatins, yogrt_remaining() talks to
 the resource manager only rarely and maintains a cache of the remaining time.
-Most calls to yogrt_get_time() will only involve a time() library call and
+Most calls to yogrt_remaining() will only involve a time() library call and
 simple arithmetic to determine the current remaining time.
 
 .SH INTERNALS
@@ -70,10 +70,10 @@ current highest verbosity level is 3).
 Finally, the environment variable "YOGRT_DEFAULT_LIMIT" presets libyogrt's
 remaining time cache.  The value of YOGRT_DEFAULT_LIMIT should be an integer
 representing a period of time in seconds.  By setting this variable, the first
-time you call yogrt_get_time(), libyogrt will use the time specified in
+time you call yogrt_remaining(), libyogrt will use the time specified in
 YOGRT_DEFAULT_LIMIT rather than contacting the resource manager.  Later,
-when yogrt_get_time() is called more than "interval1" (or possibly "interval2")
-seconds, yogrt_get_time() will beginning querying the resource manager as
+when yogrt_remaining() is called more than "interval1" (or possibly "interval2")
+seconds, yogrt_remaining() will beginning querying the resource manager as
 normal.  This has the interesting  possibility of allowing the user to
 completely avoid talking to the resource manager.
 
@@ -84,7 +84,7 @@ interval2), libyogrt would count down from 3600 seconds on its own.
 
 (Be aware that the countdown starts the first time any call is made into
 the libyogrt library, not when the application begins running.  So if you
-plan yo exploit YOGRT_DEFAULT_LIMIT, you probably want to call yogrt_get_time()
+plan to exploit YOGRT_DEFAULT_LIMIT, you probably want to call yogrt_remaining()
 once right at the start of your application to get the clock started on the
 cache.)
 
@@ -102,18 +102,18 @@ interval2_start = 1800
 And let us assume a parallel job with a resource allocation limit of two hours.
 
 When the application begins its run, no matter how many times the application
-calls yogrt_get_time(), libyogrt will only query the resource manager
+calls yogrt_remaining(), libyogrt will only query the resource manager
 a maximum of every "interval1" seconds, which is 900 seconds (15 minutes).
 After 1.5 hours have elapsed, the "interval2_start" is triggered because
 fewer than 1800 seconds (30 minutes) remain.  At this point, no matter how
-often the application calls yogrt_get_time(), libyogrt will only query the
+often the application calls yogrt_remaining(), libyogrt will only query the
 resource manager a maximum of every "interval2" seconds, which is 300
 seconds (5 minutes).
 
 .SH NOTES
-yogrt_get_time() may only be called by task 0 of a parallel application.  When
-called from tasks other than task 0, yogrt_get_time() will return -1.  See
-"man yogrt_get_time" for details.
+yogrt_remaining() may only be called by task 0 of a parallel application.  When
+called from tasks other than task 0, yogrt_remaining() will return -1.  See
+"man yogrt_remaining" for details.
 
 libyogrt is available as a shared library only.
 
@@ -121,6 +121,6 @@ libyogrt exports Fortran-compatible symbols for all library calls.  See
 the individual man pages for more information.
 
 .SH SEE ALSO
-yogrt_get_time,
+yogrt_remaining,
 yogrt_set_interval1, yogrt_set_interval2, yogrt_set_interval2_start,
 yogrt_get_interval1, yogrt_get_interval2, yogrt_get_interval2_start

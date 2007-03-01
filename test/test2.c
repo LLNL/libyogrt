@@ -22,10 +22,10 @@ main(int argc, char *argv[])
 	double t1, t2, t3;
 
  	gettimeofday(tv1, NULL);
-	rem = yogrt_get_time();
+	rem = yogrt_remaining();
  	gettimeofday(tv2, NULL);
 	for (i = 0; i < CALLS; i++) {
-		rem = yogrt_get_time();
+		rem = yogrt_remaining();
 	}
 	gettimeofday(tv3, NULL);
 
@@ -33,8 +33,8 @@ main(int argc, char *argv[])
 	t2 = tv2->tv_sec + (tv2->tv_usec * (double)0.000001);
 	t3 = tv3->tv_sec + (tv3->tv_usec * (double)0.000001);
 
-	printf("yogrt_get_time first call:\n\t%.03f msec\n", (t2 - t1) * 1000);
-	printf("yogrt_get_time cached timing:\n");
+	printf("yogrt_remaining first call:\n\t%.03f msec\n", (t2 - t1) * 1000);
+	printf("yogrt_remaining cached timing:\n");
 	printf("\t%.0f calls/sec\n", CALLS / (t3 - t2));
 	printf("\t%.3f usecs/call\n", (t3 - t2) / CALLS * 100000);
 	exit(0);

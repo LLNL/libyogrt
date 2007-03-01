@@ -77,7 +77,7 @@ static inline int need_update(time_t now)
 	int rc;
 
 	if (last_update == -1) {
-		/* first time yogrt_get_time has been called */
+		/* first time yogrt_remaining has been called */
 		rc = 1;
 	} else if ((rem > interval2_start) && (last >= interval1)) {
 		rc = 1;
@@ -95,7 +95,7 @@ static inline int need_update(time_t now)
 	return rc;
 }
 
-int yogrt_get_time(void)
+int yogrt_remaining(void)
 {
 	time_t now = time(NULL);
 	int rem;
@@ -180,9 +180,9 @@ int yogrt_get_interval2_start(void)
 /**********************************************************************
  * Fortran wrappers (single underscore version)
  **********************************************************************/
-int iyogrt_get_time_(void)
+int iyogrt_remaining_(void)
 {
-	return yogrt_get_time();
+	return yogrt_remaining();
 }
 
 int iyogrt_set_interval1_(int *seconds)
@@ -221,9 +221,9 @@ int iyogrt_get_interval2_start_(void)
 /**********************************************************************
  * Fortran wrappers (double underscore version)
  **********************************************************************/
-int iyogrt_get_time__(void)
+int iyogrt_remaining__(void)
 {
-	return yogrt_get_time();
+	return yogrt_remaining();
 }
 
 int iyogrt_set_interval1__(int *seconds)
