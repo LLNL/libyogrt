@@ -1,0 +1,44 @@
+.TH YOGRT_SETGET 3 2007-02-28 "" "LIBYOGRT"
+
+.SH NAME
+yogrt_set_interval1, yogrt_get_interval1 \- set/get interval1
+.br
+yogrt_set_interval2, yogrt_get_interval2 \- set/get interval2
+.br
+yogrt_set_interval2_start, yogrt_get_interval2_start \- set/get interval2_start
+
+.SH SYNOPSIS
+.nf
+.B #include <yogrt.h>
+.sp
+.BI void yogrt_set_interval1(int seconds)
+.br
+.BI int yogrt_get_interval1(void)
+.br
+.BI void yogrt_set_interval2(int seconds)
+.br
+.BI int yogrt_get_interval2(void)
+.br
+.BI void yogrt_set_interval2_start(int seconds_before_end)
+.br
+.BI int yogrt_get_interval2_start(void)
+.fi
+.sp
+Link with -lyogrt.
+
+.SH DESCRIPTION
+This libyogrt library calls allow one to get and set internal library
+variables to control the frequency of cache updates.  See
+.BR libyogrt (7)
+for a full description of the effects of these variables.
+
+.SH "RETURN VALUE"
+The yogrt_get_* functions return the current value of their corresponding
+variable.
+
+.SH NOTES
+These functions may be called by an application, and the values of the three
+variables changed, as often as desired.
+
+.SH "SEE ALSO"
+.BR libyogrt (7)
