@@ -138,8 +138,10 @@ int yogrt_remaining(void)
 			debug("Update failed, will try again in"
 			      " at least %d sec.\n", FAILED_UPDATE_INTERVAL);
 			last_update_failed = 1;
-			cached_time_rem -= (now - last_update);
-			last_update = now;
+			if (cached_time_rem != -1) {
+				cached_time_rem -= (now - last_update);
+				last_update = now;
+			}
 		}
 	}
 
