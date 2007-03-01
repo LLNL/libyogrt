@@ -19,7 +19,7 @@
 AC_DEFUN([X_AC_LCRM], [
 
   _x_ac_lcrm_dirs="/dpcs"
-  _x_ac_lcrm_libs="lib"
+  _x_ac_lcrm_libs="lib64 lib"
 
   AC_ARG_WITH(
     [lcrm],
