@@ -36,7 +36,7 @@ static inline void init_yogrt(void)
 		initialized = 1;
 
 		if ((p = getenv("YOGRT_DEBUG")) != NULL) {
-			verbosity = atol(p);
+			verbosity = (int)atol(p);
 		}
 		debug("Backend implementation is \"%s\".\n",
 		      internal_backend_name());
@@ -44,23 +44,43 @@ static inline void init_yogrt(void)
 			debug("Found YOGRT_DEBUG=%d\n", verbosity);
 		}
 		if ((p = getenv("YOGRT_INTERVAL1")) != NULL) {
-			interval1 = atol(p);
+			interval1 = (int)atol(p);
 			debug("Found YOGRT_INTERVAL1=%d\n", interval1);
+			if (interval1 < 0) {
+				interval1 = 0;
+				debug("Negative number not allowed,"
+				      " setting interval1 to 0\n");
+			}
 		}
 		if ((p = getenv("YOGRT_INTERVAL2")) != NULL) {
-			interval2 = atol(p);
+			interval2 = (int)atol(p);
 			debug("Found YOGRT_INTERVAL2=%d\n", interval2);
+			if (interval2 < 0) {
+				interval2 = 0;
+				debug("Negative number not allowed,"
+				      " setting interval2 to 0\n");
+			}
 		}
 		if ((p = getenv("YOGRT_INTERVAL2_START")) != NULL) {
-			interval2_start = atol(p);
+			interval2_start = (int)atol(p);
 			debug("Found YOGRT_INTERVAL2_START=%d\n",
 			      interval2_start);
+			if (interval2_start < 0) {
+				interval2 = 0;
+				debug("Negative number not allowed,"
+				      " setting interval2_start to 0\n");
+			}
 		}
 		if ((p = getenv("YOGRT_DEFAULT_LIMIT")) != NULL) {
-			cached_time_rem = atol(p);
+			cached_time_rem = (int)atol(p);
 			last_update = time(NULL);
 			debug("Found YOGRT_DEFAULT_LIMIT=%d\n",
 			      cached_time_rem);
+			if (cached_time_rem < 0) {
+				cached_time_rem = -1;
+				debug("Negative number not allowed,  leaving"
+				      " YOGRT_DEFAULT_LIMIT uninitialized\n");
+			}
 		}
 		rank = internal_get_rank();
 		debug("Rank is %d\n", rank);
@@ -151,21 +171,30 @@ int yogrt_get_time(void)
 void yogrt_set_interval1(int seconds)
 {
 	init_yogrt();
-	interval1 = seconds;
+	if (seconds < 0)
+		interval1 = 0;
+	else
+		interval1 = seconds;
 	debug("interval1 changed to %d\n", interval1);
 }
 
 void yogrt_set_interval2(int seconds)
 {
 	init_yogrt();
-	interval2 = seconds;
-	debug("interval1 changed to %d\n", interval2);
+	if (seconds < 0)
+		interval2 = 0;
+	else
+		interval2 = seconds;
+	debug("interval2 changed to %d\n", interval2);
 }
 
 void yogrt_set_interval2_start(int seconds_before_end)
 {
 	init_yogrt();
-	interval2_start = seconds_before_end;
+	if (seconds_before_end < 0)
+		interval2_start = 0;
+	else
+		interval2_start = seconds_before_end;
 	debug("interval2_start changed to %d\n", interval2);
 }
 
