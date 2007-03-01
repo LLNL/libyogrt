@@ -120,12 +120,14 @@ for name in $lib_names; do
 done
 
 %preun none
-# Remove the symlinks to the library
-subpackage=none
-lib_names=$(. %{_libdir}/libyogrt/${subpackage}/libyogrt.la; echo -n $library_names)
-for name in $lib_names; do
-	rm -f %{_libdir}/${name}
-done
+if [ $1 -eq 0 ]; then
+	# Remove the symlinks to the library
+	subpackage=none
+	lib_names=$(. %{_libdir}/libyogrt/${subpackage}/libyogrt.la; echo -n $library_names)
+	for name in $lib_names; do
+		rm -f %{_libdir}/${name}
+	done
+fi
 
 ######################################################################
 # slurm subpackage 
@@ -156,12 +158,14 @@ for name in $lib_names; do
 done
 
 %preun slurm
-# Remove the symlinks to the library
-subpackage=slurm
-lib_names=$(. %{_libdir}/libyogrt/${subpackage}/libyogrt.la; echo -n $library_names)
-for name in $lib_names; do
-	rm -f %{_libdir}/${name}
-done
+if [ $1 -eq 0 ]; then
+	# Remove the symlinks to the library
+	subpackage=slurm
+	lib_names=$(. %{_libdir}/libyogrt/${subpackage}/libyogrt.la; echo -n $library_names)
+	for name in $lib_names; do
+		rm -f %{_libdir}/${name}
+	done
+fi
 
 ######################################################################
 # lcrm subpackage 
@@ -192,12 +196,14 @@ for name in $lib_names; do
 done
 
 %preun lcrm
-# Remove the symlinks to the library
-subpackage=lcrm
-lib_names=$(. %{_libdir}/libyogrt/${subpackage}/libyogrt.la; echo -n $library_names)
-for name in $lib_names; do
-	rm -f %{_libdir}/${name}
-done
+if [ $1 -eq 0 ]; then
+	# Remove the symlinks to the library
+	subpackage=lcrm
+	lib_names=$(. %{_libdir}/libyogrt/${subpackage}/libyogrt.la; echo -n $library_names)
+	for name in $lib_names; do
+		rm -f %{_libdir}/${name}
+	done
+fi
 
 ######################################################################
 # moab subpackage 
@@ -228,12 +234,14 @@ for name in $lib_names; do
 done
 
 %preun moab
-# Remove the symlinks to the library
-subpackage=moab
-lib_names=$(. %{_libdir}/libyogrt/${subpackage}/libyogrt.la; echo -n $library_names)
-for name in $lib_names; do
-	rm -f %{_libdir}/${name}
-done
+if [ $1 -eq 0 ]; then
+	# Remove the symlinks to the library
+	subpackage=moab
+	lib_names=$(. %{_libdir}/libyogrt/${subpackage}/libyogrt.la; echo -n $library_names)
+	for name in $lib_names; do
+		rm -f %{_libdir}/${name}
+	done
+fi
 
 %changelog
 * Mon Feb 12 2007 Christopher J. Morrone <morrone@conon.llnl.gov> - 
