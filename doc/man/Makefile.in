@@ -50,8 +50,9 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 SOURCES =
 DIST_SOURCES =
+man3dir = $(mandir)/man3
+am__installdirs = "$(DESTDIR)$(man3dir)" "$(DESTDIR)$(man7dir)"
 man7dir = $(mandir)/man7
-am__installdirs = "$(DESTDIR)$(man7dir)"
 NROFF = nroff
 MANS = $(man_MANS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -187,7 +188,8 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 man_MANS = \
 	libyogrt.7 \
-	yogrt.7
+	yogrt.7 \
+	yogrt_remaining.3
 
 EXTRA_DIST = $(man_MANS)
 all: all-am
@@ -232,6 +234,51 @@ clean-libtool:
 distclean-libtool:
 	-rm -f libtool
 uninstall-info-am:
+install-man3: $(man3_MANS) $(man_MANS)
+	@$(NORMAL_INSTALL)
+	test -z "$(man3dir)" || $(mkdir_p) "$(DESTDIR)$(man3dir)"
+	@list='$(man3_MANS) $(dist_man3_MANS) $(nodist_man3_MANS)'; \
+	l2='$(man_MANS) $(dist_man_MANS) $(nodist_man_MANS)'; \
+	for i in $$l2; do \
+	  case "$$i" in \
+	    *.3*) list="$$list $$i" ;; \
+	  esac; \
+	done; \
+	for i in $$list; do \
+	  if test -f $(srcdir)/$$i; then file=$(srcdir)/$$i; \
+	  else file=$$i; fi; \
+	  ext=`echo $$i | sed -e 's/^.*\\.//'`; \
+	  case "$$ext" in \
+	    3*) ;; \
+	    *) ext='3' ;; \
+	  esac; \
+	  inst=`echo $$i | sed -e 's/\\.[0-9a-z]*$$//'`; \
+	  inst=`echo $$inst | sed -e 's/^.*\///'`; \
+	  inst=`echo $$inst | sed '$(transform)'`.$$ext; \
+	  echo " $(INSTALL_DATA) '$$file' '$(DESTDIR)$(man3dir)/$$inst'"; \
+	  $(INSTALL_DATA) "$$file" "$(DESTDIR)$(man3dir)/$$inst"; \
+	done
+uninstall-man3:
+	@$(NORMAL_UNINSTALL)
+	@list='$(man3_MANS) $(dist_man3_MANS) $(nodist_man3_MANS)'; \
+	l2='$(man_MANS) $(dist_man_MANS) $(nodist_man_MANS)'; \
+	for i in $$l2; do \
+	  case "$$i" in \
+	    *.3*) list="$$list $$i" ;; \
+	  esac; \
+	done; \
+	for i in $$list; do \
+	  ext=`echo $$i | sed -e 's/^.*\\.//'`; \
+	  case "$$ext" in \
+	    3*) ;; \
+	    *) ext='3' ;; \
+	  esac; \
+	  inst=`echo $$i | sed -e 's/\\.[0-9a-z]*$$//'`; \
+	  inst=`echo $$inst | sed -e 's/^.*\///'`; \
+	  inst=`echo $$inst | sed '$(transform)'`.$$ext; \
+	  echo " rm -f '$(DESTDIR)$(man3dir)/$$inst'"; \
+	  rm -f "$(DESTDIR)$(man3dir)/$$inst"; \
+	done
 install-man7: $(man7_MANS) $(man_MANS)
 	@$(NORMAL_INSTALL)
 	test -z "$(man7dir)" || $(mkdir_p) "$(DESTDIR)$(man7dir)"
@@ -315,7 +362,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(MANS)
 installdirs:
-	for dir in "$(DESTDIR)$(man7dir)"; do \
+	for dir in "$(DESTDIR)$(man3dir)" "$(DESTDIR)$(man7dir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -366,7 +413,7 @@ install-exec-am:
 
 install-info: install-info-am
 
-install-man: install-man7
+install-man: install-man3 install-man7
 
 installcheck-am:
 
@@ -388,18 +435,18 @@ ps-am:
 
 uninstall-am: uninstall-info-am uninstall-man
 
-uninstall-man: uninstall-man7
+uninstall-man: uninstall-man3 uninstall-man7
 
 .PHONY: all all-am check check-am clean clean-generic clean-libtool \
 	distclean distclean-generic distclean-libtool distdir dvi \
 	dvi-am html html-am info info-am install install-am \
 	install-data install-data-am install-exec install-exec-am \
-	install-info install-info-am install-man install-man7 \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	uninstall uninstall-am uninstall-info-am uninstall-man \
-	uninstall-man7
+	install-info install-info-am install-man install-man3 \
+	install-man7 install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic mostlyclean-libtool pdf pdf-am \
+	ps ps-am uninstall uninstall-am uninstall-info-am \
+	uninstall-man uninstall-man3 uninstall-man7
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
