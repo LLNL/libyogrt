@@ -83,6 +83,7 @@ for subpackage in none slurm lcrm moab; do
 %else
 %{_libdir}/libyogrt/${subpackage}/*
 %endif
+%{_mandir}/*/*
 ENDOFLIST
 	fi
 done
