@@ -1,10 +1,15 @@
-.TH LIBYOGRT 7
+.TH LIBYOGRT 7 2007-02-28 "" "LIBYOGRT"
 
 .SH NAME
 libyogrt \- Your One Get Remaining Time library.
 
 .SH SYNOPSIS
-See the man page for each function for its synopsis.
+.nf
+.B #include <yogrt.h>
+.sp
+.fi
+.sp
+Link with -lyogrt.
 
 .SH DESCRIPTION
 libyogrt provides a simple API by which a parallel application can
@@ -57,7 +62,7 @@ yogrt_set_interval2(), yogrt_set_interval2_start().
 The yogrt_get_* and yogrt_set_* calls may be called more than once if
 an application wishes to adjust the intervals several times.
 
-.SH ENVIRONMENT VARIABLES
+.SH "ENVIRONMENT VARIABLES"
 Before the first call is made into libyogrt, the values of "interval1",
 "interval2", and "interval2_start" may be initialized with the environment
 variables "YOGRT_INTERVAL1", "YOGRT_INTERVAL2", and "YOGRT_INTERVAL2_START".
@@ -120,7 +125,11 @@ libyogrt is available as a shared library only.
 libyogrt exports Fortran-compatible symbols for all library calls.  See
 the individual man pages for more information.
 
-.SH SEE ALSO
-yogrt_remaining,
-yogrt_set_interval1, yogrt_set_interval2, yogrt_set_interval2_start,
-yogrt_get_interval1, yogrt_get_interval2, yogrt_get_interval2_start
+.SH "SEE ALSO"
+.BR yogrt_remaining (3),
+.BR yogrt_set_interval1 (3),
+.BR yogrt_set_interval2 (3),
+.BR yogrt_set_interval2_start (3),
+.BR yogrt_get_interval1 (3),
+.BR yogrt_get_interval2 (3),
+.BR yogrt_get_interval2_start (3)

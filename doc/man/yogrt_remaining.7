@@ -1,0 +1,62 @@
+.TH YOGRT_REMAINING 3 2007-02-28 "" "LIBYOGRT"
+
+.SH NAME
+yogrt_remaining \- Return the wall clock time remaining in a parallel
+resource allocation. 
+
+.SH SYNOPSIS
+.nf
+.B #include <yogrt.h>
+.sp
+.BI "int yogrt_remaining(void " );
+.fi
+.sp
+Link with -lyogrt.
+
+.SH DESCRIPTION
+Return the number of seconds remaining in the current resource allocation.
+(This call may ONLY be used by process rank zero of a parallel job.)
+
+yogrt_remaining()'s goal is to unify and simplify the process of retrieving
+the remaining time available to a job regardless of the
+underlying system resource manager (e.g. SLURM, Moab, etc.).
+
+Performance is a very important design criteria for yogrt_remaining().
+To acheive the required speed, yogrt_remaining() talks to the resource manager
+only rarely and caches the remaining time.  Most calls to yogrt_remaining()
+will only involve a time() library call and simple arithmetic to determine
+the current remaining time.
+
+For more information on libyogrt's internals and its configurable caching
+settings, see
+.BR libyogrt (7).
+
+.SH "RETURN VALUE"
+If called from task zero of a parallel job, returns the number of seconds
+remaining in the resource allication.  If libyogrt is unable to query the
+underlying resource manager, it will return INT_MAX (#include <limits.h>).
+Since INT_MAX is the largest possible integer, there is no risk of the
+application terminating prematurely.  Most applications will have no need
+to test for INT_MAX.
+
+Returns -1 when called from any task other than task zero.
+
+.SH NOTES
+yogrt_remaining() may only be called from task zero for several reasons.
+First, some resource managers only allow task zero or processes
+on the first node in the resource allocation to query the remaining time.
+This policy avoids unnecessary load on the resource manager.
+
+Furthermore, if yogrt_remaining time were allowed in all tasks, the
+values it returned would likely be skewed across the tasks.  This would
+likely result in applications getting into undesireable states where some
+tasks have begun shutting down but others are continuing to run.
+
+.SH "SEE ALSO"
+.BR libyogrt (7),
+.BR yogrt_set_interval1 (3),
+.BR yogrt_set_interval2 (3),
+.BR yogrt_set_interval2_start (3),
+.BR yogrt_get_interval1 (3),
+.BR yogrt_get_interval2 (3),
+.BR yogrt_get_interval2_start (3)
