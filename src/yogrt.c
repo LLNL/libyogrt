@@ -138,6 +138,16 @@ int yogrt_remaining(void)
 	return rc;
 }
 
+/*
+ * Just an alias for yogrt_remaining().  We don't advertise this function
+ * but it might appear in some documentation that predates the release
+ * of libyogrt.
+ */
+int yogrt_get_time(void)
+{
+	return yogrt_remaining();
+}
+
 void yogrt_set_interval1(int seconds)
 {
 	init_yogrt();
