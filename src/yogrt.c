@@ -164,7 +164,7 @@ static inline void read_env_variables(void)
 
 	if ((p = getenv("YOGRT_INTERVAL1")) != NULL) {
 		interval1 = (int)atol(p);
-		debug("Found YOGRT_INTERVAL1=%d\n", interval1);
+		debug("In environment: YOGRT_INTERVAL1=%d\n", interval1);
 		if (interval1 < 0) {
 			interval1 = 0;
 			debug("Negative number not allowed,"
@@ -173,7 +173,7 @@ static inline void read_env_variables(void)
 	}
 	if ((p = getenv("YOGRT_INTERVAL2")) != NULL) {
 		interval2 = (int)atol(p);
-		debug("Found YOGRT_INTERVAL2=%d\n", interval2);
+		debug("In environment: YOGRT_INTERVAL2=%d\n", interval2);
 		if (interval2 < 0) {
 			interval2 = 0;
 			debug("Negative number not allowed,"
@@ -182,7 +182,8 @@ static inline void read_env_variables(void)
 	}
 	if ((p = getenv("YOGRT_INTERVAL2_START")) != NULL) {
 		interval2_start = (int)atol(p);
-		debug("Found YOGRT_INTERVAL2_START=%d\n", interval2_start);
+		debug("In environment: YOGRT_INTERVAL2_START=%d\n",
+		      interval2_start);
 		if (interval2_start < 0) {
 			interval2 = 0;
 			debug("Negative number not allowed,"
@@ -192,7 +193,7 @@ static inline void read_env_variables(void)
 	if ((p = getenv("YOGRT_REMAINING")) != NULL) {
 		cached_time_rem = (int)atol(p);
 		last_update = time(NULL);
-		debug("Found YOGRT_REMAINING=%d\n", cached_time_rem);
+		debug("In environment: YOGRT_REMAINING=%d\n", cached_time_rem);
 		if (cached_time_rem < 0) {
 			cached_time_rem = -1;
 			debug("Negative number not allowed,  leaving"
@@ -201,7 +202,7 @@ static inline void read_env_variables(void)
 	}
 	if ((p = getenv("YOGRT_BACKEND")) != NULL) {
 		strncpy(backend_name, p, 64);
-		debug("Found YOGRT_BACKEND=%s\n", backend_name);
+		debug("In environment: YOGRT_BACKEND=%s\n", backend_name);
 	}
 }
 
@@ -256,7 +257,8 @@ static int init_yogrt(void)
 		if ((p = getenv("YOGRT_DEBUG")) != NULL) {
 			verbosity = (int)atol(p);
 			if (p != NULL) {
-				debug("Found YOGRT_DEBUG=%d\n", verbosity);
+				debug("In environment: YOGRT_DEBUG=%d\n",
+				      verbosity);
 			}
 		}
 		read_config_file();
