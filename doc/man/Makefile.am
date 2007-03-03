@@ -7,6 +7,7 @@ man_MANS = \
 	yogrt_get_interval2.3 \
 	yogrt_set_interval2.3 \
 	yogrt_get_interval2_start.3 \
-	yogrt_set_interval2_start.3
+	yogrt_set_interval2_start.3 \
+	yogrt.conf.5
 
 EXTRA_DIST = $(man_MANS)

@@ -1,0 +1,43 @@
+.TH YOGRT.CONF 5 2007-02-28 "" "LIBYOGRT"
+
+.SH NAME
+yogrt.conf \- libyogrt configuration file
+
+.SH DESCRIPTION
+yogrt.conf is the configuration file for libyogrt.  Possible settings are:
+.TP
+\fBbackend\fR
+The backend module that libyogrt will use to talk to a resource manager.
+Possible values are: none, slurm, lcrm, moab.  Values ARE case sensitive.
+
+Same as the YOGRT_BACKEND environement variable.  (The environment variable
+overrides this setting.)
+.TP 
+\fBdebug\fR
+Same as the YOGRT_DEBUG environement variable.  (The environment variable
+overrides this setting.)
+.TP 
+\fBinterval1\fR
+Same as YOGRT_INTERVAL1 environement variable.  (The environment variable
+overrides this setting.)
+.TP 
+\fBinterval2\fR
+Same as YOGRT_INTERVAL2 environement variable.  (The environment variable
+overrides this setting.)
+.TP 
+\fBinterval2_start\fR
+Same as YOGRT_INTERVAL2_START environement variable.  (The environment variable
+overrides this setting.)
+.TP 
+\fBremaining\fR
+Same as YOGRT_REMAINING environement variable.  (The environment variable
+overrides this setting.)
+
+.SH EXAMPLE
+.nf
+# yogrt.conf configuration file for libyogrt
+backend=moab
+.fi
+
+.SH "SEE ALSO"
+.BR libyogrt (7)
