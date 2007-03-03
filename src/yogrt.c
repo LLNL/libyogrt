@@ -7,11 +7,23 @@
 LICENSE
  ***************************************************************************/
 
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 #include <time.h>
 #include <limits.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <ctype.h>
+#include <dlfcn.h>
+
 #include "yogrt.h"
 #include "internal_yogrt.h"
+
+#define FAILED_UPDATE_INTERVAL 300
+#define REMAINING(now) (cached_time_rem - ((now) - last_update))
 
 int verbosity = 0;
 static int initialized = 0; /* flag */
@@ -24,67 +36,237 @@ static int interval2_start = 1800; /* 30 minutes before the end */
 static int cached_time_rem = -1;
 static time_t last_update = (time_t)-1; /* of cached_time_rem */
 static int last_update_failed = 0; /* flag */
-#define FAILED_UPDATE_INTERVAL 300
 
-#define REMAINING(now) (cached_time_rem - ((now) - last_update))
+static char backend_name[64];
+static void *backend_handle = NULL;
+static struct backend_operations {
+	void   (*init)     (int verb);
+	char * (*name)     (void);
+	int    (*remaining)(time_t now, time_t last_update, int chached);
+	int    (*rank)     (void);
+} backend;
 
-static inline void init_yogrt(void)
+
+static inline void strip_whitespace(char *str)
 {
-	if (initialized == 0) {
-		char *p;
+	int i, j;
+	int len = strlen(str);
 
-		initialized = 1;
+	for (i = 0, j = 0; i < len; i++) {
+		if (!isspace(str[i])) {
+			str[j] = str[i];
+			j++;
+		}
+	}
+	str[j] = '\0';
+}
 
-		if ((p = getenv("YOGRT_DEBUG")) != NULL) {
-			verbosity = (int)atol(p);
+static inline void read_config_file(void)
+{
+	FILE *fp;
+	char line[256];
+	char *eq_ptr;
+	int len;
+	int content_flag;
+	int i;
+
+	fp = fopen(CONFIGPATH "/yogrt.conf", "r");
+	if (fp == NULL) {
+		debug("Config file " CONFIGPATH "/yogrt.conf not found.\n");
+		return;
+	}
+
+	debug("Reading config file " CONFIGPATH "/yogrt.conf.\n");
+	while (fgets(line, 256, fp)) {
+		char *key, *value;
+
+		len = strlen(line);
+		if (len == 0)
+			continue;
+		if (line[0] == '#')
+			continue;
+		content_flag = 0;
+		eq_ptr = NULL;
+		for (i = 0; i < len; i++) {
+			if (!isspace(line[i])) {
+				content_flag = 1;
+				if (line[i] == '=')
+					eq_ptr = line + i;
+			}
+			if (line[i] == '\n') /* strip newline character */
+				line[i] = '\0';
 		}
-		debug("Backend implementation is \"%s\".\n",
-		      internal_backend_name());
-		if (p != NULL) {
-			debug("Found YOGRT_DEBUG=%d\n", verbosity);
-		}
-		if ((p = getenv("YOGRT_INTERVAL1")) != NULL) {
-			interval1 = (int)atol(p);
-			debug("Found YOGRT_INTERVAL1=%d\n", interval1);
+		if (!content_flag)
+			continue;
+		if (eq_ptr == NULL)
+			continue;
+
+		key = line;
+		value = eq_ptr + 1;
+		*eq_ptr = '\0';
+
+		strip_whitespace(key);
+		strip_whitespace(value);
+
+		if (strcasecmp(key, "debug") == 0
+		    || strcasecmp(key, "yogrt_debug") == 0) {
+			verbosity = (int)atol(value);
+			debug("In yogrt.conf: %s=%d\n", key, verbosity);
+		} else if (strcasecmp(key, "interval1") == 0
+			   || strcasecmp(key, "yogrt_interval1") == 0) {
+			interval1 = (int)atol(value);
+			debug("In yogrt.conf: %s=%d\n", key, interval1);
 			if (interval1 < 0) {
 				interval1 = 0;
 				debug("Negative number not allowed,"
 				      " setting interval1 to 0\n");
 			}
-		}
-		if ((p = getenv("YOGRT_INTERVAL2")) != NULL) {
-			interval2 = (int)atol(p);
-			debug("Found YOGRT_INTERVAL2=%d\n", interval2);
+		} else if (strcasecmp(key, "interval2") == 0
+			   || strcasecmp(key, "yogrt_interval2") == 0) {
+			interval2 = (int)atol(value);
+			debug("In yogrt.conf: %s=%d\n", key, interval2);
 			if (interval2 < 0) {
 				interval2 = 0;
 				debug("Negative number not allowed,"
 				      " setting interval2 to 0\n");
 			}
-		}
-		if ((p = getenv("YOGRT_INTERVAL2_START")) != NULL) {
-			interval2_start = (int)atol(p);
-			debug("Found YOGRT_INTERVAL2_START=%d\n",
-			      interval2_start);
+		} else if (strcasecmp(key, "interval2_start") == 0
+			   || strcasecmp(key, "yogrt_interval2_start") == 0) {
+			interval2_start = (int)atol(value);
+			debug("In yogrt.conf: %s=%d\n", key, interval2_start);
 			if (interval2_start < 0) {
-				interval2 = 0;
+				interval2_start = 0;
 				debug("Negative number not allowed,"
 				      " setting interval2_start to 0\n");
 			}
-		}
-		if ((p = getenv("YOGRT_DEFAULT_LIMIT")) != NULL) {
-			cached_time_rem = (int)atol(p);
+		} else if (strcasecmp(key, "remaining") == 0
+			   || strcasecmp(key, "yogrt_remaining") == 0) {
+			cached_time_rem = (int)atol(value);
 			last_update = time(NULL);
-			debug("Found YOGRT_DEFAULT_LIMIT=%d\n",
-			      cached_time_rem);
+			debug("In yogrt.conf: %s=%d\n", key, cached_time_rem);
 			if (cached_time_rem < 0) {
 				cached_time_rem = -1;
 				debug("Negative number not allowed,  leaving"
 				      " YOGRT_DEFAULT_LIMIT uninitialized\n");
 			}
+		} else if (strcasecmp(key, "backend") == 0
+			   || strcasecmp(key, "yogrt_backend") == 0) {
+			strncpy(backend_name, value, 64);
+			debug("In yogrt.conf: %s=%s\n", key, backend_name);
 		}
-		rank = internal_get_rank();
-		debug("Rank is %d\n", rank);
 	}
+	fclose(fp);
+}
+
+static inline void read_env_variables(void)
+{
+	char *p;
+
+	if ((p = getenv("YOGRT_INTERVAL1")) != NULL) {
+		interval1 = (int)atol(p);
+		debug("Found YOGRT_INTERVAL1=%d\n", interval1);
+		if (interval1 < 0) {
+			interval1 = 0;
+			debug("Negative number not allowed,"
+			      " setting interval1 to 0\n");
+		}
+	}
+	if ((p = getenv("YOGRT_INTERVAL2")) != NULL) {
+		interval2 = (int)atol(p);
+		debug("Found YOGRT_INTERVAL2=%d\n", interval2);
+		if (interval2 < 0) {
+			interval2 = 0;
+			debug("Negative number not allowed,"
+			      " setting interval2 to 0\n");
+		}
+	}
+	if ((p = getenv("YOGRT_INTERVAL2_START")) != NULL) {
+		interval2_start = (int)atol(p);
+		debug("Found YOGRT_INTERVAL2_START=%d\n", interval2_start);
+		if (interval2_start < 0) {
+			interval2 = 0;
+			debug("Negative number not allowed,"
+			      " setting interval2_start to 0\n");
+		}
+	}
+	if ((p = getenv("YOGRT_DEFAULT_LIMIT")) != NULL) {
+		cached_time_rem = (int)atol(p);
+		last_update = time(NULL);
+		debug("Found YOGRT_DEFAULT_LIMIT=%d\n", cached_time_rem);
+		if (cached_time_rem < 0) {
+			cached_time_rem = -1;
+			debug("Negative number not allowed,  leaving"
+			      " YOGRT_DEFAULT_LIMIT uninitialized\n");
+		}
+	}
+	if ((p = getenv("YOGRT_BACKEND")) != NULL) {
+		strncpy(backend_name, p, 64);
+		debug("Found YOGRT_BACKEND=%s\n", backend_name);
+	}
+}
+
+static inline int load_backend(void)
+{
+	char path[512];
+	struct stat st[1];
+
+	if (strlen(backend_name) == 0) {
+		debug("No backend name specified.  Defaulting to \"none\".\n");
+		strcpy(backend_name, "none");
+	}
+
+	snprintf(path, 512, "%s/libyogrt-%s.so", BACKENDDIR, backend_name);
+	debug3("Testing for %s.\n", path);
+	if (stat(path, st) == -1) {
+		snprintf(path, 512, "%s/libyogrt-%s.a",
+			 BACKENDDIR, backend_name);
+		debug3("Testing for %s.\n", path);
+		if (stat(path, st) == -1) {
+			/* FIXME - should be error() */
+			debug("Unable to locate backend library file!\n");
+			return 0;
+		}
+	}	
+	debug3("Will use %s.\n", path);
+
+	if ((backend_handle = dlopen(path, RTLD_NOW)) == NULL) {
+		/* FIXME - should be error() */
+		debug("dlopen failed: %s\n", dlerror());
+		return 0;
+	}
+		
+	backend.init =      dlsym(backend_handle, "internal_init");
+	backend.name =      dlsym(backend_handle, "internal_backend_name");
+	backend.remaining = dlsym(backend_handle, "internal_get_rem_time");
+	backend.rank =      dlsym(backend_handle, "internal_get_rank");
+
+	backend.init(verbosity);
+	rank = backend.rank();
+	debug("Rank is %d\n", rank);
+	debug("Backend implementation is \"%s\".\n", backend.name());
+
+	return 1;
+}
+
+static int init_yogrt(void)
+{
+	int rc = 1;
+
+	if (initialized == 0) {
+		char *p;
+		initialized = 1;
+		if ((p = getenv("YOGRT_DEBUG")) != NULL) {
+			verbosity = (int)atol(p);
+			if (p != NULL) {
+				debug("Found YOGRT_DEBUG=%d\n", verbosity);
+			}
+		}
+		read_config_file();
+		read_env_variables();
+		rc = load_backend();
+	}
+
+	return rc;
 }
 
 /*
@@ -122,6 +304,9 @@ int yogrt_remaining(void)
 	int rc;
 
 	init_yogrt();
+	if (backend_handle == NULL) {
+		return INT_MAX;
+	}
 
 	if (rank != 0) {
 		debug("This is not task rank 0.  Returning -1.\n");
@@ -129,7 +314,7 @@ int yogrt_remaining(void)
 	}
 
 	if (need_update(now)) {
-		rem = internal_get_rem_time(now, last_update, cached_time_rem);
+		rem = backend.remaining(now, last_update, cached_time_rem);
 		if (rem != -1) {
 			last_update_failed = 0;
 			cached_time_rem = rem;

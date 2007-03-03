@@ -1,0 +1,6 @@
+#
+# Configuration file for libyogrt
+#
+# Possible backend settings are: none, slurm, lcrm, moab
+#
+backend=none

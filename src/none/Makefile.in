@@ -14,7 +14,6 @@
 
 @SET_MAKE@
 
-
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 VPATH = @srcdir@
@@ -39,8 +38,7 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 subdir = src/none
-DIST_COMMON = $(pkginclude_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in
+DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/config/x_ac_lcrm.m4 \
 	$(top_srcdir)/config/x_ac_meta.m4 \
@@ -57,13 +55,12 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(nonelibdir)" \
-	"$(DESTDIR)$(pkgincludedir)"
-nonelibLTLIBRARIES_INSTALL = $(INSTALL)
-LTLIBRARIES = $(nonelib_LTLIBRARIES)
-libyogrt_la_DEPENDENCIES = ../yogrt.lo @LTLIBOBJS@
-am_libyogrt_la_OBJECTS = internal.lo
-libyogrt_la_OBJECTS = $(am_libyogrt_la_OBJECTS)
+am__installdirs = "$(DESTDIR)$(sublibdir)"
+sublibLTLIBRARIES_INSTALL = $(INSTALL)
+LTLIBRARIES = $(sublib_LTLIBRARIES)
+libyogrt_none_la_LIBADD =
+am_libyogrt_none_la_OBJECTS = internal.lo
+libyogrt_none_la_OBJECTS = $(am_libyogrt_none_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -75,10 +72,8 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(libyogrt_la_SOURCES)
-DIST_SOURCES = $(libyogrt_la_SOURCES)
-pkgincludeHEADERS_INSTALL = $(INSTALL_HEADER)
-HEADERS = $(pkginclude_HEADERS)
+SOURCES = $(libyogrt_none_la_SOURCES)
+DIST_SOURCES = $(libyogrt_none_la_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -213,16 +208,14 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 INCLUDES = -I$(top_srcdir)/src
-nonelibdir = $(libdir)/libyogrt/none
-nonelib_LTLIBRARIES = libyogrt.la
-libyogrt_la_SOURCES = internal.c
-libyogrt_la_LIBADD = ../yogrt.lo @LTLIBOBJS@
-libyogrt_la_LDFLAGS = \
+sublibdir = $(libdir)/libyogrt
+sublib_LTLIBRARIES = libyogrt-none.la
+libyogrt_none_la_SOURCES = internal.c
+libyogrt_none_la_LDFLAGS = \
 	-no-undefined \
-	-export-symbols-regex "^i?yogrt_.*" \
+	-export-symbols-regex "^internal_.*" \
 	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
 
-pkginclude_HEADERS = ../yogrt.h
 all: all-am
 
 .SUFFIXES:
@@ -256,35 +249,35 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-install-nonelibLTLIBRARIES: $(nonelib_LTLIBRARIES)
+install-sublibLTLIBRARIES: $(sublib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
-	test -z "$(nonelibdir)" || $(mkdir_p) "$(DESTDIR)$(nonelibdir)"
-	@list='$(nonelib_LTLIBRARIES)'; for p in $$list; do \
+	test -z "$(sublibdir)" || $(mkdir_p) "$(DESTDIR)$(sublibdir)"
+	@list='$(sublib_LTLIBRARIES)'; for p in $$list; do \
 	  if test -f $$p; then \
 	    f=$(am__strip_dir) \
-	    echo " $(LIBTOOL) --mode=install $(nonelibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(nonelibdir)/$$f'"; \
-	    $(LIBTOOL) --mode=install $(nonelibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(nonelibdir)/$$f"; \
+	    echo " $(LIBTOOL) --mode=install $(sublibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(sublibdir)/$$f'"; \
+	    $(LIBTOOL) --mode=install $(sublibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(sublibdir)/$$f"; \
 	  else :; fi; \
 	done
 
-uninstall-nonelibLTLIBRARIES:
+uninstall-sublibLTLIBRARIES:
 	@$(NORMAL_UNINSTALL)
-	@set -x; list='$(nonelib_LTLIBRARIES)'; for p in $$list; do \
+	@set -x; list='$(sublib_LTLIBRARIES)'; for p in $$list; do \
 	  p=$(am__strip_dir) \
-	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(nonelibdir)/$$p'"; \
-	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(nonelibdir)/$$p"; \
+	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(sublibdir)/$$p'"; \
+	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(sublibdir)/$$p"; \
 	done
 
-clean-nonelibLTLIBRARIES:
-	-test -z "$(nonelib_LTLIBRARIES)" || rm -f $(nonelib_LTLIBRARIES)
-	@list='$(nonelib_LTLIBRARIES)'; for p in $$list; do \
+clean-sublibLTLIBRARIES:
+	-test -z "$(sublib_LTLIBRARIES)" || rm -f $(sublib_LTLIBRARIES)
+	@list='$(sublib_LTLIBRARIES)'; for p in $$list; do \
 	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
 	  test "$$dir" != "$$p" || dir=.; \
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libyogrt.la: $(libyogrt_la_OBJECTS) $(libyogrt_la_DEPENDENCIES) 
-	$(LINK) -rpath $(nonelibdir) $(libyogrt_la_LDFLAGS) $(libyogrt_la_OBJECTS) $(libyogrt_la_LIBADD) $(LIBS)
+libyogrt-none.la: $(libyogrt_none_la_OBJECTS) $(libyogrt_none_la_DEPENDENCIES) 
+	$(LINK) -rpath $(sublibdir) $(libyogrt_none_la_LDFLAGS) $(libyogrt_none_la_OBJECTS) $(libyogrt_none_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -324,23 +317,6 @@ clean-libtool:
 distclean-libtool:
 	-rm -f libtool
 uninstall-info-am:
-install-pkgincludeHEADERS: $(pkginclude_HEADERS)
-	@$(NORMAL_INSTALL)
-	test -z "$(pkgincludedir)" || $(mkdir_p) "$(DESTDIR)$(pkgincludedir)"
-	@list='$(pkginclude_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f=$(am__strip_dir) \
-	  echo " $(pkgincludeHEADERS_INSTALL) '$$d$$p' '$(DESTDIR)$(pkgincludedir)/$$f'"; \
-	  $(pkgincludeHEADERS_INSTALL) "$$d$$p" "$(DESTDIR)$(pkgincludedir)/$$f"; \
-	done
-
-uninstall-pkgincludeHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(pkginclude_HEADERS)'; for p in $$list; do \
-	  f=$(am__strip_dir) \
-	  echo " rm -f '$(DESTDIR)$(pkgincludedir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(pkgincludedir)/$$f"; \
-	done
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -391,7 +367,6 @@ distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
 distdir: $(DISTFILES)
-	$(mkdir_p) $(distdir)/..
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -420,9 +395,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LTLIBRARIES)
 installdirs:
-	for dir in "$(DESTDIR)$(nonelibdir)" "$(DESTDIR)$(pkgincludedir)"; do \
+	for dir in "$(DESTDIR)$(sublibdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -451,7 +426,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libtool clean-nonelibLTLIBRARIES \
+clean-am: clean-generic clean-libtool clean-sublibLTLIBRARIES \
 	mostlyclean-am
 
 distclean: distclean-am
@@ -470,7 +445,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-nonelibLTLIBRARIES install-pkgincludeHEADERS
+install-data-am: install-sublibLTLIBRARIES
 
 install-exec-am:
 
@@ -498,22 +473,20 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-info-am uninstall-nonelibLTLIBRARIES \
-	uninstall-pkgincludeHEADERS
+uninstall-am: uninstall-info-am uninstall-sublibLTLIBRARIES
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libtool clean-nonelibLTLIBRARIES ctags distclean \
+	clean-libtool clean-sublibLTLIBRARIES ctags distclean \
 	distclean-compile distclean-generic distclean-libtool \
 	distclean-tags distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-exec \
 	install-exec-am install-info install-info-am install-man \
-	install-nonelibLTLIBRARIES install-pkgincludeHEADERS \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am \
-	uninstall-info-am uninstall-nonelibLTLIBRARIES \
-	uninstall-pkgincludeHEADERS
+	install-strip install-sublibLTLIBRARIES installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags uninstall uninstall-am uninstall-info-am \
+	uninstall-sublibLTLIBRARIES
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

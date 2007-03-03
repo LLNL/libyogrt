@@ -13,6 +13,8 @@ LICENSE
 
 #include "internal_yogrt.h"
 
+int verbosity = 0;
+
 char *internal_backend_name(void)
 {
 	return "LCRM";
@@ -53,4 +55,9 @@ int internal_get_rank(void)
 	}
 
 	return rank;
+}
+
+void internal_set_verbosity(int verb)
+{
+	verbosity = verb;
 }

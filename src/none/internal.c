@@ -7,7 +7,16 @@
 LICENSE
  ***************************************************************************/
 
+#include <limits.h>
+
 #include "internal_yogrt.h"
+
+int verbosity = 0;
+
+void internal_init(int verb)
+{
+	verbosity = verb;
+}
 
 char *internal_backend_name(void)
 {
@@ -19,8 +28,7 @@ int internal_get_rem_time(time_t now, time_t last_update, int cached)
 	int rem;
 
 	if (cached == -1) {
-		debug("\"none\" implementation must be intialized with YOGRT_DEFAULT_LIMIT\n");
-		return -1;
+		return INT_MAX;
 	}
 
 	rem = (cached - (now - last_update));

@@ -12,6 +12,13 @@ LICENSE
 
 #include "internal_yogrt.h"
 
+int verbosity = 0;
+
+void internal_init(int verb)
+{
+	verbosity = verb;
+}
+
 char *internal_backend_name(void)
 {
 	return "MOAB";
