@@ -222,16 +222,14 @@ static inline int load_backend(void)
 			 BACKENDDIR, backend_name);
 		debug3("Testing for %s.\n", path);
 		if (stat(path, st) == -1) {
-			/* FIXME - should be error() */
-			debug("Unable to locate backend library file!\n");
+			error("Unable to locate backend library module!\n");
 			return 0;
 		}
 	}	
 	debug3("Will use %s.\n", path);
 
 	if ((backend_handle = dlopen(path, RTLD_NOW)) == NULL) {
-		/* FIXME - should be error() */
-		debug("dlopen failed: %s\n", dlerror());
+		error("dlopen failed: %s\n", dlerror());
 		return 0;
 	}
 		

@@ -28,6 +28,7 @@ int internal_get_rank(void);
 		}							\
 	} while (0)
 
+#define error(...)  __debug_level(0, __VA_ARGS__)
 #define debug(...)  __debug_level(1, __VA_ARGS__)
 #define debug1(...) __debug_level(1, __VA_ARGS__)
 #define debug2(...) __debug_level(2, __VA_ARGS__)
