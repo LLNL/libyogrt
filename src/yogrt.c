@@ -147,7 +147,7 @@ static inline void read_config_file(void)
 			if (cached_time_rem < 0) {
 				cached_time_rem = -1;
 				debug("Negative number not allowed,  leaving"
-				      " YOGRT_DEFAULT_LIMIT uninitialized\n");
+				      " YOGRT_REMAINING uninitialized\n");
 			}
 		} else if (strcasecmp(key, "backend") == 0
 			   || strcasecmp(key, "yogrt_backend") == 0) {
@@ -189,14 +189,14 @@ static inline void read_env_variables(void)
 			      " setting interval2_start to 0\n");
 		}
 	}
-	if ((p = getenv("YOGRT_DEFAULT_LIMIT")) != NULL) {
+	if ((p = getenv("YOGRT_REMAINING")) != NULL) {
 		cached_time_rem = (int)atol(p);
 		last_update = time(NULL);
-		debug("Found YOGRT_DEFAULT_LIMIT=%d\n", cached_time_rem);
+		debug("Found YOGRT_REMAINING=%d\n", cached_time_rem);
 		if (cached_time_rem < 0) {
 			cached_time_rem = -1;
 			debug("Negative number not allowed,  leaving"
-			      " YOGRT_DEFAULT_LIMIT uninitialized\n");
+			      " YOGRT_REMAINING uninitialized\n");
 		}
 	}
 	if ((p = getenv("YOGRT_BACKEND")) != NULL) {

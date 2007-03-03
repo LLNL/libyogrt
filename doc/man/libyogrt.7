@@ -72,24 +72,24 @@ by setting the "YOGRT_DEBUG" environment variable to an integer value greater
 than 0.  Larger values will result in more verbose debugging messages (the
 current highest verbosity level is 3).
 
-Finally, the environment variable "YOGRT_DEFAULT_LIMIT" presets libyogrt's
-remaining time cache.  The value of YOGRT_DEFAULT_LIMIT should be an integer
+Finally, the environment variable "YOGRT_REMAINING" presets libyogrt's
+remaining time cache.  The value of YOGRT_REMAINING should be an integer
 representing a period of time in seconds.  By setting this variable, the first
 time you call yogrt_remaining(), libyogrt will use the time specified in
-YOGRT_DEFAULT_LIMIT rather than contacting the resource manager.  Later,
+YOGRT_REMAINING rather than contacting the resource manager.  Later,
 when yogrt_remaining() is called more than "interval1" (or possibly "interval2")
 seconds, yogrt_remaining() will beginning querying the resource manager as
 normal.  This has the interesting  possibility of allowing the user to
 completely avoid talking to the resource manager.
 
 For instance, if one were to set the enviroment variables
-"YOGRT_DEFAULT_LIMIT=3600" (one hour), "YOGRT_INTERVAL1=100000000" (essentially
+"YOGRT_REMAINING=3600" (one hour), "YOGRT_INTERVAL1=100000000" (essentially
 never query the resource manager), and "YOGRT_INTERVAL2_START=0" (never use
 interval2), libyogrt would count down from 3600 seconds on its own.
 
 (Be aware that the countdown starts the first time any call is made into
 the libyogrt library, not when the application begins running.  So if you
-plan to exploit YOGRT_DEFAULT_LIMIT, you probably want to call yogrt_remaining()
+plan to exploit YOGRT_REMAINING, you probably want to call yogrt_remaining()
 once right at the start of your application to get the clock started on the
 cache.)
 
