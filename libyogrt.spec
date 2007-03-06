@@ -49,6 +49,15 @@ for subpackage in none slurm lcrm moab; do
     fi
     cd $TOP
 done
+# now merge the 32- and 64-bit versions of the main library
+for bits in 32 64; do
+	mkdir -p $TMP/${bits}
+	cd $TMP/${bits}
+	ar -X${bits} x $TMP/orig/${bits}%{_libdir}/libyogrt.a
+done
+cd $TMP
+ar -Xany cr libyogrt.a $TMP/32/* $TMP/64/*
+cd $TOP
 rm -rf $TMP/orig
 %else
 %configure
@@ -62,8 +71,9 @@ DESTDIR="$RPM_BUILD_ROOT" make install
 mv $RPM_BUILD_ROOT%{_sysconfdir}/yogrt.conf.example $RPM_BUILD_ROOT%{_sysconfdir}/yogrt.conf
 %ifos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
 if [ -d aix ]; then
-	cp aix/libyogrt* "$RPM_BUILD_ROOT"%{_libdir}/libyogrt
+	cp aix/libyogrt-* "$RPM_BUILD_ROOT"%{_libdir}/libyogrt
 fi
+cp aix/libyogrt.a "$RPM_BUILD_ROOT"%{_libdir}
 %endif
 
 %files
