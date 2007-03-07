@@ -26,7 +26,7 @@ rm -rf "$TMP"
 for bits in 64 32; do
     OBJECT_MODE=$bits
     export OBJECT_MODE
-    %configure -C
+    %configure -C --program-prefix=%{?_program_prefix:%{_program_prefix}}
     mkdir -p $TMP/orig/$bits
     DESTDIR=$TMP/orig/$bits make install
     make clean
@@ -88,7 +88,7 @@ cp aix/libyogrt.a "$RPM_BUILD_ROOT"%{_libdir}
 %{_libdir}/libyogrt/*
 %endif
 %{_mandir}/*/*
-%config %{_sysconfdir}/yogrt.conf
+%config(noreplace) %{_sysconfdir}/yogrt.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
