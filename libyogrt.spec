@@ -87,6 +87,7 @@ cp aix/libyogrt.a "$RPM_BUILD_ROOT"%{_libdir}
 %{_includedir}/yogrt.h
 %ifos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
 %{_libdir}/*.a
+%attr(755, root, root) %dir %{_libdir}/libyogrt
 %{_libdir}/libyogrt/*.a
 %else
 %{_libdir}/*
