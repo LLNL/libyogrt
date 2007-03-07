@@ -18,7 +18,8 @@ interface for multiple parallel job scheduling systems.
 
 %build
 %ifos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
-
+CC=/usr/bin/gcc
+export CC
 # Build all of the libraries twice: 32bit versions, and then 64bit versions
 TOP="`pwd`"
 TMP="$TOP/aix"
@@ -67,6 +68,10 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
+%ifos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
+CC=/usr/bin/gcc
+export CC
+%endif
 DESTDIR="$RPM_BUILD_ROOT" make install
 mv $RPM_BUILD_ROOT%{_sysconfdir}/yogrt.conf.example $RPM_BUILD_ROOT%{_sysconfdir}/yogrt.conf
 %ifos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
