@@ -26,6 +26,21 @@ yogrt_set_interval2_start, yogrt_get_interval2_start \- set/get interval2_start
 .sp
 Link with -lyogrt.
 
+.SH "FORTRAN EXTENSIONS"
+INTEGER SECONDS
+.br
+IYOGRT_SET_INTERVAL1(SECONDS)
+.br
+SECONDS = IYOGRT_GET_INTERVAL1()
+.br
+IYOGRT_SET_INTERVAL2(SECONDS)
+.br
+SECONDS = IYOGRT_GET_INTERVAL2()
+.br
+IYOGRT_SET_INTERVAL2_START(SECONDS)
+.br
+SECONDS = IYOGRT_GET_INTERVAL2_START()
+
 .SH DESCRIPTION
 This libyogrt library calls allow one to get and set internal library
 variables to control the frequency of cache updates.  See

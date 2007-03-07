@@ -26,7 +26,7 @@ yogrt_remaining() is the libyogrt call of primary interest.  yogrt_remaining()
 returns the amount of wall clock time remaining, in seconds, in the
 application's resource allocation.
 
-Performance paramount in the design of yogrt_remaining().  To acheive the
+Performance is paramount in the design of yogrt_remaining().  To acheive the
 speed required by high performance applicatins, yogrt_remaining() talks to
 the resource manager only rarely and maintains a cache of the remaining time.
 Most calls to yogrt_remaining() will only involve a time() library call and

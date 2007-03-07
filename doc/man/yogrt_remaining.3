@@ -13,6 +13,11 @@ resource allocation.
 .sp
 Link with -lyogrt.
 
+.SH "FORTRAN EXTENSION"
+INTEGER REMAINING
+.br
+REMAINING = IYOGRT_REMAINING()
+
 .SH DESCRIPTION
 Return the number of seconds remaining in the current resource allocation.
 (This call may ONLY be used by process rank zero of a parallel job.)
