@@ -262,7 +262,7 @@ static inline int load_backend(void)
 		debug("Backend implementation is \"%s\".\n", backend.name());
 	if (backend.fudge != NULL && !fudge_factor_set) {
 		fudge_factor = backend.fudge();
-		debug("Using fudge factor from backend: %d\n", fudge_factor);
+		debug("Using backend fudge factor of %d sec.\n", fudge_factor);
 	}
 
 	return 1;
