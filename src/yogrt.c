@@ -36,6 +36,8 @@ static int interval2_start = 1800; /* 30 minutes before the end */
 static int cached_time_rem = -1;
 static time_t last_update = (time_t)-1; /* of cached_time_rem */
 static int last_update_failed = 0; /* flag */
+static int fudge_factor = 0;
+static int fudge_factor_set = 0;
 
 static char backend_name[64];
 static void *backend_handle = NULL;
@@ -44,6 +46,7 @@ static struct backend_operations {
 	char * (*name)     (void);
 	int    (*remaining)(time_t now, time_t last_update, int chached);
 	int    (*rank)     (void);
+	int    (*fudge)    (void);
 } backend;
 
 
@@ -153,6 +156,11 @@ static inline void read_config_file(void)
 			   || strcasecmp(key, "yogrt_backend") == 0) {
 			strncpy(backend_name, value, 64);
 			debug("In yogrt.conf: %s=%s\n", key, backend_name);
+		} else if (strcasecmp(key, "fudge_factor") == 0
+			   || strcasecmp(key, "yogrt_fudge_factor") == 0) {
+			fudge_factor = (int)atol(value);
+			fudge_factor_set = 1;
+			debug("In yogrt.conf: %s=%d\n", key, fudge_factor);
 		}
 	}
 	fclose(fp);
@@ -204,6 +212,11 @@ static inline void read_env_variables(void)
 		strncpy(backend_name, p, 64);
 		debug("In environment: YOGRT_BACKEND=%s\n", backend_name);
 	}
+	if ((p = getenv("YOGRT_FUDGE_FACTOR")) != NULL) {
+		fudge_factor = (int)atol(p);
+		fudge_factor_set = 1;
+		debug("In environment: YOGRT_FUDGE_FACTOR=%d\n", fudge_factor);
+	}
 }
 
 static inline int load_backend(void)
@@ -226,23 +239,31 @@ static inline int load_backend(void)
 			error("Unable to locate backend library module!\n");
 			return 0;
 		}
-	}	
+	}
 	debug3("Will use %s.\n", path);
 
 	if ((backend_handle = dlopen(path, RTLD_NOW)) == NULL) {
 		error("dlopen failed: %s\n", dlerror());
 		return 0;
 	}
-		
+
 	backend.init =      dlsym(backend_handle, "internal_init");
 	backend.name =      dlsym(backend_handle, "internal_backend_name");
 	backend.remaining = dlsym(backend_handle, "internal_get_rem_time");
 	backend.rank =      dlsym(backend_handle, "internal_get_rank");
+	backend.fudge =     dlsym(backend_handle, "internal_fudge");
 
-	backend.init(verbosity);
-	rank = backend.rank();
+	if (backend.init != NULL)
+		backend.init(verbosity);
+	if (backend.rank != NULL)
+		rank = backend.rank();
 	debug("Rank is %d\n", rank);
-	debug("Backend implementation is \"%s\".\n", backend.name());
+	if (backend.name != NULL)
+		debug("Backend implementation is \"%s\".\n", backend.name());
+	if (backend.fudge != NULL && !fudge_factor_set) {
+		fudge_factor = backend.fudge();
+		debug("Using fudge factor from backend: %d\n", fudge_factor);
+	}
 
 	return 1;
 }
@@ -300,7 +321,7 @@ static inline int need_update(time_t now)
 int yogrt_remaining(void)
 {
 	time_t now = time(NULL);
-	int rem;
+	int rem = -1;
 	int rc;
 
 	init_yogrt();
@@ -314,7 +335,10 @@ int yogrt_remaining(void)
 	}
 
 	if (need_update(now)) {
-		rem = backend.remaining(now, last_update, cached_time_rem);
+		if (backend.remaining != NULL) {
+			rem = backend.remaining(now, last_update,
+						cached_time_rem);
+		}
 		if (rem != -1) {
 			last_update_failed = 0;
 			cached_time_rem = rem;
@@ -333,7 +357,7 @@ int yogrt_remaining(void)
 	if (cached_time_rem == -1) {
 		rc = INT_MAX;
 	} else {
-		rem = REMAINING(now);
+		rem = REMAINING(now) - fudge_factor;
 		if (rem >= 0) {
 			rc = rem;
 		} else {
@@ -385,6 +409,13 @@ void yogrt_set_interval2_start(int seconds_before_end)
 	debug("interval2_start changed to %d\n", interval2);
 }
 
+void yogrt_set_fudge_factor(int seconds)
+{
+	init_yogrt();
+	fudge_factor = seconds;
+	debug("fudge_factor changed to %d\n", fudge_factor);
+}
+
 int yogrt_get_interval1(void)
 {
 	init_yogrt();
@@ -401,6 +432,12 @@ int yogrt_get_interval2_start(void)
 {
 	init_yogrt();
 	return interval2_start;
+}
+
+int yogrt_get_fudge_factor(void)
+{
+	init_yogrt();
+	return fudge_factor;
 }
 
 /**********************************************************************
@@ -429,6 +466,12 @@ int iyogrt_set_interval2_start_(int *seconds_before_end)
 	return *seconds_before_end;
 }
 
+int iyogrt_set_fudge_factor_(int *seconds)
+{
+	yogrt_set_fudge_factor(*seconds);
+	return *seconds;
+}
+
 int iyogrt_get_interval1_(void)
 {
 	return yogrt_get_interval1();
@@ -442,6 +485,11 @@ int iyogrt_get_interval2_(void)
 int iyogrt_get_interval2_start_(void)
 {
 	return yogrt_get_interval2_start();
+}
+
+int iyogrt_get_fudge_factor_(void)
+{
+	return yogrt_get_fudge_factor();
 }
 
 /**********************************************************************
@@ -470,6 +518,12 @@ int iyogrt_set_interval2_start__(int *seconds_before_end)
 	return *seconds_before_end;
 }
 
+int iyogrt_set_fudge_factor__(int *seconds)
+{
+	yogrt_set_fudge_factor(*seconds);
+	return *seconds;
+}
+
 int iyogrt_get_interval1__(void)
 {
 	return yogrt_get_interval1();
@@ -483,4 +537,9 @@ int iyogrt_get_interval2__(void)
 int iyogrt_get_interval2_start__(void)
 {
 	return yogrt_get_interval2_start();
+}
+
+int iyogrt_get_fudge_factor__(void)
+{
+	return yogrt_get_fudge_factor();
 }

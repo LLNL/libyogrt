@@ -6,6 +6,8 @@ yogrt_set_interval1, yogrt_get_interval1 \- set/get interval1
 yogrt_set_interval2, yogrt_get_interval2 \- set/get interval2
 .br
 yogrt_set_interval2_start, yogrt_get_interval2_start \- set/get interval2_start
+.br
+yogrt_set_fudge_factor, yogrt_get_fudge_factor \- set/get fudge_factor
 
 .SH SYNOPSIS
 .nf
@@ -22,6 +24,10 @@ yogrt_set_interval2_start, yogrt_get_interval2_start \- set/get interval2_start
 .BI "void yogrt_set_interval2_start(int seconds_before_end)"
 .br
 .BI "int yogrt_get_interval2_start(void)"
+.br
+.BI "void yogrt_set_fudge_factor(int seconds)"
+.br
+.BI "int yogrt_get_fudge_factor(void)"
 .fi
 .sp
 Link with -lyogrt.
@@ -40,10 +46,14 @@ SECONDS = IYOGRT_GET_INTERVAL2()
 IYOGRT_SET_INTERVAL2_START(SECONDS)
 .br
 SECONDS = IYOGRT_GET_INTERVAL2_START()
+.br
+IYOGRT_SET_FUDGE_FACTOR(SECONDS)
+.br
+SECONDS = IYOGRT_GET_FUDGE_FACTOR()
 
 .SH DESCRIPTION
-This libyogrt library calls allow one to get and set internal library
-variables to control the frequency of cache updates.  See
+These libyogrt library calls allow one to get and set internal library
+variables to control the frequency of cache updates (among other things).  See
 .BR libyogrt (7)
 for a full description of the effects of these variables.
 

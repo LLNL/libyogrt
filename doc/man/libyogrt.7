@@ -13,7 +13,7 @@ Link with -lyogrt.
 
 .SH DESCRIPTION
 libyogrt provides a simple API by which a parallel application can
-determine the ammount of time remaining before it will be terminated.
+determine the amount of time remaining before it will be terminated.
 libyogrt is designed as a layer above the system scheduler, allowing an
 application compiled against libyogrt to query its remaining time
 with Moab, SLURM, LCRM, and possibly other systems in the future.  The
@@ -26,8 +26,8 @@ yogrt_remaining() is the libyogrt call of primary interest.  yogrt_remaining()
 returns the amount of wall clock time remaining, in seconds, in the
 application's resource allocation.
 
-Performance is paramount in the design of yogrt_remaining().  To acheive the
-speed required by high performance applicatins, yogrt_remaining() talks to
+Performance is paramount in the design of yogrt_remaining().  To achieve the
+speed required by high performance applications, yogrt_remaining() talks to
 the resource manager only rarely and maintains a cache of the remaining time.
 Most calls to yogrt_remaining() will only involve a time() library call and
 simple arithmetic to determine the current remaining time.
@@ -35,7 +35,7 @@ simple arithmetic to determine the current remaining time.
 .SH INTERNALS
 
 Most people will not need to change libyogrt's caching behavior, but should
-it be desireable, libyogrt provides both environment variables and library
+it be desirable, libyogrt provides both environment variables and library
 calls for adjusting its internal update intervals.
 
 By default, libyogrt will only ask the resource manager how much time remains
@@ -62,10 +62,22 @@ yogrt_set_interval2(), yogrt_set_interval2_start().
 The yogrt_get_* and yogrt_set_* calls may be called more than once if
 an application wishes to adjust the intervals several times.
 
+libyogrt also has a "fudge_factor" internal variable.  Some resource managers
+are not entirely accurate in their remaining time predictions.  For instance,
+LCRM may kill jobs up to 60 seconds before the reported end of the resource
+allocation.  To compensate for this inaccuracy, yogrt_remaining() actually
+reports the time given by the resource manager minus "fudge_factor".  For LCRM,
+the fudge_factor is 60 seconds.  If LCRM reports 300 seconds left in your
+resource allocation, yogrt_remaining() will report 240 seconds (300 \- 60).  Each
+backend may have a different "fudge_factor" value.  Users may query and set
+the fudge_factor value using yogrt_get_fudge_factor() and
+yogrt_set_fudge_factor().
+
 .SH "ENVIRONMENT VARIABLES"
 Before the first call is made into libyogrt, the values of "interval1",
-"interval2", and "interval2_start" may be initialized with the environment
-variables "YOGRT_INTERVAL1", "YOGRT_INTERVAL2", and "YOGRT_INTERVAL2_START".
+"interval2", "interval2_start", and "fudge_factor" may be initialized
+with the environment variables "YOGRT_INTERVAL1", "YOGRT_INTERVAL2", 
+"YOGRT_INTERVAL2_START", and "YOGRT_FUDGE_FACTOR", respectively.
 
 In addition, the libyogrt library can print debugging messages to stderr
 by setting the "YOGRT_DEBUG" environment variable to an integer value greater
@@ -82,7 +94,7 @@ seconds, yogrt_remaining() will beginning querying the resource manager as
 normal.  This has the interesting  possibility of allowing the user to
 completely avoid talking to the resource manager.
 
-For instance, if one were to set the enviroment variables
+For instance, if one were to set the environment variables
 "YOGRT_REMAINING=3600" (one hour), "YOGRT_INTERVAL1=100000000" (essentially
 never query the resource manager), and "YOGRT_INTERVAL2_START=0" (never use
 interval2), libyogrt would count down from 3600 seconds on its own.

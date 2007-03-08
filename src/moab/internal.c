@@ -56,3 +56,8 @@ int internal_get_rank(void)
 
 	return rank;
 }
+
+int internal_fudge(void)
+{
+	return 0;
+}

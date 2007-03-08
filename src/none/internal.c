@@ -32,7 +32,7 @@ int internal_get_rem_time(time_t now, time_t last_update, int cached)
 	}
 
 	rem = (cached - (now - last_update));
-/* 	debug2("\"none\" implementation reports remaining time of %d sec.\n", rem); */
+	debug2("\"none\" backend reports remaining time of %d sec.\n", rem);
 	return rem;
 }
 
@@ -41,3 +41,7 @@ int internal_get_rank(void)
 	return 0;
 }
 
+int internal_fudge(void)
+{
+	return 0;
+}

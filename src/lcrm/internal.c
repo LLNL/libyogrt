@@ -66,3 +66,8 @@ void internal_set_verbosity(int verb)
 {
 	verbosity = verb;
 }
+
+int internal_fudge(void)
+{
+	return 60;
+}
