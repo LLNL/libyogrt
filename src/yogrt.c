@@ -365,7 +365,9 @@ int yogrt_remaining(void)
 		}
 	}
 
-	debug3("Reporting remaining time of %d sec.\n", rc);
+	debug3("Reporting %sremaining time of %d sec.\n",
+	       fudge_factor != 0 ? "fudged ": "",
+	       rc);
 	return rc;
 }
 
