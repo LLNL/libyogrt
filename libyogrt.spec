@@ -90,7 +90,7 @@ cp aix/libyogrt.a "$RPM_BUILD_ROOT"%{_libdir}
 %attr(755, root, root) %dir %{_libdir}/libyogrt
 %{_libdir}/libyogrt/*.a
 %else
-%{_libdir}/*
+%{_libdir}/*.*
 %{_libdir}/libyogrt/*
 %endif
 %{_mandir}/*/*
