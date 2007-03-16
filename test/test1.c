@@ -24,8 +24,6 @@ main(int argc, char *argv[])
 
 	while(1) {
 		rem = yogrt_remaining();
-		if (rem <= 5)
-			break;
 		sleep(1);
 	}
 
