@@ -9,6 +9,10 @@ Packager: Christopher J. Morrone <morrone2@llnl.gov>
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
+# Disable automatic rpm requirement generation
+%define _use_internal_dependency_generator 0
+%define __find_requires %{nil}
+
 %description
 A simple wrapper library that provides a unified get-remaining-time
 interface for multiple parallel job scheduling systems.
