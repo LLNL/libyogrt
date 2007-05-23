@@ -10,8 +10,8 @@ LICENSE
 #ifndef YOGRT_H
 #define YOGRT_H 1
 
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
+#ifdef __cplusplus
+extern "C" {
 #endif
 
 /*
@@ -41,7 +41,7 @@ extern int yogrt_remaining(void);
  * value reported by the resource manager.  Subsequent calls to yogrt_remaining()
  * will use simple arithmetic to calculate the remaining time.  If the cached
  * time is older than the update interval, yogrt_remaining() will connect to the
- * the resource manager again to ask for the latest "reamining time" value.
+ * the resource manager again to ask for the latest "remaining time" value.
  *
  * There are actually two update intervals that may be set.  The first,
  * "interval1", is used as long as the remaining time is greater than
@@ -71,5 +71,9 @@ extern int yogrt_get_interval2(void);
  * Report the current value of interval2_start.
  */
 extern int yogrt_get_interval2_start(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* !YOGRT_H */

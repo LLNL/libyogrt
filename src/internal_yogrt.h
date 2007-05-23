@@ -10,6 +10,10 @@ LICENSE
 #ifndef INTERNAL_YOGRT_H
 #define INTERNAL_YOGRT_H 1
 
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif
+
 #include <stdio.h>
 #include <time.h>
 
