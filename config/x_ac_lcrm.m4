@@ -28,10 +28,12 @@ AC_DEFUN([X_AC_LCRM], [
      with_lcrm=yes],
     [with_lcrm=no])
 
+  _backup_libs="$LIBS"
   if test "$with_lcrm" = no; then
     # Check for LCRM library in the default location.
     AC_CHECK_LIB([lrm], [lrmgettime])
   fi
+  LIBS="$_backup_libs"
 
   if test "$ac_cv_lib_lrm_lrmgettime" != yes; then
     AC_CACHE_CHECK(

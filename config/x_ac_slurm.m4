@@ -31,10 +31,12 @@ AC_DEFUN([X_AC_SLURM], [
      with_slurm=yes],
     [with_slurm=no])
 
+  _backup_libs="$LIBS"
   if test "$with_slurm" = no; then
     # Check for SLURM library in the default location.
     AC_CHECK_LIB([slurm], [slurm_get_rem_time])
   fi
+  LIBS="$_backup_libs"
 
   if test "$ac_cv_lib_slurm_slurm_get_rem_time" != yes; then
     AC_CACHE_CHECK(

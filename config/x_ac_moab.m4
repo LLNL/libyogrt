@@ -29,10 +29,12 @@ AC_DEFUN([X_AC_MOAB], [
      with_moab=yes],
     [with_moab=no])
 
+  _backup_libs="$LIBS"
   if test "$with_moab" = no; then
     # Check for MOAB library in the default location.
     AC_CHECK_LIB([cmoab], [MCCJobGetRemainingTime], [], [], [$MOAB_LIBADD])
   fi
+  LIBS="$_backup_libs"
 
   if test "$ac_cv_lib_cmoab_MCCJobGetRemainingTime" != yes; then
     AC_CACHE_CHECK(
