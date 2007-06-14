@@ -19555,7 +19555,7 @@ else
             test -d "$d/$bit" || continue
 
             _x_ac_slurm_libs_save="$LIBS"
-            LIBS="-L$d/$bit -lslurm -lpthread -lssl $LIBS"
+            LIBS="-L$d/$bit -lslurm -lpthread -lcrypto $LIBS"
             cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF

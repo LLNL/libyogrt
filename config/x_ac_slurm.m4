@@ -52,7 +52,7 @@ AC_DEFUN([X_AC_SLURM], [
             test -d "$d/$bit" || continue
         
             _x_ac_slurm_libs_save="$LIBS"
-            LIBS="-L$d/$bit -lslurm -lpthread -lssl $LIBS"
+            LIBS="-L$d/$bit -lslurm -lpthread -lcrypto $LIBS"
             AC_LINK_IFELSE(
               AC_LANG_CALL([], [slurm_get_rem_time]),
               AS_VAR_SET([x_ac_cv_slurm_dir], [$d]))
