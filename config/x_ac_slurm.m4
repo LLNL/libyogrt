@@ -55,7 +55,9 @@ AC_DEFUN([X_AC_SLURM], [
             LIBS="-L$d/$bit -lslurm -lpthread -lcrypto $LIBS"
             AC_LINK_IFELSE(
               AC_LANG_CALL([], [slurm_get_rem_time]),
-              AS_VAR_SET([x_ac_cv_slurm_dir], [$d]))
+              [AS_VAR_SET([x_ac_cv_slurm_dir], [$d])
+               AS_VAR_SET([x_ac_cv_slurm_libdir], [$d/$bit])]
+            )
             LIBS="$_x_ac_slurm_libs_save"
             test -n "$x_ac_cv_slurm_dir" && break
           done
@@ -70,7 +72,7 @@ AC_DEFUN([X_AC_SLURM], [
     SLURM_LDFLAGS=""
   elif test -n "$x_ac_cv_slurm_dir"; then
     SLURM_CPPFLAGS="-I$x_ac_cv_slurm_dir/include"
-    SLURM_LDFLAGS="-L$x_ac_cv_slurm_dir/$bit -lpthread -lcrypto"
+    SLURM_LDFLAGS="-L$x_ac_cv_slurm_libdir -lpthread -lcrypto"
   else
     if test "$with_slurm" = yes; then
       AC_MSG_ERROR([slurm is not in specified location!])
