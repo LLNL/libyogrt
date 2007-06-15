@@ -20001,6 +20001,8 @@ eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
        } && test -s conftest$ac_exeext &&
        $as_test_x conftest$ac_exeext; then
   x_ac_cv_moab_dir=$d
+               x_ac_cv_moab_libdir=$d/$bit
+
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
@@ -20027,7 +20029,7 @@ echo "${ECHO_T}$x_ac_cv_moab_dir" >&6; }
     MOAB_LDFLAGS=""
   elif test -n "$x_ac_cv_moab_dir"; then
     MOAB_CPPFLAGS="-I$x_ac_cv_moab_dir/include"
-    MOAB_LDFLAGS="-L$x_ac_cv_moab_dir/$bit"
+    MOAB_LDFLAGS="-L$x_ac_cv_moab_libdir"
   else
     if test "$with_moab" = yes; then
       { { echo "$as_me:$LINENO: error: moab is not in specified location!" >&5
