@@ -68,7 +68,7 @@ AC_DEFUN([X_AC_LCRM], [
     LCRM_LDFLAGS=""
   elif test -n "$x_ac_cv_lcrm_dir"; then
     LCRM_CPPFLAGS="-I$x_ac_cv_lcrm_dir/include"
-    LCRM_LDFLAGS="-L$x_ac_cv_lcrm_libdir/$bit"
+    LCRM_LDFLAGS="-L$x_ac_cv_lcrm_libdir"
   else
     if test "$with_lcrm" = yes; then
       AC_MSG_ERROR([lcrm is not in specified location!])

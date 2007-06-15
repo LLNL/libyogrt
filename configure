@@ -19826,7 +19826,7 @@ echo "${ECHO_T}$x_ac_cv_lcrm_dir" >&6; }
     LCRM_LDFLAGS=""
   elif test -n "$x_ac_cv_lcrm_dir"; then
     LCRM_CPPFLAGS="-I$x_ac_cv_lcrm_dir/include"
-    LCRM_LDFLAGS="-L$x_ac_cv_lcrm_libdir/$bit"
+    LCRM_LDFLAGS="-L$x_ac_cv_lcrm_libdir"
   else
     if test "$with_lcrm" = yes; then
       { { echo "$as_me:$LINENO: error: lcrm is not in specified location!" >&5
