@@ -248,7 +248,7 @@ static inline int load_backend(void)
 	flags = RTLD_NOW|RTLD_MEMBER;
 	/* append the member name to make the AIX loader happy */
 	snprintf(path, 512, "*/libyogrt-%s.a(libyogrt-%s.so.%d)",
-		 BACKENDIR, backend_name, backend_name, META_LT_CURRENT);
+		 BACKENDDIR, backend_name, backend_name, META_LT_CURRENT);
 #endif
 	debug3("Will use %s.\n", path);
 
