@@ -19798,6 +19798,8 @@ eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
        } && test -s conftest$ac_exeext &&
        $as_test_x conftest$ac_exeext; then
   x_ac_cv_lcrm_dir=$d
+               x_ac_cv_lcrm_libdir=$d/$bit
+
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
@@ -19824,7 +19826,7 @@ echo "${ECHO_T}$x_ac_cv_lcrm_dir" >&6; }
     LCRM_LDFLAGS=""
   elif test -n "$x_ac_cv_lcrm_dir"; then
     LCRM_CPPFLAGS="-I$x_ac_cv_lcrm_dir/include"
-    LCRM_LDFLAGS="-L$x_ac_cv_lcrm_dir/$bit"
+    LCRM_LDFLAGS="-L$x_ac_cv_lcrm_libdir/$bit"
   else
     if test "$with_lcrm" = yes; then
       { { echo "$as_me:$LINENO: error: lcrm is not in specified location!" >&5
