@@ -53,7 +53,9 @@ AC_DEFUN([X_AC_MOAB], [
             LIBS="-L$d/$bit $MOAB_LIBADD $LIBS"
             AC_LINK_IFELSE(
               AC_LANG_CALL([], [MCCJobGetRemainingTime]),
-              AS_VAR_SET([x_ac_cv_moab_dir], [$d]))
+              [AS_VAR_SET([x_ac_cv_moab_dir], [$d])
+               AS_VAR_SET([x_ac_cv_moab_libdir], [$d/$bit])]
+            )
             LIBS="$_x_ac_moab_libs_save"
             test -n "$x_ac_cv_moab_dir" && break
           done
@@ -68,7 +70,7 @@ AC_DEFUN([X_AC_MOAB], [
     MOAB_LDFLAGS=""
   elif test -n "$x_ac_cv_moab_dir"; then
     MOAB_CPPFLAGS="-I$x_ac_cv_moab_dir/include"
-    MOAB_LDFLAGS="-L$x_ac_cv_moab_dir/$bit"
+    MOAB_LDFLAGS="-L$x_ac_cv_moab_libdir"
   else
     if test "$with_moab" = yes; then
       AC_MSG_ERROR([moab is not in specified location!])

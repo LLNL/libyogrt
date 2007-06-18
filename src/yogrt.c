@@ -222,6 +222,7 @@ static inline void read_env_variables(void)
 static inline int load_backend(void)
 {
 	char path[512];
+	int flags;
 	struct stat st[1];
 
 	if (strlen(backend_name) == 0) {
@@ -229,6 +230,7 @@ static inline int load_backend(void)
 		strcpy(backend_name, "none");
 	}
 
+	flags = RTLD_NOW;
 	snprintf(path, 512, "%s/libyogrt-%s.so", BACKENDDIR, backend_name);
 	debug3("Testing for %s.\n", path);
 	if (stat(path, st) == -1) {
@@ -240,9 +242,17 @@ static inline int load_backend(void)
 			return 0;
 		}
 	}
+#ifndef HAVE_AIX
+	flags = RTLD_NOW;
+#else /* system is AIX */
+	flags = RTLD_NOW|RTLD_MEMBER;
+	/* append the member name to make the AIX loader happy */
+	snprintf(path, 512, "%s/libyogrt-%s.a(libyogrt-%s.so.%s)",
+		 BACKENDDIR, backend_name, backend_name, META_LT_CURRENT);
+#endif
 	debug3("Will use %s.\n", path);
 
-	if ((backend_handle = dlopen(path, RTLD_NOW)) == NULL) {
+	if ((backend_handle = dlopen(path, flags)) == NULL) {
 		error("dlopen failed: %s\n", dlerror());
 		return 0;
 	}

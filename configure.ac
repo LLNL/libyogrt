@@ -15,6 +15,10 @@ AC_DISABLE_STATIC
 AM_INIT_AUTOMAKE([$PACKAGE], [$VERSION], [check-news dist-bzip2 gnu no-define])
 AM_MAINTAINER_MODE
 
+case "$host" in
+	*-*-aix*) AC_DEFINE(HAVE_AIX, [], [Define if system is AIX]);;
+esac
+
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_LIBTOOL

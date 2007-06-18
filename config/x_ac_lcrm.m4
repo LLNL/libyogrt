@@ -1,5 +1,5 @@
 ##*****************************************************************************
-## $Id: x_ac_lcrm.m4 8192 2006-05-25 00:15:05Z morrone $
+ ## $Id: x_ac_lcrm.m4 8192 2006-05-25 00:15:05Z morrone $
 ##*****************************************************************************
 #  AUTHOR:
 #    Christopher Morrone <morrone2@llnl.gov>
@@ -51,7 +51,9 @@ AC_DEFUN([X_AC_LCRM], [
             LIBS="-L$d/$bit -llrm $LIBS"
             AC_LINK_IFELSE(
               AC_LANG_CALL([], [lrmgettime]),
-              AS_VAR_SET([x_ac_cv_lcrm_dir], [$d]))
+              [AS_VAR_SET([x_ac_cv_lcrm_dir], [$d])
+               AS_VAR_SET([x_ac_cv_lcrm_libdir], [$d/$bit])]
+            )
             LIBS="$_x_ac_lcrm_libs_save"
             test -n "$x_ac_cv_lcrm_dir" && break
           done
@@ -66,7 +68,7 @@ AC_DEFUN([X_AC_LCRM], [
     LCRM_LDFLAGS=""
   elif test -n "$x_ac_cv_lcrm_dir"; then
     LCRM_CPPFLAGS="-I$x_ac_cv_lcrm_dir/include"
-    LCRM_LDFLAGS="-L$x_ac_cv_lcrm_dir/$bit"
+    LCRM_LDFLAGS="-L$x_ac_cv_lcrm_libdir"
   else
     if test "$with_lcrm" = yes; then
       AC_MSG_ERROR([lcrm is not in specified location!])
