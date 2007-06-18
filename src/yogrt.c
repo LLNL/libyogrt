@@ -230,7 +230,6 @@ static inline int load_backend(void)
 		strcpy(backend_name, "none");
 	}
 
-	flags = RTLD_NOW;
 	snprintf(path, 512, "%s/libyogrt-%s.so", BACKENDDIR, backend_name);
 	debug3("Testing for %s.\n", path);
 	if (stat(path, st) == -1) {
@@ -243,9 +242,9 @@ static inline int load_backend(void)
 		}
 	}
 #ifndef HAVE_AIX
-	flags = RTLD_NOW;
+	flags = RTLD_NOW|RTLD_GLOBAL;
 #else /* system is AIX */
-	flags = RTLD_NOW|RTLD_MEMBER;
+	flags = RTLD_NOW|RTLD_GLOBAL|RTLD_MEMBER;
 	/* append the member name to make the AIX loader happy */
 	snprintf(path, 512, "%s/libyogrt-%s.a(libyogrt-%s.so.%s)",
 		 BACKENDDIR, backend_name, backend_name, META_LT_CURRENT);
