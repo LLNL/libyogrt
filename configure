@@ -19652,7 +19652,7 @@ echo "${ECHO_T}$x_ac_cv_slurm_dir" >&6; }
   elif test -n "$x_ac_cv_slurm_dir"; then
     SLURM_CPPFLAGS="-I$x_ac_cv_slurm_dir/include"
     SLURM_LDFLAGS="-L$x_ac_cv_slurm_libdir -lpthread -lcrypto"
-    SLURM_LIBADD="-slurm"
+    SLURM_LIBADD="-lslurm"
   else
     if test "$with_slurm" = yes; then
       { { echo "$as_me:$LINENO: error: slurm is not in specified location!" >&5

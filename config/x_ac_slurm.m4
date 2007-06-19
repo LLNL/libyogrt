@@ -74,7 +74,7 @@ AC_DEFUN([X_AC_SLURM], [
   elif test -n "$x_ac_cv_slurm_dir"; then
     SLURM_CPPFLAGS="-I$x_ac_cv_slurm_dir/include"
     SLURM_LDFLAGS="-L$x_ac_cv_slurm_libdir -lpthread -lcrypto"
-    SLURM_LIBADD="-slurm"
+    SLURM_LIBADD="-lslurm"
   else
     if test "$with_slurm" = yes; then
       AC_MSG_ERROR([slurm is not in specified location!])
