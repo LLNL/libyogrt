@@ -8,15 +8,19 @@ LICENSE
  ***************************************************************************/
 
 #include <stdlib.h>
-#include <slurm/slurm.h>
 #include <fcntl.h>
 #include <unistd.h>
+#ifndef HAVE_AIX_64BIT
+#include <slurm/slurm.h>
+#endif
 
 #include "internal_yogrt.h"
 
 static char *external_program = EXTERNALPROGPATH;
 static uint32_t jobid = NO_VAL;
+#ifdef HAVE_AIX_64BIT
 static int external_get_rem_time();
+#endif
 
 int verbosity = 0;
 
@@ -77,6 +81,7 @@ int internal_fudge(void)
  * Call the external 32-bit compiled application from the 64-bit libyogrt
  * backend library, because libslurm is only build 32-bit on AIX.
  */
+#ifdef HAVE_AIX_64BIT
 static int external_get_rem_time()
 {
 	int fds[2];
@@ -126,3 +131,4 @@ static int external_get_rem_time()
 		exit(2);
 	}
 }
+#endif

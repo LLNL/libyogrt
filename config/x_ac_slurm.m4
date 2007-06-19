@@ -85,5 +85,5 @@ AC_DEFUN([X_AC_SLURM], [
   AC_SUBST(SLURM_LDFLAGS)
 
   AM_CONDITIONAL(WITH_SLURM,
-	test -n "$x_ac_cv_slurm_dir" || test "$ac_cv_lib_slurm_slurm_get_rem_time" = yes)
+	test -n "$x_ac_cv_slurm_dir" || test "$ac_cv_lib_slurm_slurm_get_rem_time" = yes || test "$aix_64bit_mode" = yes)
 ])

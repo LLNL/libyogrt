@@ -15,20 +15,17 @@ AC_DISABLE_STATIC
 AM_INIT_AUTOMAKE([$PACKAGE], [$VERSION], [check-news dist-bzip2 gnu no-define])
 AM_MAINTAINER_MODE
 
+aix_64bit_mode=no
+SLURM_AIX_PROGRAMS=""
 case "$host" in
 	*-*-aix*) AC_DEFINE(HAVE_AIX, [], [Define if system is AIX])
                   LDFLAGS="$LDFLAGS -Wl,-brtl -Wl,-bexpfull"
                   if test "$OBJECT_MODE" == "64" ; then
                       AC_DEFINE(HAVE_AIX_64BIT, [], [Define for 64-bit build on AIX])
-                      SLURM_AIX_PROGRAMS=""
+                      aix_64bit_mode=yes
                   elif test "$OBJECT_MODE" == "32" ; then
                       SLURM_AIX_PROGRAMS="libyogrt_slurm_time"
-                  else
-                      SLURM_AIX_PROGRAMS=""
                   fi
-        ;;
-        default)
-                  SLURM_AIX_PROGRAMS=""
         ;;
 esac
 AC_SUBST([SLURM_AIX_PROGRAMS])
