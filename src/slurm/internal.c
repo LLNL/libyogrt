@@ -7,6 +7,8 @@
 LICENSE
  ***************************************************************************/
 
+#include "internal_yogrt.h"
+
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -14,11 +16,10 @@ LICENSE
 #include <slurm/slurm.h>
 #endif
 
-#include "internal_yogrt.h"
-
 static char *external_program = EXTERNALPROGPATH;
+#ifndef HAVE_AIX_64BIT
 static uint32_t jobid = NO_VAL;
-#ifdef HAVE_AIX_64BIT
+#else
 static int external_get_rem_time();
 #endif
 
