@@ -18,7 +18,11 @@ AM_MAINTAINER_MODE
 case "$host" in
 	*-*-aix*) AC_DEFINE(HAVE_AIX, [], [Define if system is AIX])
                   LDFLAGS="$LDFLAGS -Wl,-brtl -Wl,-bexpfull"
-                  SLURM_AIX_PROGRAMS="libyogrt_slurm_time"
+                  if test "$OBJECT_MODE" == "32" ; then
+                      SLURM_AIX_PROGRAMS="libyogrt_slurm_time"
+                  else
+                      SLURM_AIX_PROGRAMS=""
+                  fi
         ;;
         default)
                   SLURM_AIX_PROGRAMS=""
