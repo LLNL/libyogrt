@@ -233,7 +233,9 @@ libyogrt_slurm_la_LDFLAGS = $(SLURM_LDFLAGS) \
 # it from both 32-bit and 64-bit programs.
 libexec_PROGRAMS = @SLURM_AIX_PROGRAMS@
 libyogrt_slurm_time_SOURCES = libyogrt_slurm_time.c
-libyogrt_slurm_time_CPPFLAGS = $(SLURM_CPPFLAGS)
+libyogrt_slurm_time_CPPFLAGS = $(SLURM_CPPFLAGS) \
+	-DEXTERNALPROGPATH=\"$(libexecdir)/libyogrt_slurm_time\"
+
 libyogrt_slurm_time_LDFLAGS = $(SLURM_LDFLAGS) -lslurm
 all: all-am
 

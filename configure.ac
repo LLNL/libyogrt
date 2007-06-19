@@ -18,8 +18,9 @@ AM_MAINTAINER_MODE
 case "$host" in
 	*-*-aix*) AC_DEFINE(HAVE_AIX, [], [Define if system is AIX])
                   LDFLAGS="$LDFLAGS -Wl,-brtl -Wl,-bexpfull"
-                  if test "$OBJECT_MODE" == "32" ; then
+                  if test "$OBJECT_MODE" == "64" ; then
                       SLURM_AIX_PROGRAMS="libyogrt_slurm_time"
+                      AC_DEFINE(HAVE_AIX_64BIT, [], [Define for 64-bit build on AIX])
                   else
                       SLURM_AIX_PROGRAMS=""
                   fi
