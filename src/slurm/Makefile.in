@@ -14,6 +14,7 @@
 
 @SET_MAKE@
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -33,6 +34,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
+EXTRA_PROGRAMS = libyogrt_slurm_time$(EXEEXT)
 subdir = src/slurm
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -51,7 +53,7 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(sublibdir)"
+am__installdirs = "$(DESTDIR)$(sublibdir)" "$(DESTDIR)$(libexecdir)"
 sublibLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(sublib_LTLIBRARIES)
 libyogrt_slurm_la_DEPENDENCIES =
@@ -60,6 +62,15 @@ libyogrt_slurm_la_OBJECTS = $(am_libyogrt_slurm_la_OBJECTS)
 libyogrt_slurm_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(libyogrt_slurm_la_LDFLAGS) $(LDFLAGS) -o $@
+libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
+PROGRAMS = $(libexec_PROGRAMS)
+am_libyogrt_slurm_time_OBJECTS =  \
+	libyogrt_slurm_time-libyogrt_slurm_time.$(OBJEXT)
+libyogrt_slurm_time_OBJECTS = $(am_libyogrt_slurm_time_OBJECTS)
+libyogrt_slurm_time_LDADD = $(LDADD)
+libyogrt_slurm_time_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(libyogrt_slurm_time_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -72,8 +83,9 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libyogrt_slurm_la_SOURCES)
-DIST_SOURCES = $(libyogrt_slurm_la_SOURCES)
+SOURCES = $(libyogrt_slurm_la_SOURCES) $(libyogrt_slurm_time_SOURCES)
+DIST_SOURCES = $(libyogrt_slurm_la_SOURCES) \
+	$(libyogrt_slurm_time_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -144,6 +156,7 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
+SLURM_AIX_PROGRAMS = @SLURM_AIX_PROGRAMS@
 SLURM_CPPFLAGS = @SLURM_CPPFLAGS@
 SLURM_LDFLAGS = @SLURM_LDFLAGS@
 STRIP = @STRIP@
@@ -214,6 +227,14 @@ libyogrt_slurm_la_LDFLAGS = $(SLURM_LDFLAGS) \
 	-export-symbols-regex "^internal_.*" \
 	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
 
+
+# Only build the libyogrt_slurm_time program on AIX, where we need it
+# because libslurm is only compiled 32-bit, and libyogrt needs to access
+# it from both 32-bit and 64-bit programs.
+libexec_PROGRAMS = @SLURM_AIX_PROGRAMS@
+libyogrt_slurm_time_SOURCES = libyogrt_slurm_time.c
+libyogrt_slurm_time_CPPFLAGS = $(SLURM_CPPFLAGS)
+libyogrt_slurm_time_LDFLAGS = $(SLURM_LDFLAGS) -lslurm
 all: all-am
 
 .SUFFIXES:
@@ -276,6 +297,37 @@ clean-sublibLTLIBRARIES:
 	done
 libyogrt-slurm.la: $(libyogrt_slurm_la_OBJECTS) $(libyogrt_slurm_la_DEPENDENCIES) 
 	$(libyogrt_slurm_la_LINK) -rpath $(sublibdir) $(libyogrt_slurm_la_OBJECTS) $(libyogrt_slurm_la_LIBADD) $(LIBS)
+install-libexecPROGRAMS: $(libexec_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	test -z "$(libexecdir)" || $(MKDIR_P) "$(DESTDIR)$(libexecdir)"
+	@list='$(libexec_PROGRAMS)'; for p in $$list; do \
+	  p1=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
+	  if test -f $$p \
+	     || test -f $$p1 \
+	  ; then \
+	    f=`echo "$$p1" | sed 's,^.*/,,;$(transform);s/$$/$(EXEEXT)/'`; \
+	   echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(libexecPROGRAMS_INSTALL) '$$p' '$(DESTDIR)$(libexecdir)/$$f'"; \
+	   $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(libexecPROGRAMS_INSTALL) "$$p" "$(DESTDIR)$(libexecdir)/$$f" || exit 1; \
+	  else :; fi; \
+	done
+
+uninstall-libexecPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libexec_PROGRAMS)'; for p in $$list; do \
+	  f=`echo "$$p" | sed 's,^.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/'`; \
+	  echo " rm -f '$(DESTDIR)$(libexecdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(libexecdir)/$$f"; \
+	done
+
+clean-libexecPROGRAMS:
+	@list='$(libexec_PROGRAMS)'; for p in $$list; do \
+	  f=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
+	  echo " rm -f $$p $$f"; \
+	  rm -f $$p $$f ; \
+	done
+libyogrt_slurm_time$(EXEEXT): $(libyogrt_slurm_time_OBJECTS) $(libyogrt_slurm_time_DEPENDENCIES) 
+	@rm -f libyogrt_slurm_time$(EXEEXT)
+	$(libyogrt_slurm_time_LINK) $(libyogrt_slurm_time_OBJECTS) $(libyogrt_slurm_time_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -284,6 +336,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libyogrt_slurm_la-internal.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -312,6 +365,20 @@ libyogrt_slurm_la-internal.lo: internal.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='internal.c' object='libyogrt_slurm_la-internal.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libyogrt_slurm_la-internal.lo `test -f 'internal.c' || echo '$(srcdir)/'`internal.c
+
+libyogrt_slurm_time-libyogrt_slurm_time.o: libyogrt_slurm_time.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_time_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libyogrt_slurm_time-libyogrt_slurm_time.o -MD -MP -MF $(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Tpo -c -o libyogrt_slurm_time-libyogrt_slurm_time.o `test -f 'libyogrt_slurm_time.c' || echo '$(srcdir)/'`libyogrt_slurm_time.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Tpo $(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='libyogrt_slurm_time.c' object='libyogrt_slurm_time-libyogrt_slurm_time.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_time_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libyogrt_slurm_time-libyogrt_slurm_time.o `test -f 'libyogrt_slurm_time.c' || echo '$(srcdir)/'`libyogrt_slurm_time.c
+
+libyogrt_slurm_time-libyogrt_slurm_time.obj: libyogrt_slurm_time.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_time_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libyogrt_slurm_time-libyogrt_slurm_time.obj -MD -MP -MF $(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Tpo -c -o libyogrt_slurm_time-libyogrt_slurm_time.obj `if test -f 'libyogrt_slurm_time.c'; then $(CYGPATH_W) 'libyogrt_slurm_time.c'; else $(CYGPATH_W) '$(srcdir)/libyogrt_slurm_time.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Tpo $(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='libyogrt_slurm_time.c' object='libyogrt_slurm_time-libyogrt_slurm_time.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_time_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libyogrt_slurm_time-libyogrt_slurm_time.obj `if test -f 'libyogrt_slurm_time.c'; then $(CYGPATH_W) 'libyogrt_slurm_time.c'; else $(CYGPATH_W) '$(srcdir)/libyogrt_slurm_time.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -395,9 +462,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES)
+all-am: Makefile $(LTLIBRARIES) $(PROGRAMS)
 installdirs:
-	for dir in "$(DESTDIR)$(sublibdir)"; do \
+	for dir in "$(DESTDIR)$(sublibdir)" "$(DESTDIR)$(libexecdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -426,8 +493,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libtool clean-sublibLTLIBRARIES \
-	mostlyclean-am
+clean-am: clean-generic clean-libexecPROGRAMS clean-libtool \
+	clean-sublibLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -449,7 +516,7 @@ install-data-am: install-sublibLTLIBRARIES
 
 install-dvi: install-dvi-am
 
-install-exec-am:
+install-exec-am: install-libexecPROGRAMS
 
 install-html: install-html-am
 
@@ -481,23 +548,25 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-sublibLTLIBRARIES
+uninstall-am: uninstall-libexecPROGRAMS uninstall-sublibLTLIBRARIES
 
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libtool clean-sublibLTLIBRARIES ctags distclean \
-	distclean-compile distclean-generic distclean-libtool \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
+	clean-libexecPROGRAMS clean-libtool clean-sublibLTLIBRARIES \
+	ctags distclean distclean-compile distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-libexecPROGRAMS install-man \
 	install-pdf install-pdf-am install-ps install-ps-am \
 	install-strip install-sublibLTLIBRARIES installcheck \
 	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-sublibLTLIBRARIES
+	tags uninstall uninstall-am uninstall-libexecPROGRAMS \
+	uninstall-sublibLTLIBRARIES
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
