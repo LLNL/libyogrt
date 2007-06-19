@@ -56,7 +56,8 @@ am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(sublibdir)" "$(DESTDIR)$(libexecdir)"
 sublibLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(sublib_LTLIBRARIES)
-libyogrt_slurm_la_DEPENDENCIES =
+am__DEPENDENCIES_1 =
+libyogrt_slurm_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_libyogrt_slurm_la_OBJECTS = libyogrt_slurm_la-internal.lo
 libyogrt_slurm_la_OBJECTS = $(am_libyogrt_slurm_la_OBJECTS)
 libyogrt_slurm_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
@@ -159,6 +160,7 @@ SHELL = @SHELL@
 SLURM_AIX_PROGRAMS = @SLURM_AIX_PROGRAMS@
 SLURM_CPPFLAGS = @SLURM_CPPFLAGS@
 SLURM_LDFLAGS = @SLURM_LDFLAGS@
+SLURM_LIBADD = @SLURM_LIBADD@
 STRIP = @STRIP@
 VERSION = @VERSION@
 abs_builddir = @abs_builddir@
@@ -220,7 +222,7 @@ INCLUDES = -I$(top_srcdir)/src
 sublibdir = $(libdir)/libyogrt
 sublib_LTLIBRARIES = libyogrt-slurm.la
 libyogrt_slurm_la_SOURCES = internal.c
-libyogrt_slurm_la_LIBADD = -lslurm
+libyogrt_slurm_la_LIBADD = $(SLURM_LIBADD)
 libyogrt_slurm_la_CPPFLAGS = $(SLURM_CPPFLAGS) \
 	-DEXTERNALPROGPATH=\"$(libexecdir)/libyogrt_slurm_time\"
 
@@ -236,7 +238,7 @@ libyogrt_slurm_la_LDFLAGS = $(SLURM_LDFLAGS) \
 libexec_PROGRAMS = @SLURM_AIX_PROGRAMS@
 libyogrt_slurm_time_SOURCES = libyogrt_slurm_time.c
 libyogrt_slurm_time_CPPFLAGS = $(SLURM_CPPFLAGS)
-libyogrt_slurm_time_LDFLAGS = $(SLURM_LDFLAGS) -lslurm
+libyogrt_slurm_time_LDFLAGS = $(SLURM_LDFLAGS) $(SLURM_LIBADD)
 all: all-am
 
 .SUFFIXES:

@@ -70,9 +70,11 @@ AC_DEFUN([X_AC_SLURM], [
      && test "$ac_cv_lib_slurm_slurm_get_rem_time" = yes; then
     SLURM_CPPFLAGS=""
     SLURM_LDFLAGS=""
+    SLURM_LIBADD=""
   elif test -n "$x_ac_cv_slurm_dir"; then
     SLURM_CPPFLAGS="-I$x_ac_cv_slurm_dir/include"
     SLURM_LDFLAGS="-L$x_ac_cv_slurm_libdir -lpthread -lcrypto"
+    SLURM_LIBADD="-slurm"
   else
     if test "$with_slurm" = yes; then
       AC_MSG_ERROR([slurm is not in specified location!])
@@ -83,6 +85,7 @@ AC_DEFUN([X_AC_SLURM], [
 
   AC_SUBST(SLURM_CPPFLAGS)
   AC_SUBST(SLURM_LDFLAGS)
+  AC_SUBST(SLURM_LIBADD)
 
   AM_CONDITIONAL(WITH_SLURM,
 	test -n "$x_ac_cv_slurm_dir" || test "$ac_cv_lib_slurm_slurm_get_rem_time" = yes || test "$aix_64bit_mode" = yes)
