@@ -46,13 +46,14 @@ for subpackage in none slurm lcrm moab; do
         if [ -f $TMP/orig/${bits}%{_libdir}/libyogrt/libyogrt-${subpackage}.a ]; then
             mkdir -p $TMP/$subpackage/${bits}
             cd $TMP/$subpackage/${bits}
-            ar -X${bits} x $TMP/orig/${bits}%{_libdir}/libyogrt/libyogrt-${subpackage}.a
+            #ar -X${bits} x $TMP/orig/${bits}%{_libdir}/libyogrt/libyogrt-${subpackage}.a
+            cp $TMP/orig/${bits}%{_libdir}/libyogrt/libyogrt-${subpackage}.so .
         fi
     done
 
     cd $TMP
     if [ -d $TMP/$subpackage ]; then
-        ar -Xany cr libyogrt-${subpackage}.a $TMP/$subpackage/*/*
+        ar -Xany cr libyogrt-${subpackage}.a $TMP/$subpackage/*/*.so
     fi
     cd $TOP
 done
@@ -60,7 +61,8 @@ done
 for bits in 32 64; do
 	mkdir -p $TMP/${bits}
 	cd $TMP/${bits}
-	ar -X${bits} x $TMP/orig/${bits}%{_libdir}/libyogrt.a
+	#ar -X${bits} x $TMP/orig/${bits}%{_libdir}/libyogrt.a
+	cp $TMP/orig/${bits}%{_libdir}/libyogrt.so .
 done
 cd $TMP
 ar -Xany cr libyogrt.a $TMP/32/* $TMP/64/*
