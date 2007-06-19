@@ -9,3 +9,7 @@ libyogrt_slurm_la_LDFLAGS = $(SLURM_LDFLAGS) \
 	-no-undefined \
 	-export-symbols-regex "^internal_.*" \
 	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
+
+libexec_PROGRAMS = @SLURM_AIX_PROGRAMS@
+libyogrt_slurm_time_SOURCES = libyogrt_slurm_time.c
+libyogrt_slurm_time_LDFLAGS = $(SLURM_LDFLAGS)

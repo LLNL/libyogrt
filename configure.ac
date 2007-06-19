@@ -18,8 +18,13 @@ AM_MAINTAINER_MODE
 case "$host" in
 	*-*-aix*) AC_DEFINE(HAVE_AIX, [], [Define if system is AIX])
                   LDFLAGS="$LDFLAGS -Wl,-brtl -Wl,-bexpfull"
+                  SLURM_AIX_PROGRAMS="libyogrt_slurm_time"
+        ;;
+        default)
+                  SLURM_AIX_PROGRAMS=""
         ;;
 esac
+AC_SUBST([SLURM_AIX_PROGRAMS])
 
 # Checks for programs.
 AC_PROG_CC
