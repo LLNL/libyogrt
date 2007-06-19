@@ -43,17 +43,17 @@ done
 # one composite libyogrt.a library.
 for subpackage in none slurm lcrm moab; do
     for bits in 32 64; do
-        if [ -f $TMP/orig/${bits}%{_libdir}/libyogrt/libyogrt-${subpackage}.a ]; then
+        if [ -f $TMP/orig/${bits}%{_libdir}/libyogrt/libyogrt-${subpackage}.so.1 ]; then
             mkdir -p $TMP/$subpackage/${bits}
             cd $TMP/$subpackage/${bits}
             #ar -X${bits} x $TMP/orig/${bits}%{_libdir}/libyogrt/libyogrt-${subpackage}.a
-            cp $TMP/orig/${bits}%{_libdir}/libyogrt/libyogrt-${subpackage}.so .
+            cp $TMP/orig/${bits}%{_libdir}/libyogrt/libyogrt-${subpackage}.so.1 .
         fi
     done
 
     cd $TMP
     if [ -d $TMP/$subpackage ]; then
-        ar -Xany cr libyogrt-${subpackage}.a $TMP/$subpackage/*/*.so
+        ar -Xany cr libyogrt-${subpackage}.a $TMP/$subpackage/*/*
     fi
     cd $TOP
 done
@@ -62,7 +62,7 @@ for bits in 32 64; do
 	mkdir -p $TMP/${bits}
 	cd $TMP/${bits}
 	#ar -X${bits} x $TMP/orig/${bits}%{_libdir}/libyogrt.a
-	cp $TMP/orig/${bits}%{_libdir}/libyogrt.so .
+	cp $TMP/orig/${bits}%{_libdir}/libyogrt.so.1 .
 done
 cd $TMP
 ar -Xany cr libyogrt.a $TMP/32/* $TMP/64/*
