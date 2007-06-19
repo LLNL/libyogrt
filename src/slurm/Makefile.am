@@ -16,5 +16,6 @@ libyogrt_slurm_la_LDFLAGS = $(SLURM_LDFLAGS) \
 libexec_PROGRAMS = @SLURM_AIX_PROGRAMS@
 EXTRA_PROGRAMS = libyogrt_slurm_time
 libyogrt_slurm_time_SOURCES = libyogrt_slurm_time.c
-libyogrt_slurm_time_CPPFLAGS = $(SLURM_CPPFLAGS)
+libyogrt_slurm_time_CPPFLAGS = $(SLURM_CPPFLAGS) \
+	-DEXTERNALPROGPATH=\"$(libexecdir)/libyogrt_slurm_time\"
 libyogrt_slurm_time_LDFLAGS = $(SLURM_LDFLAGS) -lslurm
