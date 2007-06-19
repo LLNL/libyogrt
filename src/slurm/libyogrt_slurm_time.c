@@ -1,3 +1,12 @@
+/***************************************************************************
+ *  Copyright (C) 2007 The Regents of the University of California.
+ *  Produced at Lawrence Livermore National Laboratory (cf, DISCLAIMER).
+ *  Written by Christopher J. Morrone <morrone2@llnl.gov>.
+ *  UCRL-CODE-XXXXXX.
+ ***************************************************************************
+LICENSE
+ ***************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
