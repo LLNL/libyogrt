@@ -2,7 +2,7 @@ INCLUDES = -I$(top_srcdir)/src
 
 sublibdir = $(libdir)/libyogrt
 sublib_LTLIBRARIES = libyogrt-slurm.la @AIXSLURM_MODULE@
-EXTRA_LTLIBRARIES = libyogrt-spank-plugin.la
+#EXTRA_LTLIBRARIES = libyogrt-spank-plugin.la
 
 libyogrt_slurm_la_SOURCES = internal.c
 libyogrt_slurm_la_LIBADD = $(SLURM_LIBADD)
