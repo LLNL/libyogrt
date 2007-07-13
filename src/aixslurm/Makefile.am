@@ -17,7 +17,8 @@ libyogrt_spank_plugin_la_CPPFLAGS = $(SLURM_CPPFLAGS) \
 	-DEXTERNALPROGPATH=\"$(libexecdir)/libyogrt_slurm_timed\"
 libyogrt_spank_plugin_la_LDFLAGS = \
 	-no-undefined \
-	-export-symbols-regex "^slurm_spank_.*"
+	-export-symbols-regex "^slurm_spank_.*" \
+	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
 
 libexec_PROGRAMS = @AIXSLURM_PROGRAM@
 EXTRA_PROGRAMS = libyogrt_slurm_timed
