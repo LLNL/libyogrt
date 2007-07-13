@@ -32,6 +32,7 @@ int slurm_spank_user_init (spank_t sp, int ac, char **av)
 	uid_t uid;
 	uint32_t jobid, stepid, nodeid;
 
+	slurm_debug("slurm_spank_user_init 1");
 	spank_get_item(sp, S_JOB_UID, &uid);
 	spank_get_item(sp, S_JOB_ID, &jobid);
 	spank_get_item(sp, S_JOB_STEPID, &stepid);
