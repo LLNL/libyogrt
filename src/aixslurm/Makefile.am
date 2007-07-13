@@ -13,7 +13,7 @@ libyogrt_slurm_la_LDFLAGS = $(SLURM_LDFLAGS) \
 	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
 
 libyogrt_spank_plugin_la_SOURCES = libyogrt_spank_plugin.c
-libyogrt_slurm_la_LIBADD = 
+libyogrt_spank_plugin_la_LIBADD = 
 libyogrt_spank_plugin_la_CPPFLAGS = $(SLURM_CPPFLAGS) \
 	-DEXTERNALPROGPATH=\"$(libexecdir)/libyogrt_slurm_timed\"
 libyogrt_spank_plugin_la_LDFLAGS = -no-undefined \
