@@ -19,7 +19,7 @@ LICENSE
 /*
  * All spank plugins must define this macro for the SLURM plugin loader.
  */
-SPANK_PLUGIN(yogrt, 1)
+SPANK_PLUGIN(yogrt, 1);
 
 static char *helper_program = EXTERNALPROGPATH;
 static pid_t helper_pid = (pid_t)-1;
