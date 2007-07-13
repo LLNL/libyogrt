@@ -16,21 +16,16 @@ AM_INIT_AUTOMAKE([$PACKAGE], [$VERSION], [check-news dist-bzip2 gnu no-define])
 AM_MAINTAINER_MODE
 
 aix_64bit_mode=no
-AIXSLURM_PROGRAM=""
-AIXSLURM_MODULE=""
 case "$host" in
 	*-*-aix*) AC_DEFINE(HAVE_AIX, [], [Define if system is AIX])
                   if test "$OBJECT_MODE" == "64" ; then
                       AC_DEFINE(HAVE_AIX_64BIT, [], [Define for 64-bit build on AIX])
                       aix_64bit_mode=yes
-                  elif test "$OBJECT_MODE" == "32" ; then
-                      AIXSLURM_PROGRAM="libyogrt_slurm_timed"
-                      AIXSLURM_MODULE="libyogrt-spank-plugin.la"
                   fi
         ;;
 esac
-AC_SUBST([AIXSLURM_PROGRAM])
-AC_SUBST([AIXSLURM_MODULE])
+AM_CONDITIONAL([WANT_AIXSLURM_PROGRAM], [test "$aix_64bit_mode" = no])
+AM_CONDITIONAL([WANT_AIXSLURM_SPANK_PLUGIN], [test "$aix_64bit_mode" = no])
 
 # Checks for programs.
 AC_PROG_CC
