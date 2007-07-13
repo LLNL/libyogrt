@@ -14,7 +14,6 @@ LICENSE
 #include <unistd.h>
 #include <slurm/slurm.h>
 
-static char *external_program = EXTERNALPROGPATH;
 static uint32_t jobid = NO_VAL;
 
 int verbosity = 0;

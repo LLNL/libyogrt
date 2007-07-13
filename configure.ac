@@ -50,6 +50,7 @@ AC_CONFIG_FILES([Makefile
                  src/none/Makefile
                  src/slurm/Makefile
                  src/lcrm/Makefile
-                 src/moab/Makefile])
+                 src/moab/Makefile
+                 src/aixslurm/Makefile])
 
 AC_OUTPUT
