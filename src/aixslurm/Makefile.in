@@ -63,7 +63,7 @@ libyogrt_slurm_la_OBJECTS = $(am_libyogrt_slurm_la_OBJECTS)
 libyogrt_slurm_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(libyogrt_slurm_la_LDFLAGS) $(LDFLAGS) -o $@
-libyogrt_spank_plugin_la_LIBADD =
+libyogrt_spank_plugin_la_DEPENDENCIES =
 am_libyogrt_spank_plugin_la_OBJECTS =  \
 	libyogrt_spank_plugin_la-libyogrt_spank_plugin.lo
 libyogrt_spank_plugin_la_OBJECTS =  \
@@ -243,11 +243,11 @@ libyogrt_slurm_la_LDFLAGS = $(SLURM_LDFLAGS) \
 	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
 
 libyogrt_spank_plugin_la_SOURCES = libyogrt_spank_plugin.c
+libyogrt_spank_plugin_la_LIBADD = 
 libyogrt_spank_plugin_la_CPPFLAGS = $(SLURM_CPPFLAGS) \
 	-DEXTERNALPROGPATH=\"$(libexecdir)/libyogrt_slurm_timed\"
 
-libyogrt_spank_plugin_la_LDFLAGS = \
-	-no-undefined \
+libyogrt_spank_plugin_la_LDFLAGS = -no-undefined \
 	-export-symbols-regex "^slurm_spank_.*" \
 	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
 
