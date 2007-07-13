@@ -20086,7 +20086,7 @@ fi
 
 
 
-ac_config_files="$ac_config_files Makefile doc/Makefile doc/man/Makefile src/Makefile src/none/Makefile src/slurm/Makefile src/lcrm/Makefile src/moab/Makefile"
+ac_config_files="$ac_config_files Makefile doc/Makefile doc/man/Makefile src/Makefile src/none/Makefile src/slurm/Makefile src/lcrm/Makefile src/moab/Makefile src/aixslurm/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -20711,6 +20711,7 @@ do
     "src/slurm/Makefile") CONFIG_FILES="$CONFIG_FILES src/slurm/Makefile" ;;
     "src/lcrm/Makefile") CONFIG_FILES="$CONFIG_FILES src/lcrm/Makefile" ;;
     "src/moab/Makefile") CONFIG_FILES="$CONFIG_FILES src/moab/Makefile" ;;
+    "src/aixslurm/Makefile") CONFIG_FILES="$CONFIG_FILES src/aixslurm/Makefile" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
