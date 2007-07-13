@@ -16,19 +16,21 @@ AM_INIT_AUTOMAKE([$PACKAGE], [$VERSION], [check-news dist-bzip2 gnu no-define])
 AM_MAINTAINER_MODE
 
 aix_64bit_mode=no
-SLURM_AIX_PROGRAMS=""
+AIXSLURM_PROGRAM=""
+AIXSLURM_MODULE=""
 case "$host" in
 	*-*-aix*) AC_DEFINE(HAVE_AIX, [], [Define if system is AIX])
-                  LDFLAGS="$LDFLAGS -Wl,-brtl -Wl,-bexpfull"
                   if test "$OBJECT_MODE" == "64" ; then
                       AC_DEFINE(HAVE_AIX_64BIT, [], [Define for 64-bit build on AIX])
                       aix_64bit_mode=yes
                   elif test "$OBJECT_MODE" == "32" ; then
-                      SLURM_AIX_PROGRAMS="libyogrt_slurm_time"
+                      AIXSLURM_PROGRAM="libyogrt_slurm_time"
+                      AIXSLURM_MODULE="slurm-yogrt-plugin.la"
                   fi
         ;;
 esac
-AC_SUBST([SLURM_AIX_PROGRAMS])
+AC_SUBST([AIXSLURM_PROGRAM])
+AC_SUBST([AIXSLURM_MODULE])
 
 # Checks for programs.
 AC_PROG_CC
