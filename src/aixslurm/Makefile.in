@@ -34,7 +34,9 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-EXTRA_PROGRAMS = libyogrt_slurm_timed$(EXEEXT)
+@WANT_AIXSLURM_SPANK_PLUGIN_TRUE@am__append_1 = libyogrt-spank-plugin.la
+libexec_PROGRAMS = $(am__EXEEXT_1)
+@WANT_AIXSLURM_PROGRAM_TRUE@am__append_2 = libyogrt_slurm_timed
 subdir = src/aixslurm
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -63,7 +65,7 @@ libyogrt_slurm_la_OBJECTS = $(am_libyogrt_slurm_la_OBJECTS)
 libyogrt_slurm_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(libyogrt_slurm_la_LDFLAGS) $(LDFLAGS) -o $@
-libyogrt_spank_plugin_la_DEPENDENCIES =
+libyogrt_spank_plugin_la_LIBADD =
 am_libyogrt_spank_plugin_la_OBJECTS =  \
 	libyogrt_spank_plugin_la-libyogrt_spank_plugin.lo
 libyogrt_spank_plugin_la_OBJECTS =  \
@@ -71,6 +73,10 @@ libyogrt_spank_plugin_la_OBJECTS =  \
 libyogrt_spank_plugin_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(libyogrt_spank_plugin_la_LDFLAGS) $(LDFLAGS) -o $@
+@WANT_AIXSLURM_SPANK_PLUGIN_TRUE@am_libyogrt_spank_plugin_la_rpath =  \
+@WANT_AIXSLURM_SPANK_PLUGIN_TRUE@	-rpath $(sublibdir)
+@WANT_AIXSLURM_PROGRAM_TRUE@am__EXEEXT_1 =  \
+@WANT_AIXSLURM_PROGRAM_TRUE@	libyogrt_slurm_timed$(EXEEXT)
 libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(libexec_PROGRAMS)
 am_libyogrt_slurm_timed_OBJECTS =  \
@@ -102,8 +108,6 @@ ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
-AIXSLURM_MODULE = @AIXSLURM_MODULE@
-AIXSLURM_PROGRAM = @AIXSLURM_PROGRAM@
 AMTAR = @AMTAR@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
@@ -232,8 +236,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 INCLUDES = -I$(top_srcdir)/src
 sublibdir = $(libdir)/libyogrt
-sublib_LTLIBRARIES = libyogrt-slurm.la @AIXSLURM_MODULE@
-EXTRA_LTLIBRARIES = libyogrt-spank-plugin.la
+sublib_LTLIBRARIES = libyogrt-slurm.la $(am__append_1)
 libyogrt_slurm_la_SOURCES = internal.c
 libyogrt_slurm_la_LIBADD = $(SLURM_LIBADD)
 libyogrt_slurm_la_CPPFLAGS = $(SLURM_CPPFLAGS)
@@ -243,15 +246,13 @@ libyogrt_slurm_la_LDFLAGS = $(SLURM_LDFLAGS) \
 	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
 
 libyogrt_spank_plugin_la_SOURCES = libyogrt_spank_plugin.c
-libyogrt_spank_plugin_la_LIBADD = 
 libyogrt_spank_plugin_la_CPPFLAGS = $(SLURM_CPPFLAGS) \
 	-DEXTERNALPROGPATH=\"$(libexecdir)/libyogrt_slurm_timed\"
 
-libyogrt_spank_plugin_la_LDFLAGS = -no-undefined \
-	-export-symbols-regex "^slurm_spank_.*" \
-	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
+libyogrt_spank_plugin_la_LDFLAGS = \
+	-no-undefined \
+	-export-symbols-regex "^slurm_spank_.*"
 
-libexec_PROGRAMS = @AIXSLURM_PROGRAM@
 libyogrt_slurm_timed_SOURCES = libyogrt_slurm_timed.c
 libyogrt_slurm_timed_CPPFLAGS = $(SLURM_CPPFLAGS)
 libyogrt_slurm_timed_LDFLAGS = $(SLURM_LDFLAGS) $(SLURM_LIBADD)
@@ -318,7 +319,7 @@ clean-sublibLTLIBRARIES:
 libyogrt-slurm.la: $(libyogrt_slurm_la_OBJECTS) $(libyogrt_slurm_la_DEPENDENCIES) 
 	$(libyogrt_slurm_la_LINK) -rpath $(sublibdir) $(libyogrt_slurm_la_OBJECTS) $(libyogrt_slurm_la_LIBADD) $(LIBS)
 libyogrt-spank-plugin.la: $(libyogrt_spank_plugin_la_OBJECTS) $(libyogrt_spank_plugin_la_DEPENDENCIES) 
-	$(libyogrt_spank_plugin_la_LINK)  $(libyogrt_spank_plugin_la_OBJECTS) $(libyogrt_spank_plugin_la_LIBADD) $(LIBS)
+	$(libyogrt_spank_plugin_la_LINK) $(am_libyogrt_spank_plugin_la_rpath) $(libyogrt_spank_plugin_la_OBJECTS) $(libyogrt_spank_plugin_la_LIBADD) $(LIBS)
 install-libexecPROGRAMS: $(libexec_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	test -z "$(libexecdir)" || $(MKDIR_P) "$(DESTDIR)$(libexecdir)"
