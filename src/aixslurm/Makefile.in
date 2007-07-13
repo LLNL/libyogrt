@@ -34,7 +34,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-EXTRA_PROGRAMS = libyogrt_slurm_time$(EXEEXT)
+EXTRA_PROGRAMS = libyogrt_slurm_timed$(EXEEXT)
 subdir = src/aixslurm
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -63,19 +63,20 @@ libyogrt_slurm_la_OBJECTS = $(am_libyogrt_slurm_la_OBJECTS)
 libyogrt_slurm_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(libyogrt_slurm_la_LDFLAGS) $(LDFLAGS) -o $@
-slurm_yogrt_plugin_la_LIBADD =
-am_slurm_yogrt_plugin_la_OBJECTS =  \
-	slurm_yogrt_plugin_la-slurm_yogrt_plugin.lo
-slurm_yogrt_plugin_la_OBJECTS = $(am_slurm_yogrt_plugin_la_OBJECTS)
+libyogrt_spank_plugin_la_LIBADD =
+am_libyogrt_spank_plugin_la_OBJECTS =  \
+	libyogrt_spank_plugin_la-libyogrt_spank_plugin.lo
+libyogrt_spank_plugin_la_OBJECTS =  \
+	$(am_libyogrt_spank_plugin_la_OBJECTS)
 libexecPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(libexec_PROGRAMS)
-am_libyogrt_slurm_time_OBJECTS =  \
-	libyogrt_slurm_time-libyogrt_slurm_time.$(OBJEXT)
-libyogrt_slurm_time_OBJECTS = $(am_libyogrt_slurm_time_OBJECTS)
-libyogrt_slurm_time_LDADD = $(LDADD)
-libyogrt_slurm_time_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+am_libyogrt_slurm_timed_OBJECTS =  \
+	libyogrt_slurm_timed-libyogrt_slurm_timed.$(OBJEXT)
+libyogrt_slurm_timed_OBJECTS = $(am_libyogrt_slurm_timed_OBJECTS)
+libyogrt_slurm_timed_LDADD = $(LDADD)
+libyogrt_slurm_timed_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libyogrt_slurm_time_LDFLAGS) $(LDFLAGS) -o $@
+	$(libyogrt_slurm_timed_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -89,11 +90,11 @@ LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(libyogrt_slurm_la_SOURCES) \
-	$(slurm_yogrt_plugin_la_SOURCES) \
-	$(libyogrt_slurm_time_SOURCES)
+	$(libyogrt_spank_plugin_la_SOURCES) \
+	$(libyogrt_slurm_timed_SOURCES)
 DIST_SOURCES = $(libyogrt_slurm_la_SOURCES) \
-	$(slurm_yogrt_plugin_la_SOURCES) \
-	$(libyogrt_slurm_time_SOURCES)
+	$(libyogrt_spank_plugin_la_SOURCES) \
+	$(libyogrt_slurm_timed_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -229,7 +230,7 @@ top_srcdir = @top_srcdir@
 INCLUDES = -I$(top_srcdir)/src
 sublibdir = $(libdir)/libyogrt
 sublib_LTLIBRARIES = libyogrt-slurm.la @AIXSLURM_MODULE@
-EXTRA_LTLIBRARIES = slurm-yogrt-plugin.la
+EXTRA_LTLIBRARIES = libyogrt-spank-plugin.la
 libyogrt_slurm_la_SOURCES = internal.c
 libyogrt_slurm_la_LIBADD = $(SLURM_LIBADD)
 libyogrt_slurm_la_CPPFLAGS = $(SLURM_CPPFLAGS)
@@ -238,14 +239,14 @@ libyogrt_slurm_la_LDFLAGS = $(SLURM_LDFLAGS) \
 	-export-symbols-regex "^internal_.*" \
 	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
 
-slurm_yogrt_plugin_la_SOURCES = slurm_yogrt_plugin.c
-slurm_yogrt_plugin_la_CPPFLAGS = $(SLURM_CPPFLAGS) \
-	-DEXTERNALPROGPATH="$(libexecdir)/libyogrt_slurm_time"
+libyogrt_spank_plugin_la_SOURCES = libyogrt_spank_plugin.c
+libyogrt_spank_plugin_la_CPPFLAGS = $(SLURM_CPPFLAGS) \
+	-DEXTERNALPROGPATH="$(libexecdir)/libyogrt_slurm_timed"
 
 libexec_PROGRAMS = @AIXSLURM_PROGRAM@
-libyogrt_slurm_time_SOURCES = libyogrt_slurm_time.c
-libyogrt_slurm_time_CPPFLAGS = $(SLURM_CPPFLAGS)
-libyogrt_slurm_time_LDFLAGS = $(SLURM_LDFLAGS) $(SLURM_LIBADD)
+libyogrt_slurm_timed_SOURCES = libyogrt_slurm_timed.c
+libyogrt_slurm_timed_CPPFLAGS = $(SLURM_CPPFLAGS)
+libyogrt_slurm_timed_LDFLAGS = $(SLURM_LDFLAGS) $(SLURM_LIBADD)
 all: all-am
 
 .SUFFIXES:
@@ -308,8 +309,8 @@ clean-sublibLTLIBRARIES:
 	done
 libyogrt-slurm.la: $(libyogrt_slurm_la_OBJECTS) $(libyogrt_slurm_la_DEPENDENCIES) 
 	$(libyogrt_slurm_la_LINK) -rpath $(sublibdir) $(libyogrt_slurm_la_OBJECTS) $(libyogrt_slurm_la_LIBADD) $(LIBS)
-slurm-yogrt-plugin.la: $(slurm_yogrt_plugin_la_OBJECTS) $(slurm_yogrt_plugin_la_DEPENDENCIES) 
-	$(LINK)  $(slurm_yogrt_plugin_la_OBJECTS) $(slurm_yogrt_plugin_la_LIBADD) $(LIBS)
+libyogrt-spank-plugin.la: $(libyogrt_spank_plugin_la_OBJECTS) $(libyogrt_spank_plugin_la_DEPENDENCIES) 
+	$(LINK)  $(libyogrt_spank_plugin_la_OBJECTS) $(libyogrt_spank_plugin_la_LIBADD) $(LIBS)
 install-libexecPROGRAMS: $(libexec_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	test -z "$(libexecdir)" || $(MKDIR_P) "$(DESTDIR)$(libexecdir)"
@@ -338,9 +339,9 @@ clean-libexecPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
-libyogrt_slurm_time$(EXEEXT): $(libyogrt_slurm_time_OBJECTS) $(libyogrt_slurm_time_DEPENDENCIES) 
-	@rm -f libyogrt_slurm_time$(EXEEXT)
-	$(libyogrt_slurm_time_LINK) $(libyogrt_slurm_time_OBJECTS) $(libyogrt_slurm_time_LDADD) $(LIBS)
+libyogrt_slurm_timed$(EXEEXT): $(libyogrt_slurm_timed_OBJECTS) $(libyogrt_slurm_timed_DEPENDENCIES) 
+	@rm -f libyogrt_slurm_timed$(EXEEXT)
+	$(libyogrt_slurm_timed_LINK) $(libyogrt_slurm_timed_OBJECTS) $(libyogrt_slurm_timed_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -349,8 +350,8 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libyogrt_slurm_la-internal.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/slurm_yogrt_plugin_la-slurm_yogrt_plugin.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libyogrt_slurm_timed-libyogrt_slurm_timed.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libyogrt_spank_plugin_la-libyogrt_spank_plugin.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -380,26 +381,26 @@ libyogrt_slurm_la-internal.lo: internal.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libyogrt_slurm_la-internal.lo `test -f 'internal.c' || echo '$(srcdir)/'`internal.c
 
-slurm_yogrt_plugin_la-slurm_yogrt_plugin.lo: slurm_yogrt_plugin.c
-@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(slurm_yogrt_plugin_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT slurm_yogrt_plugin_la-slurm_yogrt_plugin.lo -MD -MP -MF $(DEPDIR)/slurm_yogrt_plugin_la-slurm_yogrt_plugin.Tpo -c -o slurm_yogrt_plugin_la-slurm_yogrt_plugin.lo `test -f 'slurm_yogrt_plugin.c' || echo '$(srcdir)/'`slurm_yogrt_plugin.c
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/slurm_yogrt_plugin_la-slurm_yogrt_plugin.Tpo $(DEPDIR)/slurm_yogrt_plugin_la-slurm_yogrt_plugin.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='slurm_yogrt_plugin.c' object='slurm_yogrt_plugin_la-slurm_yogrt_plugin.lo' libtool=yes @AMDEPBACKSLASH@
+libyogrt_spank_plugin_la-libyogrt_spank_plugin.lo: libyogrt_spank_plugin.c
+@am__fastdepCC_TRUE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_spank_plugin_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libyogrt_spank_plugin_la-libyogrt_spank_plugin.lo -MD -MP -MF $(DEPDIR)/libyogrt_spank_plugin_la-libyogrt_spank_plugin.Tpo -c -o libyogrt_spank_plugin_la-libyogrt_spank_plugin.lo `test -f 'libyogrt_spank_plugin.c' || echo '$(srcdir)/'`libyogrt_spank_plugin.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libyogrt_spank_plugin_la-libyogrt_spank_plugin.Tpo $(DEPDIR)/libyogrt_spank_plugin_la-libyogrt_spank_plugin.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='libyogrt_spank_plugin.c' object='libyogrt_spank_plugin_la-libyogrt_spank_plugin.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(slurm_yogrt_plugin_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o slurm_yogrt_plugin_la-slurm_yogrt_plugin.lo `test -f 'slurm_yogrt_plugin.c' || echo '$(srcdir)/'`slurm_yogrt_plugin.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_spank_plugin_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libyogrt_spank_plugin_la-libyogrt_spank_plugin.lo `test -f 'libyogrt_spank_plugin.c' || echo '$(srcdir)/'`libyogrt_spank_plugin.c
 
-libyogrt_slurm_time-libyogrt_slurm_time.o: libyogrt_slurm_time.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_time_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libyogrt_slurm_time-libyogrt_slurm_time.o -MD -MP -MF $(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Tpo -c -o libyogrt_slurm_time-libyogrt_slurm_time.o `test -f 'libyogrt_slurm_time.c' || echo '$(srcdir)/'`libyogrt_slurm_time.c
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Tpo $(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='libyogrt_slurm_time.c' object='libyogrt_slurm_time-libyogrt_slurm_time.o' libtool=no @AMDEPBACKSLASH@
+libyogrt_slurm_timed-libyogrt_slurm_timed.o: libyogrt_slurm_timed.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_timed_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libyogrt_slurm_timed-libyogrt_slurm_timed.o -MD -MP -MF $(DEPDIR)/libyogrt_slurm_timed-libyogrt_slurm_timed.Tpo -c -o libyogrt_slurm_timed-libyogrt_slurm_timed.o `test -f 'libyogrt_slurm_timed.c' || echo '$(srcdir)/'`libyogrt_slurm_timed.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libyogrt_slurm_timed-libyogrt_slurm_timed.Tpo $(DEPDIR)/libyogrt_slurm_timed-libyogrt_slurm_timed.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='libyogrt_slurm_timed.c' object='libyogrt_slurm_timed-libyogrt_slurm_timed.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_time_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libyogrt_slurm_time-libyogrt_slurm_time.o `test -f 'libyogrt_slurm_time.c' || echo '$(srcdir)/'`libyogrt_slurm_time.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_timed_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libyogrt_slurm_timed-libyogrt_slurm_timed.o `test -f 'libyogrt_slurm_timed.c' || echo '$(srcdir)/'`libyogrt_slurm_timed.c
 
-libyogrt_slurm_time-libyogrt_slurm_time.obj: libyogrt_slurm_time.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_time_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libyogrt_slurm_time-libyogrt_slurm_time.obj -MD -MP -MF $(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Tpo -c -o libyogrt_slurm_time-libyogrt_slurm_time.obj `if test -f 'libyogrt_slurm_time.c'; then $(CYGPATH_W) 'libyogrt_slurm_time.c'; else $(CYGPATH_W) '$(srcdir)/libyogrt_slurm_time.c'; fi`
-@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Tpo $(DEPDIR)/libyogrt_slurm_time-libyogrt_slurm_time.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='libyogrt_slurm_time.c' object='libyogrt_slurm_time-libyogrt_slurm_time.obj' libtool=no @AMDEPBACKSLASH@
+libyogrt_slurm_timed-libyogrt_slurm_timed.obj: libyogrt_slurm_timed.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_timed_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT libyogrt_slurm_timed-libyogrt_slurm_timed.obj -MD -MP -MF $(DEPDIR)/libyogrt_slurm_timed-libyogrt_slurm_timed.Tpo -c -o libyogrt_slurm_timed-libyogrt_slurm_timed.obj `if test -f 'libyogrt_slurm_timed.c'; then $(CYGPATH_W) 'libyogrt_slurm_timed.c'; else $(CYGPATH_W) '$(srcdir)/libyogrt_slurm_timed.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/libyogrt_slurm_timed-libyogrt_slurm_timed.Tpo $(DEPDIR)/libyogrt_slurm_timed-libyogrt_slurm_timed.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='libyogrt_slurm_timed.c' object='libyogrt_slurm_timed-libyogrt_slurm_timed.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_time_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libyogrt_slurm_time-libyogrt_slurm_time.obj `if test -f 'libyogrt_slurm_time.c'; then $(CYGPATH_W) 'libyogrt_slurm_time.c'; else $(CYGPATH_W) '$(srcdir)/libyogrt_slurm_time.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libyogrt_slurm_timed_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o libyogrt_slurm_timed-libyogrt_slurm_timed.obj `if test -f 'libyogrt_slurm_timed.c'; then $(CYGPATH_W) 'libyogrt_slurm_timed.c'; else $(CYGPATH_W) '$(srcdir)/libyogrt_slurm_timed.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
