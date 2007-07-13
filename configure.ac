@@ -24,8 +24,8 @@ case "$host" in
                       AC_DEFINE(HAVE_AIX_64BIT, [], [Define for 64-bit build on AIX])
                       aix_64bit_mode=yes
                   elif test "$OBJECT_MODE" == "32" ; then
-                      AIXSLURM_PROGRAM="libyogrt_slurm_time"
-                      AIXSLURM_MODULE="slurm-yogrt-plugin.la"
+                      AIXSLURM_PROGRAM="libyogrt_slurm_timed"
+                      AIXSLURM_MODULE="libyogrt-spank-plugin.la"
                   fi
         ;;
 esac
