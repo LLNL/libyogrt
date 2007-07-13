@@ -18,6 +18,6 @@ libyogrt_spank_plugin_la_CPPFLAGS = $(SLURM_CPPFLAGS) \
 
 libexec_PROGRAMS = @AIXSLURM_PROGRAM@
 EXTRA_PROGRAMS = libyogrt_slurm_timed
-libyogrt_slurm_time_SOURCES = libyogrt_slurm_timed.c
-libyogrt_slurm_time_CPPFLAGS = $(SLURM_CPPFLAGS)
-libyogrt_slurm_time_LDFLAGS = $(SLURM_LDFLAGS) $(SLURM_LIBADD)
+libyogrt_slurm_timed_SOURCES = libyogrt_slurm_timed.c
+libyogrt_slurm_timed_CPPFLAGS = $(SLURM_CPPFLAGS)
+libyogrt_slurm_timed_LDFLAGS = $(SLURM_LDFLAGS) $(SLURM_LIBADD)
