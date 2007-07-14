@@ -15,6 +15,17 @@ AC_DISABLE_STATIC
 AM_INIT_AUTOMAKE([$PACKAGE], [$VERSION], [check-news dist-bzip2 gnu no-define])
 AM_MAINTAINER_MODE
 
+# Checks for programs.
+AC_PROG_CC
+AC_PROG_LIBTOOL
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_INLINE
+
+X_AC_SLURM
+X_AC_LCRM
+X_AC_MOAB
+
 aix_64bit_mode=no
 using_aix=no
 case "$host" in
@@ -32,17 +43,6 @@ AM_CONDITIONAL([WANT_AIXSLURM_PROGRAM],
 AM_CONDITIONAL([WANT_AIXSLURM_SPANK_PLUGIN],
   [test "$using_aix" = yes && test "$aix_64bit_mode" = no && test "$slurm_available" = yes])
 AM_CONDITIONAL([HAVE_AIX], [test "$using_aix" = yes])
-
-# Checks for programs.
-AC_PROG_CC
-AC_PROG_LIBTOOL
-
-# Checks for typedefs, structures, and compiler characteristics.
-AC_C_INLINE
-
-X_AC_SLURM
-X_AC_LCRM
-X_AC_MOAB
 
 AC_CONFIG_FILES([Makefile
                  doc/Makefile
