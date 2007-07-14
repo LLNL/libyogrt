@@ -220,10 +220,11 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 @WITH_SLURM_TRUE@SLURM_DIR = slurm
 @WITH_LCRM_TRUE@LCRM_DIR = lcrm
+@HAVE_AIX_TRUE@AIXSLURM_DIR = aixslurm
 #if WITH_MOAB
 #  MOAB_DIR = moab
 #endif
-SUBDIRS = none $(SLURM_DIR) $(LCRM_DIR) $(MOAB_DIR) aixslurm
+SUBDIRS = none $(SLURM_DIR) $(LCRM_DIR) $(MOAB_DIR) $(AIXSLURM_DIR)
 lib_LTLIBRARIES = libyogrt.la
 libyogrt_la_SOURCES = yogrt.c
 libyogrt_la_LIBADD = -ldl
