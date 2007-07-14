@@ -13,6 +13,9 @@ LICENSE
 #include <sys/types.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <unistd.h>
+#include <limits.h>
+#include <fcntl.h>
 
 #include <slurm/spank.h>
 
@@ -32,7 +35,6 @@ int slurm_spank_user_init (spank_t sp, int ac, char **av)
 	uid_t uid;
 	uint32_t jobid, stepid, nodeid;
 
-	slurm_debug("slurm_spank_user_init 1");
 	spank_get_item(sp, S_JOB_UID, &uid);
 	spank_get_item(sp, S_JOB_ID, &jobid);
 	spank_get_item(sp, S_JOB_STEPID, &stepid);
@@ -42,7 +44,7 @@ int slurm_spank_user_init (spank_t sp, int ac, char **av)
 		return 0;
 
 	snprintf(socket_name, sizeof(socket_name),
-		 "/tmp/.aixslurm_%d_%u.%u", uid, jobid, stepid);
+		 "/tmp/.yogrtaixslurm_%d_%u.%u", uid, jobid, stepid);
 
 	spank_setenv(sp, "YOGRT_AIXSLURM_SOCKET", socket_name, 1);
 
@@ -77,6 +79,31 @@ static pid_t start_helper(const char *socket_name, uint32_t jobid)
 		return child;
 	} else {
 		/* child */
+		uid_t uid = geteuid();
+		gid_t gid = getegid();
+		int devnull, i;
+
+		/* regain privileges... */
+		seteuid(getuid());
+		setegid(getgid());
+
+		/* ...so we can fully drop privileges */
+		setregid(gid, gid);
+		setreuid(uid, uid);
+
+		/* change working directory */
+		chdir("/");
+
+		/* close all fds */
+		devnull = open("/dev/null", O_RDWR);
+		dup2(devnull, STDIN_FILENO);
+		dup2(devnull, STDOUT_FILENO);
+		dup2(devnull, STDERR_FILENO);
+		for (i = STDERR_FILENO+1; i < OPEN_MAX; i++) {
+			close(i);
+		}
+
+		/* run the helper program */
 		execl(helper_program, helper_program,
 		      socket_name, jobid_str, NULL);
 		exit(1);

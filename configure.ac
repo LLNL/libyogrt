@@ -18,6 +18,7 @@ AM_MAINTAINER_MODE
 aix_64bit_mode=no
 case "$host" in
 	*-*-aix*) AC_DEFINE(HAVE_AIX, [], [Define if system is AIX])
+                  LDFLAGS="$LDFLAGS -Wl,-brtl -Wl,-bexpfull"
                   if test "$OBJECT_MODE" == "64" ; then
                       AC_DEFINE(HAVE_AIX_64BIT, [], [Define for 64-bit build on AIX])
                       aix_64bit_mode=yes
