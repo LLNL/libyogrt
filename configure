@@ -2810,9 +2810,6 @@ _ACEOF
                   fi
         ;;
 esac
-echo "using_aix = $using_aix"
-echo "aix_64bit_mode = $aix_64bit_mode"
-echo "slurm_available = $slurm_available"
  if test "$using_aix" = yes && test "$aix_64bit_mode" = no && test "$slurm_available" = yes; then
   WANT_AIXSLURM_PROGRAM_TRUE=
   WANT_AIXSLURM_PROGRAM_FALSE='#'
@@ -19701,7 +19698,7 @@ echo "$as_me: WARNING: unable to locate slurm installation" >&2;}
   if test -n "$x_ac_cv_slurm_dir" || test "$ac_cv_lib_slurm_slurm_get_rem_time" = yes; then
     slurm_available=yes
   else
-    slurm_available=no
+    slurm_available=yes
   fi
 
    if test "$slurm_available" = yes; then
