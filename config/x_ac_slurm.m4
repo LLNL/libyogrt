@@ -87,6 +87,11 @@ AC_DEFUN([X_AC_SLURM], [
   AC_SUBST(SLURM_LDFLAGS)
   AC_SUBST(SLURM_LIBADD)
 
-  AM_CONDITIONAL(WITH_SLURM,
-	test -n "$x_ac_cv_slurm_dir" || test "$ac_cv_lib_slurm_slurm_get_rem_time" = yes)
+  if test -n "$x_ac_cv_slurm_dir" || test "$ac_cv_lib_slurm_slurm_get_rem_time" = yes; then
+    slurm_available=yes
+  else
+    slurm_available=no
+  fi
+
+  AM_CONDITIONAL([WITH_SLURM], [test "$slurm_available" = yes])
 ])

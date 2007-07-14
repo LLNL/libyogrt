@@ -16,8 +16,10 @@ AM_INIT_AUTOMAKE([$PACKAGE], [$VERSION], [check-news dist-bzip2 gnu no-define])
 AM_MAINTAINER_MODE
 
 aix_64bit_mode=no
+using_aix=no
 case "$host" in
 	*-*-aix*) AC_DEFINE(HAVE_AIX, [], [Define if system is AIX])
+                  using_aix=yes
                   LDFLAGS="$LDFLAGS -Wl,-brtl -Wl,-bexpfull"
                   if test "$OBJECT_MODE" == "64" ; then
                       AC_DEFINE(HAVE_AIX_64BIT, [], [Define for 64-bit build on AIX])
@@ -25,8 +27,11 @@ case "$host" in
                   fi
         ;;
 esac
-AM_CONDITIONAL([WANT_AIXSLURM_PROGRAM], [test "$aix_64bit_mode" = no])
-AM_CONDITIONAL([WANT_AIXSLURM_SPANK_PLUGIN], [test "$aix_64bit_mode" = no])
+AM_CONDITIONAL([WANT_AIXSLURM_PROGRAM],
+  [test "$using_aix" = yes && test "$aix_64bit_mode" = no && test "$slurm_available" = yes])
+AM_CONDITIONAL([WANT_AIXSLURM_SPANK_PLUGIN],
+  [test "$using_aix" = yes && test "$aix_64bit_mode" = no && test "$slurm_available" = yes])
+AM_CONDITIONAL([HAVE_AIX], [test "$using_aix" = yes])
 
 # Checks for programs.
 AC_PROG_CC
