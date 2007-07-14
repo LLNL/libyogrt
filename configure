@@ -2810,6 +2810,9 @@ _ACEOF
                   fi
         ;;
 esac
+echo "using_aix = $using_aix"
+echo "aix_64bit_mode = $aix_64bit_mode"
+echo "slurm_available = $slurm_available"
  if test "$using_aix" = yes && test "$aix_64bit_mode" = no && test "$slurm_available" = yes; then
   WANT_AIXSLURM_PROGRAM_TRUE=
   WANT_AIXSLURM_PROGRAM_FALSE='#'
