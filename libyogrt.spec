@@ -103,6 +103,7 @@ fi
 %attr(755, root, root) %dir %{_libdir}/libyogrt
 %{_libdir}/libyogrt/*.a
 %{_libdir}/libyogrt/libyogrt-spank-plugin.so
+%{_libexecdir}/libyogrt_slurm_timed
 %else
 %{_libdir}/*.*
 %{_libdir}/libyogrt/*
