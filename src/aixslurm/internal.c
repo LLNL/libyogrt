@@ -105,7 +105,7 @@ again:
 					if (stat(socket_name, &statbuf) == 0)
 						goto again;
 					debug3("AIXSLURM stat %d\n", i);
-					usleep(10);
+					usleep(10000);
 				}
 			}
 		}
