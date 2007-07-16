@@ -28,7 +28,7 @@ int internal_get_rank(void);
 #define __debug_level(level, ...)					\
 	do {								\
 		if (verbosity >= level) {				\
-			fprintf(stderr, "libyogurt: "__VA_ARGS__);	\
+			fprintf(stderr, "libyogrt: "__VA_ARGS__);	\
 		}							\
 	} while (0)
 
