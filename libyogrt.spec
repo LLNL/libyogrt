@@ -41,7 +41,7 @@ done
 
 # Now merge the 32bit and 64bit versions of the libraries together into
 # one composite libyogrt.a library.
-for subpackage in none slurm lcrm moab; do
+for subpackage in none slurm lcrm moab aixslurm; do
     for bits in 32 64; do
         if [ -f $TMP/orig/${bits}%{_libdir}/libyogrt/libyogrt-${subpackage}.so.1 ]; then
             mkdir -p $TMP/$subpackage/${bits}
