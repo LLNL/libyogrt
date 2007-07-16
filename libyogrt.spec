@@ -85,6 +85,12 @@ if [ -d aix ]; then
 	cp aix/libyogrt-* "$RPM_BUILD_ROOT"%{_libdir}/libyogrt
 fi
 cp aix/libyogrt.a "$RPM_BUILD_ROOT"%{_libdir}
+# slurm plugins must be .so files, not .a, so now we unpack the spank plugin.
+cd "$RPM_BUILD_ROOT"%{_libdir}/libyogrt
+if [ -f libyogrt-spank-plugin.a ]; then
+	ar x ./libyogrt-spank-plugin.a
+	mv ./libyogrt-spank-plugin.so.1 ./libyogrt-spank-plugin.so
+fi
 %endif
 
 %files
@@ -95,6 +101,7 @@ cp aix/libyogrt.a "$RPM_BUILD_ROOT"%{_libdir}
 %{_libdir}/*.a
 %attr(755, root, root) %dir %{_libdir}/libyogrt
 %{_libdir}/libyogrt/*.a
+%{_libdir}/libyogrt/libyogrt-spank-plugin.so
 %else
 %{_libdir}/*.*
 %{_libdir}/libyogrt/*
