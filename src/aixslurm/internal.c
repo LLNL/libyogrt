@@ -103,7 +103,7 @@ again:
 				first_time = 1;
 				for (i = 0; i < 100; i++) {
 					if (stat(socket_name, &statbuf) == 0)
-						got again;
+						goto again;
 					debug3("AIXSLURM stat %d\n", i);
 					usleep(10);
 				}
