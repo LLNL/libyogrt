@@ -70,7 +70,7 @@ AC_DEFUN([X_AC_SLURM], [
      && test "$ac_cv_lib_slurm_slurm_get_rem_time" = yes; then
     SLURM_CPPFLAGS=""
     SLURM_LDFLAGS=""
-    SLURM_LIBADD=""
+    SLURM_LIBADD="-lslurm"
   elif test -n "$x_ac_cv_slurm_dir"; then
     SLURM_CPPFLAGS="-I$x_ac_cv_slurm_dir/include"
     SLURM_LDFLAGS="-L$x_ac_cv_slurm_libdir -lpthread -lcrypto"
