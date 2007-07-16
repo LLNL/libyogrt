@@ -14,12 +14,17 @@ LICENSE
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <signal.h>
 
 #include <slurm/slurm.h>
 
 int create_socket(const char *name);
+void sigint_handler(int sig);
+
+int got_signal = 0;
 
 int main(int argc, char **argv)
 {
@@ -28,6 +33,7 @@ int main(int argc, char **argv)
        int fd;
        long t;
 
+       signal(SIGINT, sigint_handler);
        if (argc != 3)
 	       exit(1);
 
@@ -35,6 +41,7 @@ int main(int argc, char **argv)
        jobid = (uint32_t)atol(argv[2]);
 
        unlink(socket_name);
+       umask(0177);
        fd = create_socket(socket_name);
 
        while (1) {
@@ -42,6 +49,9 @@ int main(int argc, char **argv)
 	       struct sockaddr_un addr;
 	       int len = sizeof(addr);
 	       FILE *fconn = NULL;
+
+	       if (got_signal)
+		       break;
 
 	       conn = accept(fd, (struct sockaddr *)&addr, (socklen_t *)&len);
 	       if (conn < 0)
@@ -89,4 +99,9 @@ create_socket(const char *name)
 	chmod(name, 0600);
 
         return fd;
+}
+
+void sigint_handler(int sig)
+{
+	got_signal = 1;
 }
