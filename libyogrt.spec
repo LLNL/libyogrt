@@ -90,6 +90,7 @@ cd "$RPM_BUILD_ROOT"%{_libdir}/libyogrt
 if [ -f libyogrt-spank-plugin.a ]; then
 	ar x ./libyogrt-spank-plugin.a
 	mv ./libyogrt-spank-plugin.so.1 ./libyogrt-spank-plugin.so
+	rm ./libyogrt-spank-plugin.a
 fi
 %endif
 
