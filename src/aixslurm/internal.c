@@ -96,6 +96,12 @@ again:
 		if (errno == ECONNREFUSED) {
 			/* do nothing */
 		} else if (errno == ENOENT) {
+			/* The first time through, the socket may not yet
+			 * have been created.  So wait repeadedly stat()
+			 * the file name, waiting 10ms between each stat,
+			 * for up to a second.  This will normally avoid
+			 * having this function return -1 on the first call.
+			 */
 			if (!first_time) {
 				struct stat statbuf;
 				int i;
@@ -104,7 +110,6 @@ again:
 				for (i = 0; i < 100; i++) {
 					if (stat(socket_name, &statbuf) == 0)
 						goto again;
-					debug3("AIXSLURM stat %d\n", i);
 					usleep(10000);
 				}
 			}
