@@ -14,6 +14,7 @@ LICENSE
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <sys/stat.h>
 #include <sys/un.h>
 #include <unistd.h>
@@ -79,6 +80,7 @@ static long get_time_from_socket(const char *socket_name)
 	struct sockaddr_un addr;
 	char buf[32];
 	long rem = -1;
+	static int first_time = 0;
 
 	if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0) {
 		return -1;
@@ -89,12 +91,23 @@ static long get_time_from_socket(const char *socket_name)
 	strcpy(addr.sun_path, socket_name);
 	len = strlen(addr.sun_path)+1 + sizeof(addr.sun_family);
 
+again:
 	if (connect(fd, (struct sockaddr *) &addr, len) < 0) {
 		if (errno == ECONNREFUSED) {
-			printf("connection refused\n");
-		} else {
-			perror("foo");
-			printf("connection failed\n");
+			/* do nothing */
+		} else if (errno == ENOENT) {
+			if (!first_time) {
+				struct stat statbuf;
+				int i;
+
+				first_time = 1;
+				for (i = 0; i < 100; i++) {
+					if (stat(socket_name, &statbuf) == 0)
+						got again;
+					debug3("AIXSLURM stat %d\n", i);
+					usleep(10);
+				}
+			}
 		}
 		close(fd);
 		return -1;
