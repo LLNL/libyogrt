@@ -69,7 +69,7 @@ AC_DEFUN([X_AC_SLURM], [
   if test "$with_slurm" = no \
      && test "$ac_cv_lib_slurm_slurm_get_rem_time" = yes; then
     SLURM_CPPFLAGS=""
-    SLURM_LDFLAGS="-lslurm"
+    SLURM_LDFLAGS=""
     SLURM_LIBADD="-lslurm"
   elif test -n "$x_ac_cv_slurm_dir"; then
     SLURM_CPPFLAGS="-I$x_ac_cv_slurm_dir/include"
@@ -90,7 +90,7 @@ AC_DEFUN([X_AC_SLURM], [
   if test -n "$x_ac_cv_slurm_dir" || test "$ac_cv_lib_slurm_slurm_get_rem_time" = yes; then
     AS_VAR_SET([slurm_available], [yes])
   else
-    AS_VAR_SET([slurm_available], [yes])
+    AS_VAR_SET([slurm_available], [no])
   fi
 
   AM_CONDITIONAL([WITH_SLURM], [test "$slurm_available" = yes])
