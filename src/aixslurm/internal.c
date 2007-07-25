@@ -48,7 +48,7 @@ int internal_get_rem_time(time_t now, time_t last_update, int cached)
 		char buf[128];
 
 		if ((tmp = getenv("YOGRT_AIXSLURM_SOCKET")) != NULL) {
-			debug3("Ignoring YOGRT_AIXSLURM_SOCKET=%s", tmp);
+			debug3("Ignoring YOGRT_AIXSLURM_SOCKET=%s\n", tmp);
 		}
 
 		/* Unfortunately, we cannot use the YOGRT_AIXSLURM_SOCKET
