@@ -42,9 +42,32 @@ int internal_get_rem_time(time_t now, time_t last_update, int cached)
 
 	/* Get job id from environment on the first call */
 	if (socket_name == NULL) {
-		char *name;
-		if ((name = getenv("YOGRT_AIXSLURM_SOCKET")) != NULL) {
-			socket_name = strdup(name);
+		uid_t uid;
+		uint32_t jobid, stepid;
+		char *jobptr, *stepptr, *tmp;
+		char buf[128];
+
+		if ((tmp = getenv("YOGRT_AIXSLURM_SOCKET")) != NULL) {
+			debug3("Ignoring YOGRT_AIXSLURM_SOCKET=%s", tmp);
+		}
+
+		/* Unfortunately, we cannot use the YOGRT_AIXSLURM_SOCKET
+		   environment variable because poe's pmdv4 daemons do
+		   not allow environment variables in its environment to
+		   fall through to the user's tasks.  Instead we just
+		   expect the filename pattern to the same as that in
+		   libyogrt_spank_plugin.c. */
+		if ((jobptr = getenv("SLURM_JOBID")) != NULL
+		    && (stepptr = getenv("SLURM_STEPID")) != NULL) {
+			jobid = (uint32_t)atol(jobptr);
+			stepid = (uint32_t)atol(stepptr);
+			uid = getuid();
+			
+			snprintf(buf, sizeof(buf),
+				 "/tmp/.yogrtaixslurm_%d_%u.%u",
+				 uid, jobid, stepid);
+			socket_name = strdup(buf);
+			debug("AIXSLURM using socket \"%s\".\n", socket_name);
 		}
 	}
 

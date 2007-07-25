@@ -43,6 +43,11 @@ int slurm_spank_user_init (spank_t sp, int ac, char **av)
 	if (nodeid != 0)
 		return 0;
 
+	/* WARNING - If you change the file name here at all, you must
+	   update the file name in src/aixslurm/internal.c as well.
+	   Even though we have spank set the YOGRT_AIXSLURM_SOCKET variable,
+	   the pmdv4 daemon will NOT pass the variable down to the user's
+	   task. */
 	snprintf(socket_name, sizeof(socket_name),
 		 "/tmp/.yogrtaixslurm_%d_%u.%u", uid, jobid, stepid);
 
