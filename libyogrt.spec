@@ -8,6 +8,9 @@ Group: System Environment/Base
 Packager: Christopher J. Morrone <morrone2@llnl.gov>
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
+%if 0%ch4
+BuildRequires: slurm slurm-devel
+%endif
 
 # Disable automatic rpm requirement generation
 %define _use_internal_dependency_generator 0
