@@ -100,6 +100,10 @@ fi
 %files
 %defattr(-,root,root,-)
 %doc
+%doc DISCLAIMER
+%doc COPYING
+%doc COPYING.LESSER
+%doc INSTALL
 %{_includedir}/yogrt.h
 %ifos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
 %{_libdir}/*.a
