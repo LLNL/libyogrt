@@ -7,9 +7,9 @@ endif
 if HAVE_AIX
   AIXSLURM_DIR = aixslurm
 endif
-#if WITH_MOAB
-#  MOAB_DIR = moab
-#endif
+if WITH_MOAB
+  MOAB_DIR = moab
+endif
 
 SUBDIRS = none $(SLURM_DIR) $(LCRM_DIR) $(MOAB_DIR) $(AIXSLURM_DIR)
 
