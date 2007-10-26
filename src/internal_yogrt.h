@@ -33,11 +33,15 @@
 
 extern int verbosity;
 
+void internal_init(int verb);
+
 char *internal_backend_name(void);
 
 int internal_get_rem_time(time_t now, time_t last_update, int cached);
 
 int internal_get_rank(void);
+
+int internal_fudge(void);
 
 #define __debug_level(level, ...)					\
 	do {								\
