@@ -100,7 +100,7 @@ int internal_get_rem_time(time_t now, time_t last_update, int cached)
  * libyogrt only guarantees that process rank 0 may call yogrt_remaining().
  * This rank number is not exposed to the user through the libyogrt API.
  * The yogrt_remaining() function will return an error of -1 for any processes
- * for which internal_get_rank() does not return 0.
+ * for which internal_get_rank() returns non-zero.
  *
  * Return the rank of the calling process.  If the rank number cannot be
  * determined, return 0 if it is safe for the the calling process to
