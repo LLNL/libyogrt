@@ -344,7 +344,7 @@ static inline int need_update(time_t now)
 
 int yogrt_remaining(void)
 {
-	time_t now = time(NULL);
+	time_t now;
 	int rem = -1;
 	int rc;
 
@@ -358,10 +358,12 @@ int yogrt_remaining(void)
 		return -1;
 	}
 
+        now = time(NULL);
 	if (need_update(now)) {
 		if (backend.remaining != NULL) {
 			rem = backend.remaining(now, last_update,
 						cached_time_rem);
+                        now = time(NULL);
 		}
 		if (rem != -1) {
 			last_update_failed = 0;
