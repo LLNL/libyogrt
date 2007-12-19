@@ -73,6 +73,19 @@ backend may have a different "fudge_factor" value.  Users may query and set
 the fudge_factor value using yogrt_get_fudge_factor() and
 yogrt_set_fudge_factor().
 
+Even libyogrt's internally cached remaining time variable may
+by set using the function yogrt_set_remaining().  Keep in mind that
+libyogrt will continue to count down from the new cached remaining time,
+and after the appropriate interval1 or interval2 has passed after calling
+yogrt_set_remaining(), libyogrt will contact the resource manager for
+a new remaining time update.
+
+The libyogrt library can print debugging messages to stderr
+by setting its debugging level to an integer value greater
+than 0.  Larger values will result in more verbose debugging messages (the
+current highest verbosity level is 3).  Users may query and set
+the debug value using yogrt_set_debug() and yogrt_get_debug().
+
 .SH "ENVIRONMENT VARIABLES"
 Before the first call is made into libyogrt, the values of "interval1",
 "interval2", "interval2_start", and "fudge_factor" may be initialized
@@ -142,6 +155,9 @@ the individual man pages for more information.
 .BR yogrt_set_interval1 (3),
 .BR yogrt_set_interval2 (3),
 .BR yogrt_set_interval2_start (3),
+.BR yogrt_set_debug (3),
+.BR yogrt_set_remaining (3),
 .BR yogrt_get_interval1 (3),
 .BR yogrt_get_interval2 (3),
-.BR yogrt_get_interval2_start (3)
+.BR yogrt_get_interval2_start (3),
+.BR yogrt_get_debug (3)

@@ -29,6 +29,12 @@ yogrt_set_fudge_factor, yogrt_get_fudge_factor \- set/get fudge_factor
 .br
 .BI "int yogrt_get_fudge_factor(void)"
 .fi
+.BI "void yogrt_set_remaining(int seconds_remaining)"
+.fi
+.BI "void yogrt_set_debug(int verbosity)"
+.fi
+.BI "int yogrt_get_debug(void)"
+.fi
 .sp
 Link with -lyogrt.
 
@@ -50,6 +56,12 @@ SECONDS = IYOGRT_GET_INTERVAL2_START()
 IYOGRT_SET_FUDGE_FACTOR(SECONDS)
 .br
 SECONDS = IYOGRT_GET_FUDGE_FACTOR()
+.br
+IYOGRT_SET_REMAINING(SECONDS)
+.br
+IYOGRT_SET_DEBUG(VERBOSITY)
+.br
+VERBOSIRT = IYOGRT_GET_DEBUG()
 
 .SH DESCRIPTION
 These libyogrt library calls allow one to get and set internal library

@@ -407,6 +407,17 @@ int yogrt_get_time(void)
 	return yogrt_remaining();
 }
 
+void yogrt_set_remaining(int seconds)
+{
+	init_yogrt();
+	if (seconds < 0)
+                cached_time_rem = 0;
+	else
+                cached_time_rem = seconds;
+        last_update = time(NULL);
+	debug("remaining time changed to %d\n", cached_time_rem);
+}
+
 void yogrt_set_interval1(int seconds)
 {
 	init_yogrt();
@@ -444,6 +455,11 @@ void yogrt_set_fudge_factor(int seconds)
 	debug("fudge_factor changed to %d\n", fudge_factor);
 }
 
+void yogrt_set_debug(int val)
+{
+        verbosity = val;
+}
+
 int yogrt_get_interval1(void)
 {
 	init_yogrt();
@@ -468,12 +484,23 @@ int yogrt_get_fudge_factor(void)
 	return fudge_factor;
 }
 
+int yogrt_get_debug(void)
+{
+        return verbosity;
+}
+
 /**********************************************************************
  * Fortran wrappers (single underscore version)
  **********************************************************************/
 int iyogrt_remaining_(void)
 {
 	return yogrt_remaining();
+}
+
+int iyogrt_set_remaining_(int *seconds)
+{
+	yogrt_set_remaining(*seconds);
+	return *seconds;
 }
 
 int iyogrt_set_interval1_(int *seconds)
@@ -500,6 +527,12 @@ int iyogrt_set_fudge_factor_(int *seconds)
 	return *seconds;
 }
 
+int iyogrt_set_debug_(int *val)
+{
+	yogrt_set_debug(*val);
+	return *val;
+}
+
 int iyogrt_get_interval1_(void)
 {
 	return yogrt_get_interval1();
@@ -520,12 +553,23 @@ int iyogrt_get_fudge_factor_(void)
 	return yogrt_get_fudge_factor();
 }
 
+int iyogrt_get_debug_(void)
+{
+	return yogrt_get_debug();
+}
+
 /**********************************************************************
  * Fortran wrappers (double underscore version)
  **********************************************************************/
 int iyogrt_remaining__(void)
 {
 	return yogrt_remaining();
+}
+
+int iyogrt_set_remaining__(int *seconds)
+{
+	yogrt_set_remaining(*seconds);
+	return *seconds;
 }
 
 int iyogrt_set_interval1__(int *seconds)
@@ -552,6 +596,12 @@ int iyogrt_set_fudge_factor__(int *seconds)
 	return *seconds;
 }
 
+int iyogrt_set_debug__(int *val)
+{
+	yogrt_set_debug(*val);
+	return *val;
+}
+
 int iyogrt_get_interval1__(void)
 {
 	return yogrt_get_interval1();
@@ -570,4 +620,9 @@ int iyogrt_get_interval2_start__(void)
 int iyogrt_get_fudge_factor__(void)
 {
 	return yogrt_get_fudge_factor();
+}
+
+int iyogrt_get_debug__(void)
+{
+	return yogrt_get_debug();
 }
