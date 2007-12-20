@@ -28,9 +28,13 @@
 
 int verbosity = 0;
 
-void internal_init(int verb)
+int internal_init(int verb)
 {
 	verbosity = verb;
+
+        /* Don't know how to determine if job is running under Moab.
+           Just assume always valid. */
+        return 1;
 }
 
 char *internal_backend_name(void)

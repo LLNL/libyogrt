@@ -32,9 +32,18 @@ static uint32_t jobid = NO_VAL;
 
 int verbosity = 0;
 
-void internal_init(int verb)
+int internal_init(int verb)
 {
 	verbosity = verb;
+
+        if (getenv("SLURM_JOB_ID") != NULL
+            || getenv("SLURM_JOBID") != NULL) {
+                return 1;
+        } else {
+                debug("ERROR: Neither SLURM_JOBID nor SLURM_JOB_ID are set."
+                      " Remaining time will be a bogus value.\n");
+                return 0;
+        }
 }
 
 char *internal_backend_name(void)

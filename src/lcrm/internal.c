@@ -29,9 +29,21 @@
 
 int verbosity = 0;
 
-void internal_init(int verb)
+int internal_init(int verb)
 {
+        char *ptr;
+
 	verbosity = verb;
+
+        if (((ptr = getenv("LRM_ENVIRONMENT")) != NULL)
+            && strcmp(ptr, "BATCH") == 0) {
+                return 1;
+        } else {
+                debug("ERROR: Environment variable LRM_ENVIRONMENT=BATCH is"
+                      " not set. Remaining time will be a bogus value.\n");
+
+                return 0;
+        }
 }
 
 char *internal_backend_name(void)

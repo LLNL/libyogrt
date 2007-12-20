@@ -33,7 +33,7 @@
 
 extern int verbosity;
 
-void internal_init(int verb);
+int internal_init(int verb);
 
 char *internal_backend_name(void);
 

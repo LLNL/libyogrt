@@ -42,6 +42,8 @@
 int verbosity = 0;
 static int initialized = 0; /* flag */
 static int rank = 0;
+static int valid = 1; /* Is the environment valid for contacting the
+                         resource manager? */
 
 static int interval1 = 900; /* 15 minutes */
 static int interval2 = 300; /* 5 minutes */
@@ -56,7 +58,7 @@ static int fudge_factor_set = 0;
 static char backend_name[64];
 static void *backend_handle = NULL;
 static struct backend_operations {
-	void   (*init)     (int verb);
+	int    (*init)     (int verb);
 	char * (*name)     (void);
 	int    (*remaining)(time_t now, time_t last_update, int chached);
 	int    (*rank)     (void);
@@ -278,7 +280,7 @@ static inline int load_backend(void)
 	backend.fudge =     dlsym(backend_handle, "internal_fudge");
 
 	if (backend.init != NULL)
-		backend.init(verbosity);
+		valid = backend.init(verbosity);
 	if (backend.rank != NULL)
 		rank = backend.rank();
 	debug("Rank is %d\n", rank);
@@ -288,6 +290,8 @@ static inline int load_backend(void)
 		fudge_factor = backend.fudge();
 		debug("Using backend fudge factor of %d sec.\n", fudge_factor);
 	}
+        if (!valid)
+                debug("Environment is not valid for selected backend.\n");
 
 	return 1;
 }
@@ -352,6 +356,11 @@ int yogrt_remaining(void)
 	if (backend_handle == NULL) {
 		return INT_MAX;
 	}
+
+        if (valid == 0) {
+                debug2("Environment is not valid.  Returning INT_MAX.\n");
+                return INT_MAX;
+        }
 
 	if (rank != 0) {
 		debug("This is not task rank 0.  Returning -1.\n");

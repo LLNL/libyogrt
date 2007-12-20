@@ -39,9 +39,18 @@ int verbosity = 0;
 
 static long get_time_from_socket(const char *socket_name);
 
-void internal_init(int verb)
+int internal_init(int verb)
 {
 	verbosity = verb;
+
+        if (getenv("SLURM_JOBID") != NULL
+            && getenv("SLURM_STEPID") != NULL) {
+                return 1;
+        } else {
+                debug("ERROR: SLURM_JOBID and/or SLURM_STEPID are not set."
+                      " Remaining time will be a bogus value.\n");
+                return 0;
+        }
 }
 
 char *internal_backend_name(void)

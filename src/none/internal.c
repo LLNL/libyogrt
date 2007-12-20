@@ -48,9 +48,16 @@
  */
 int verbosity = 0;
 
-void internal_init(int verb)
+int internal_init(int verb)
 {
 	verbosity = verb;
+
+        /* internal_init() must return non-zero if the current environment
+           is valid for using the implemented resource manager.  If
+           internal_init() returns zero, yogrt_remaining() will never call
+           internal_get_rem_time(), instead always returning INT_MAX to the
+           user. */
+        return 1;
 }
 
 /*
