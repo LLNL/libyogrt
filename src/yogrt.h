@@ -43,9 +43,21 @@ extern "C" {
  * the current remaining time.
  *
  * Exactly how often yogrt_remaining() will talk to the resource manager
- * may be modified with the functions below.
+ * may be modified with the "interval" functions below.
  */
 extern int yogrt_remaining(void);
+
+/*
+ * libyogrt's internally cached remaining time variable may
+ * by modified using the function yogrt_set_remaining().  Keep in mind that
+ * libyogrt will continue to count down from the new cached remaining time,
+ * and after the appropriate interval1 or interval2 has passed after calling
+ * yogrt_set_remaining(), libyogrt will contact the resource manager for
+ * a new remaining time update.
+ *
+ * Most programs will not have a use for this function.
+ */
+extern void yogrt_set_remaining(int seconds);
 
 /*
  * The following functions allow the user to fine tune the internal behavior
@@ -85,6 +97,18 @@ extern int yogrt_get_interval2(void);
  * Report the current value of interval2_start.
  */
 extern int yogrt_get_interval2_start(void);
+
+/*
+ * Report or set libyogrt's internal debugging level.
+ * The libyogrt library can print debugging messages to stderr
+ * by setting its debugging level to an integer value greater
+ * than 0.  Larger values will result in more verbose debugging messages (the
+ * current highest verbosity level is 3).  Users may query and set
+ * the debug value using yogrt_set_debug() and yogrt_get_debug().
+ */
+extern int yogrt_get_debug(void);
+extern void yogrt_set_debug(int val);
+
 
 #ifdef __cplusplus
 }
