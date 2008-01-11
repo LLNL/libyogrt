@@ -43,8 +43,9 @@ int internal_init(int verb)
 {
 	verbosity = verb;
 
-        if (getenv("SLURM_JOBID") != NULL
-            && getenv("SLURM_STEPID") != NULL) {
+        if ((getenv("SLURM_JOBID") != NULL
+             && getenv("SLURM_STEPID") != NULL)
+            || getenv("YOGRT_AIXSLURM_SOCKET") != NULL) {
                 return 1;
         } else {
                 debug("ERROR: SLURM_JOBID and/or SLURM_STEPID are not set."
@@ -70,10 +71,6 @@ int internal_get_rem_time(time_t now, time_t last_update, int cached)
 		char *jobptr, *stepptr, *tmp;
 		char buf[128];
 
-		if ((tmp = getenv("YOGRT_AIXSLURM_SOCKET")) != NULL) {
-			debug3("Ignoring YOGRT_AIXSLURM_SOCKET=%s\n", tmp);
-		}
-
 		/* Unfortunately, we cannot use the YOGRT_AIXSLURM_SOCKET
 		   environment variable because poe's pmdv4 daemons do
 		   not allow environment variables in its environment to
@@ -91,7 +88,15 @@ int internal_get_rem_time(time_t now, time_t last_update, int cached)
 				 uid, jobid, stepid);
 			socket_name = strdup(buf);
 			debug("AIXSLURM using socket \"%s\".\n", socket_name);
-		}
+		} else if ((tmp = getenv("YOGRT_AIXSLURM_SOCKET")) != NULL) {
+                        /* If we aren't under a job step, fall
+                           back to the environment variable. */
+			debug("AIXSLURM using YOGRT_AIXSLURM_SOCKET=%s\n",tmp);
+			socket_name = tmp;
+                } else {
+                        debug("ERROR: AIXSLURM unable to determine "
+                              "socket name\n");
+                }
 	}
 
 	if (socket_name == NULL)
@@ -143,7 +148,7 @@ again:
 			/* do nothing */
 		} else if (errno == ENOENT) {
 			/* The first time through, the socket may not yet
-			 * have been created.  So wait repeadedly stat()
+			 * have been created.  So repeadedly stat()
 			 * the file name, waiting 10ms between each stat,
 			 * for up to a second.  This will normally avoid
 			 * having this function return -1 on the first call.
