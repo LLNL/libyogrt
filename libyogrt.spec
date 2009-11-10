@@ -12,10 +12,9 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: slurm slurm-devel
 %endif
 
-# Disable automatic rpm requirement generation
+# Disable automatic rpm requirement generation only on AIX
+%ifos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
 %define _use_internal_dependency_generator 0
-%ifnos aix5.3 aix5.2 aix5.1 aix5.0 aix4.3
-%define __find_requires %{nil}
 %endif
 
 %description
