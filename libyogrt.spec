@@ -4,11 +4,11 @@ Version: See META file
 Release: See META file
 License: Proprietary
 Group: System Environment/Base
-#URL: 
+URL: http://github.com/chaos/libyogrt
 Packager: Christopher J. Morrone <morrone2@llnl.gov>
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-%if 0%{?ch4}
+%if 0%{?ch4} || 0%{?ch4} || 0%{?ch5} || 0%{?ch6} || 0%{?ch7} 
 BuildRequires: slurm slurm-devel
 %endif
 
