@@ -1,3 +1,8 @@
+# libyogrt.spec
+
+# Declare rpmbuild --with/--without parameters
+%bcond_with slurm
+
 Summary: Your One Get Remaining Time library.
 Name: See META file
 Version: See META file
@@ -8,8 +13,9 @@ URL: http://github.com/chaos/libyogrt
 Packager: Christopher J. Morrone <morrone2@llnl.gov>
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-%if 0%{?ch4} || 0%{?ch4} || 0%{?ch5} || 0%{?ch6} || 0%{?ch7} 
+%if %{with slurm}
 BuildRequires: slurm slurm-devel
+Requires: slurm
 %endif
 
 # Disable automatic rpm requirement generation only on AIX
