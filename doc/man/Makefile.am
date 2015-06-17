@@ -13,6 +13,7 @@ man_MANS = \
 	yogrt_get_debug.3 \
 	yogrt_set_debug.3 \
 	yogrt_set_remaining.3 \
-	yogrt.conf.5
+	yogrt.conf.5 \
+	yogrt.1
 
 EXTRA_DIST = $(man_MANS)
