@@ -1,7 +1,7 @@
 # libyogrt.spec
 
 # Declare rpmbuild --with/--without parameters
-%bcond_with slurm
+%bcond_without slurm
 
 Summary: Your One Get Remaining Time library.
 Name: See META file
