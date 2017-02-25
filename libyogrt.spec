@@ -122,11 +122,15 @@ fi
 %endif
 %{_mandir}/*/*
 %config(noreplace) %{_sysconfdir}/yogrt.conf
+%{_bindir}/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Thu Jun 18 2015 Albert Chu <chu11@llnl.gov>
+- Add bindir files.
+
 * Mon Feb 12 2007 Christopher J. Morrone <morrone@conon.llnl.gov> - 
 - Initial build.
 
