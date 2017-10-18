@@ -41,6 +41,7 @@ AC_DEFINE([LIBYOGRT_LT_AGE], [], [libyogrt library version "age"])
 X_AC_SLURM
 X_AC_LCRM
 X_AC_MOAB
+X_AC_LSF
 
 aix_64bit_mode=no
 using_aix=no
@@ -69,6 +70,7 @@ AC_CONFIG_FILES([libyogrt.spec
                  src/slurm/Makefile
                  src/lcrm/Makefile
                  src/moab/Makefile
+                 src/lsf/Makefile
                  src/aixslurm/Makefile])
 
 AC_OUTPUT
