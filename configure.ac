@@ -1,7 +1,11 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT
+AC_INIT([Your One Get Remaining Time library],
+        [1.20],
+        [https://github.com/LLNL/libyogrt/issues],
+        [libyogrt],
+        [https://github.com/LLNL/libyogrt])
 X_AC_META
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([src/yogrt.h])
@@ -12,7 +16,7 @@ AC_CANONICAL_SYSTEM
 AC_DISABLE_STATIC
 
 # Automake support
-AM_INIT_AUTOMAKE([$PACKAGE], [$VERSION], [check-news dist-bzip2 gnu no-define])
+AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 
 # Checks for programs.

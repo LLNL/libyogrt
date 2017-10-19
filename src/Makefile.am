@@ -25,3 +25,5 @@ libyogrt_la_LDFLAGS = \
 	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
 
 pkginclude_HEADERS = yogrt.h
+
+noinst_HEADERS = internal_yogrt.h
