@@ -6,4 +6,4 @@ libyogrt_none_la_SOURCES = internal.c
 libyogrt_none_la_LDFLAGS = \
 	-no-undefined \
 	-export-symbols-regex "^internal_.*" \
-	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
+	-version-info $(LIBYOGRT_LT_CURRENT):$(LIBYOGRT_LT_REVISION):$(LIBYOGRT_LT_AGE)

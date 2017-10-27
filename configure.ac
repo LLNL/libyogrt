@@ -6,7 +6,12 @@ AC_INIT([Your One Get Remaining Time library],
         [https://github.com/LLNL/libyogrt/issues],
         [libyogrt],
         [https://github.com/LLNL/libyogrt])
-X_AC_META
+
+# libyogrt library versions
+LIBYOGRT_LT_CURRENT=1
+LIBYOGRT_LT_REVISION=0
+LIBYOGRT_LT_AGE=0
+
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([src/yogrt.h])
 AC_CONFIG_HEADER([config.h])
@@ -25,6 +30,13 @@ AC_PROG_LIBTOOL
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_INLINE
+
+AC_SUBST([LIBYOGRT_LT_CURRENT])
+AC_SUBST([LIBYOGRT_LT_REVISION])
+AC_SUBST([LIBYOGRT_LT_AGE])
+AC_DEFINE([LIBYOGRT_LT_CURRENT], [], [libyogrt library version "current"])
+AC_DEFINE([LIBYOGRT_LT_REVISION], [], [libyogrt library version "revision"])
+AC_DEFINE([LIBYOGRT_LT_AGE], [], [libyogrt library version "age"])
 
 X_AC_SLURM
 X_AC_LCRM
@@ -48,7 +60,8 @@ AM_CONDITIONAL([WANT_AIXSLURM_SPANK_PLUGIN],
   [test "$using_aix" = yes && test "$aix_64bit_mode" = no && test "$slurm_available" = yes])
 AM_CONDITIONAL([HAVE_AIX], [test "$using_aix" = yes])
 
-AC_CONFIG_FILES([Makefile
+AC_CONFIG_FILES([libyogrt.spec
+                 Makefile
                  doc/Makefile
                  doc/man/Makefile
                  src/Makefile

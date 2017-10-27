@@ -8,4 +8,4 @@ libyogrt_moab_la_CPPFLAGS = $(AM_CPPFLAGS) $(MOAB_CPPFLAGS)
 libyogrt_moab_la_LDFLAGS = $(MOAB_LDFLAGS) \
 	-no-undefined \
 	-export-symbols-regex "^internal_.*" \
-	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
+	-version-info $(LIBYOGRT_LT_CURRENT):$(LIBYOGRT_LT_REVISION):$(LIBYOGRT_LT_AGE)

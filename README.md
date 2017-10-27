@@ -23,7 +23,7 @@ To build and install:
     make
     make install
 
-To build a release tarball, update version info in META and configure.ac files:
+To build a release tarball, update version in configure.ac file:
 
     mkdir build
     cd build

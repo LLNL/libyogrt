@@ -3,13 +3,13 @@
 # Declare rpmbuild --with/--without parameters
 %bcond_without slurm
 
-Summary: Your One Get Remaining Time library.
-Name: See META file
-Version: See META file
-Release: See META file
+Summary: @PACKAGE_NAME@
+Name: @PACKAGE_TARNAME@
+Version: @PACKAGE_VERSION@
+Release: 1%{?dist}
 License: Proprietary
 Group: System Environment/Base
-URL: http://github.com/chaos/libyogrt
+URL: @PACKAGE_URL@
 Packager: Christopher J. Morrone <morrone2@llnl.gov>
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
@@ -127,6 +127,5 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
-* Mon Feb 12 2007 Christopher J. Morrone <morrone@conon.llnl.gov> - 
+* Mon Feb 12 2007 Christopher J. Morrone <morrone2@llnl.gov> - 
 - Initial build.
-

@@ -22,8 +22,8 @@ libyogrt_la_CPPFLAGS = \
 libyogrt_la_LDFLAGS = \
 	-no-undefined \
 	-export-symbols-regex "^i?yogrt_.*" \
-	-version-info $(META_LT_CURRENT):$(META_LT_REVISION):$(META_LT_AGE)
+	-version-info $(LIBYOGRT_LT_CURRENT):$(LIBYOGRT_LT_REVISION):$(LIBYOGRT_LT_AGE)
 
-pkginclude_HEADERS = yogrt.h
+include_HEADERS = yogrt.h
 
 noinst_HEADERS = internal_yogrt.h
