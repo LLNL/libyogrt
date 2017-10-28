@@ -75,7 +75,7 @@ ar -Xany cr libyogrt.a $TMP/32/* $TMP/64/*
 cd $TOP
 rm -rf $TMP/orig
 %else
-%configure
+%configure LDFLAGS=-Wl,--build-id
 make
 %endif
 
