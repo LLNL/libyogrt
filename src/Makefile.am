@@ -10,8 +10,11 @@ endif
 if WITH_MOAB
   MOAB_DIR = moab
 endif
+if WITH_LSF
+  LSF_DIR = lsf
+endif
 
-SUBDIRS = none $(SLURM_DIR) $(LCRM_DIR) $(MOAB_DIR) $(AIXSLURM_DIR)
+SUBDIRS = none $(SLURM_DIR) $(LCRM_DIR) $(MOAB_DIR) $(AIXSLURM_DIR) $(LSF_DIR)
 
 lib_LTLIBRARIES = libyogrt.la
 libyogrt_la_SOURCES = yogrt.c
