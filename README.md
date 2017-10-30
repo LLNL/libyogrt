@@ -3,9 +3,10 @@ This library provides functions to query a resource manager
 for the time remaining in a job.
 
 It supports:
-- SLURM
-- MOAB
 - LCRM
+- LSF
+- MOAB
+- SLURM
 - AIX w/ SLURM
 
 See [src/yogrt.h](https://github.com/LLNL/libyogrt/blob/master/src/yogrt.h) for documentation.
@@ -28,4 +29,4 @@ To build a release tarball, update version in configure.ac file:
     mkdir build
     cd build
     ../configure
-    make dist
+    make distcheck
