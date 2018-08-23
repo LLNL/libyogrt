@@ -1,10 +1,6 @@
 ##*****************************************************************************
 ## $Id: x_ac_moab.m4 8192 2006-05-25 00:15:05Z morrone $
 ##*****************************************************************************
-#  AUTHOR:
-#    Christopher Morrone <morrone2@llnl.gov>
-#    (Originally Chris Dunlap <cdunlap@llnl.gov>)
-#
 #  SYNOPSIS:
 #    X_AC_MOAB()
 #
