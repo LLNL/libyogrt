@@ -69,7 +69,7 @@ AC_DEFUN([X_AC_LSF], [
       [
         # If LSF_INCLUDEDIR is not set, we'll need get it from lsf.conf instead
         AS_IF([test -z "$LSF_INCLUDEDIR"],
-              [LSF_INCLUDEDIR=`grep LSF_INCLUDEDIR= $LSF_ENVDIR/lsf.conf | cut -d= -f2`])
+              [LSF_INCLUDEDIR=`grep LSF_INCLUDEDIR= $LSF_ENVDIR/lsf.conf 2>/dev/null| cut -d= -f2 `])
         AS_IF([test -f "$LSF_INCLUDEDIR/lsf/lsbatch.h" -a -d "$LSF_LIBDIR"],[
           _x_ac_lsf_libs_save="$LIBS"
           LIBS="-L$LSF_LIBDIR $LSF_LIBADD $LIBS"
