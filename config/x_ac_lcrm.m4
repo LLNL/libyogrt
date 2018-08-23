@@ -46,11 +46,11 @@ AC_DEFUN([X_AC_LCRM], [
           test -f "$d/include/liblrm.h" || continue
           for bit in $_x_ac_lcrm_libs; do
             test -d "$d/$bit" || continue
-        
+
             _x_ac_lcrm_libs_save="$LIBS"
             LIBS="-L$d/$bit -llrm $LIBS"
             AC_LINK_IFELSE(
-              [AC_LANG_PROGRAM([lrmgettime(NULL, NULL, NULL, NULL, NULL);])],
+              [AC_LANG_PROGRAM([],[lrmgettime(NULL, NULL, NULL, NULL, NULL);])],
               [AS_VAR_SET([x_ac_cv_lcrm_dir], [$d])
                AS_VAR_SET([x_ac_cv_lcrm_libdir], [$d/$bit])]
             )

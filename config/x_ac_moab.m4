@@ -48,11 +48,11 @@ AC_DEFUN([X_AC_MOAB], [
           test -f "$d/include/moab/mapi.h" || continue
           for bit in $_x_ac_moab_libs; do
             test -d "$d/$bit" || continue
-        
+
             _x_ac_moab_libs_save="$LIBS"
             LIBS="-L$d/$bit $MOAB_LIBADD $LIBS"
             AC_LINK_IFELSE(
-              [AC_LANG_PROGRAM([MCCJobGetRemainingTime(NULL, NULL, NULL, NULL);])],
+              [AC_LANG_PROGRAM([],[MCCJobGetRemainingTime(NULL, NULL, NULL, NULL);])],
               [AS_VAR_SET([x_ac_cv_moab_dir], [$d])
                AS_VAR_SET([x_ac_cv_moab_libdir], [$d/$bit])]
             )
