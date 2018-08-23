@@ -46,52 +46,63 @@ AC_DEFUN([X_AC_LSF], [
   AC_ARG_VAR([LSF_INCLUDEDIR], [Directory containing LSF header files])
   AC_ARG_VAR([LSF_ENVDIR], [Directory containing LSF configuration files])
 
-  # various libs needed to call lsb_ functions
-  LSF_LIBADD="-lbat -llsf -lrt -lnsl"
-
   AC_ARG_WITH(
     [lsf],
     AS_HELP_STRING(--with-lsf=PATH,Specify path to lsf installation),
     [],
     [with_lsf=check])
 
-  AS_IF([test "x$with_lsf" != xno],[
-    # Check for LSF library in the default location.
-    _backup_libs="$LIBS"
-    AC_CHECK_LIB([bat], [lsb_init], [found_lsf=yes], [found_lsf=no], [$LSF_LIBADD])
-    LIBS="$_backup_libs"
-  ])
+  AS_IF([test x$with_lsf != xno],[
+    # various libs needed to call lsb_ functions
+    #lsf_extra_libs="-lbat -llsf -lrt -lnsl"
+    lsf_extra_libs="-llsf -lrt -lnsl"
 
-  AS_IF([test "$ac_cv_lib_bat_lsb_init" != yes],[
-    AC_CACHE_CHECK(
-      [for LSF installation],
-      [x_ac_cv_lsf_libdir],
-      [
-        # If LSF_INCLUDEDIR is not set, we'll need get it from lsf.conf instead
-        AS_IF([test -z "$LSF_INCLUDEDIR"],
-              [LSF_INCLUDEDIR=`grep LSF_INCLUDEDIR= $LSF_ENVDIR/lsf.conf 2>/dev/null| cut -d= -f2 `])
-        AS_IF([test -f "$LSF_INCLUDEDIR/lsf/lsbatch.h" -a -d "$LSF_LIBDIR"],[
-          _x_ac_lsf_libs_save="$LIBS"
-          LIBS="-L$LSF_LIBDIR $LSF_LIBADD $LIBS"
-          AC_LINK_IFELSE(
-            [AC_LANG_PROGRAM([lsb_init(NULL);])],
-            [AS_VAR_SET([x_ac_cv_lsf_includedir], [$LSF_INCLUDEDIR])
-             AS_VAR_SET([x_ac_cv_lsf_libdir], [$LSF_LIBDIR])
+    found_lsf=no
+    # Check for LSF library in the default location.
+    AS_IF([test x$with_lsf = xyes -o x$with_lsf = xcheck],[
+      AC_SEARCH_LIBS([lsb_init], [bat], [found_lsf=yes], [found_lsf=no], [$lsf_extra_libs])
+    ])
+
+    AS_IF([test x$found_lsf = xno],[
+      AC_CACHE_CHECK([for LSF include directory],
+                     [x_ac_cv_lsf_includedir],
+                     [AS_IF([test -z "$LSF_INCLUDEDIR"],
+                            [LSF_INCLUDEDIR=`grep LSF_INCLUDEDIR= $LSF_ENVDIR/lsf.conf 2>/dev/null| cut -d= -f2`])
+                      AS_IF([test -f "$LSF_INCLUDEDIR/lsf/lsbatch.h"],
+                            [x_ac_cv_lsf_includedir="$LSF_INCLUDEDIR"],
+                            [x_ac_cv_lsf_includedir=no])
+                     ])
+      AC_CACHE_CHECK([for LSF library directory],
+                     [x_ac_cv_lsf_libdir],
+                     [x_ac_cv_lsf_libdir=no
+                      AS_IF([test -d "$LSF_LIBDIR"],[
+                        LIBS="-L$LSF_LIBDIR -lbat $lsf_extra_libs $LIBS"
+                        AC_LINK_IFELSE(
+                          [AC_LANG_PROGRAM([lsb_init(NULL);])],
+                          [x_ac_cv_lsf_libdir=$LSF_LIBDIR]
+                        )
+                        LIBS="$_x_ac_lsf_libs_save"
+                      ])
+                     ])
+      AS_IF([test x$x_ac_cv_lsf_includedir != xno -a x$x_ac_cv_lsf_libdir != xno],[
+             found_lsf=yes
              LSF_CPPFLAGS="-I$LSF_INCLUDEDIR"
              LSF_LDFLAGS="-L$LSF_LIBDIR"
-             found_lsf=yes],
-            [found_lsf=no]
-          )
-          LIBS="$_x_ac_lsf_libs_save"
-        ])
-      ]
-    )
-  ])
+             LSF_LIBADD="-lbat $lsf_extra_libs"
+            ],[
+             found_lsf=no
+             LSF_CPPFLAGS=""
+             LSF_LDFLAGS=""
+             LSF_LIBADD=""
+            ])
+    ])
 
-  AS_IF([test "x$found_lsf" != xyes -a "$with_lsf" != xno],[
-    AS_IF([test "x$with_lsf" = xyes],
-      [AC_MSG_ERROR([LSF is not in specified location!])],
-      [AC_MSG_WARN([unable to locate LSF installation])])
+    AS_IF([test x$found_lsf != xyes],[
+      AS_IF([test x$with_lsf = xyes],
+        [AC_MSG_ERROR([LSF not found!])],
+        [AC_MSG_WARN([not building support for LSF])]
+      )
+    ])
   ])
 
   AC_SUBST(LSF_LIBADD)
