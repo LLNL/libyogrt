@@ -71,6 +71,7 @@ AC_CONFIG_FILES([libyogrt.spec
                  src/lcrm/Makefile
                  src/moab/Makefile
                  src/lsf/Makefile
-                 src/aixslurm/Makefile])
+                 src/aixslurm/Makefile
+                 test/Makefile])
 
 AC_OUTPUT
