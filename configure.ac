@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_INIT([Your One Get Remaining Time library],
-        [1.23],
+        [1.24],
         [https://github.com/LLNL/libyogrt/issues],
         [libyogrt],
         [https://github.com/LLNL/libyogrt])
