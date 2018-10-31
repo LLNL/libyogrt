@@ -2,6 +2,7 @@
 
 # Declare rpmbuild --with/--without parameters
 %bcond_without slurm
+%bcond_with lsf
 
 Summary: @PACKAGE_NAME@
 Name: @PACKAGE_TARNAME@
@@ -17,6 +18,17 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: slurm slurm-devel
 Requires: slurm
 %endif
+%if %{with lsf}
+BuildRequires: lsf-common
+Requires: lsf-common
+# The LSF RPM packages are poorly built.  lsf-common contains two libraries
+# that we use, libbat.so and liblsf.so.  However the lsf-common package
+# neither declares that it provides them, nor installs them in sane
+# locations.  We need to prevent the internal dependency generator
+# from including rpm requires for those two libraries to work around
+# lsf-common's packaging deficiencies.
+%global __requires_exclude ^lib\(bat|lsf\)\.so.*$
+%endif
 
 %description
 A simple wrapper library that provides a unified get-remaining-time
@@ -26,7 +38,9 @@ interface for multiple parallel job scheduling systems.
 %setup -q
 
 %build
-%configure LDFLAGS=-Wl,--build-id
+%configure LDFLAGS=-Wl,--build-id \
+        %{?with_lsf:--with-lsf LSF_LIBDIR=/opt/ibm/spectrumcomputing/lsf/10.1/linux3.10-glibc2.17-ppc64le-csm/lib LSF_ENVDIR=/opt/ibm/spectrumcomputing/lsf/conf LSF_INCLUDEDIR=/opt/ibm/spectrumcomputing/lsf/10.1/include} \
+        %{!?with_lsf:--without-lsf}
 make
 
 %install
