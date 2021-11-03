@@ -42,6 +42,7 @@ X_AC_SLURM
 X_AC_LCRM
 X_AC_MOAB
 X_AC_LSF
+X_AC_FLUX
 
 aix_64bit_mode=no
 using_aix=no
