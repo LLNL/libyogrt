@@ -1,3 +1,6 @@
+if WITH_FLUX
+  FLUX_DIR = flux
+endif
 if WITH_SLURM
   SLURM_DIR = slurm
 endif
@@ -14,7 +17,7 @@ if WITH_LSF
   LSF_DIR = lsf
 endif
 
-SUBDIRS = none $(SLURM_DIR) $(LCRM_DIR) $(MOAB_DIR) $(AIXSLURM_DIR) $(LSF_DIR)
+SUBDIRS = none $(FLUX_DIR)  $(SLURM_DIR) $(LCRM_DIR) $(MOAB_DIR) $(AIXSLURM_DIR) $(LSF_DIR)
 
 lib_LTLIBRARIES = libyogrt.la
 libyogrt_la_SOURCES = yogrt.c
