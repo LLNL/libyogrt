@@ -28,6 +28,9 @@ AM_MAINTAINER_MODE
 AC_PROG_CC
 AC_PROG_LIBTOOL
 
+# Check for pkg-config support
+PKG_PROG_PKG_CONFIG
+
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_INLINE
 
@@ -42,6 +45,7 @@ X_AC_SLURM
 X_AC_LCRM
 X_AC_MOAB
 X_AC_LSF
+X_AC_FLUX
 
 aix_64bit_mode=no
 using_aix=no
@@ -67,6 +71,7 @@ AC_CONFIG_FILES([libyogrt.spec
                  doc/man/Makefile
                  src/Makefile
                  src/none/Makefile
+                 src/flux/Makefile
                  src/slurm/Makefile
                  src/lcrm/Makefile
                  src/moab/Makefile
