@@ -23,7 +23,6 @@
 
 
 #include <stdio.h>
-#include <jansson.h>
 #include <time.h>
 #include <limits.h>
 #include <flux/core.h>
@@ -71,8 +70,6 @@ static int get_job_expiration(flux_jobid_t id, long int *expiration)
 	flux_t *h = NULL;
 	flux_t *child_handle = NULL;
 	flux_future_t *f;
-	json_t *job;
-	json_t *value;
 	double exp;
 	const char *uri = NULL;
 	int rc = -1;
