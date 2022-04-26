@@ -8,6 +8,7 @@ It supports:
 - MOAB
 - SLURM
 - AIX w/ SLURM
+- Flux
 
 See [src/yogrt.h](https://github.com/LLNL/libyogrt/blob/master/src/yogrt.h) for documentation.
 
