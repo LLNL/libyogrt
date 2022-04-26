@@ -296,6 +296,15 @@ static inline int load_backend(void)
 	return 1;
 }
 
+static void unload_backend(void)
+{
+        if (backend_handle != NULL) {
+                dlclose(backend_handle);
+                backend_handle = NULL;
+                memset(&backend, 0, sizeof(backend));
+        }
+}
+
 static int init_yogrt(void)
 {
 	int rc = 1;
@@ -316,6 +325,14 @@ static int init_yogrt(void)
 	}
 
 	return rc;
+}
+
+static void fini_yogrt(void)
+{
+        if (initialized == 1) {
+                unload_backend();
+                initialized = 0;
+        }
 }
 
 /*
@@ -498,6 +515,20 @@ int yogrt_get_debug(void)
         return verbosity;
 }
 
+int yogrt_init(void)
+{
+        int rc;
+
+        rc = init_yogrt();
+
+        return rc;
+}
+
+void yogrt_fini(void)
+{
+        fini_yogrt();
+}
+
 /**********************************************************************
  * Fortran wrappers (single underscore version)
  **********************************************************************/
@@ -565,6 +596,16 @@ int iyogrt_get_fudge_factor_(void)
 int iyogrt_get_debug_(void)
 {
 	return yogrt_get_debug();
+}
+
+int iyogrt_init_(void)
+{
+        return yogrt_init();
+}
+
+void iyogrt_fini_(void)
+{
+        yogrt_fini();
 }
 
 /**********************************************************************
@@ -635,3 +676,14 @@ int iyogrt_get_debug__(void)
 {
 	return yogrt_get_debug();
 }
+
+int iyogrt_init__(void)
+{
+        return yogrt_init();
+}
+
+void iyogrt_fini__(void)
+{
+        yogrt_fini();
+}
+

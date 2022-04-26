@@ -109,6 +109,22 @@ extern int yogrt_get_interval2_start(void);
 extern int yogrt_get_debug(void);
 extern void yogrt_set_debug(int val);
 
+/*
+ * Initialize the yogrt library, including loading the
+ * configured libyogrt backend library. It is not necessay
+ * for applications to call this, as all of the other library
+ * calls will initialize the library autocatically when
+ * needed. This function is mainly provided for completeness.
+ */
+extern int yogrt_init(void);
+
+/*
+ * Finalize (shut down) the libyogrt library. This will
+ * unload the backend library, and cleanup as needed. It is
+ * also not necesary for applications to call this, however
+ * doing so may eliminate warnings from memory debuggers.
+ */
+extern void yogrt_fini(void);
 
 #ifdef __cplusplus
 }
