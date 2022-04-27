@@ -36,11 +36,15 @@
 main(int argc, char *argv[])
 {
 	int rem;
+        int i;
 
-	while(1) {
+        yogrt_init();
+
+	for (i=0; i<10; i++) {
 		rem = yogrt_remaining();
 		sleep(1);
 	}
 
+        yogrt_fini();
 	exit(0);
 }
