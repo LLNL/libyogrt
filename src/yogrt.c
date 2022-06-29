@@ -170,7 +170,7 @@ static inline void read_config_file(void)
 			}
 		} else if (strcasecmp(key, "backend") == 0
 			   || strcasecmp(key, "yogrt_backend") == 0) {
-			strncpy(backend_name, value, 64);
+			strncpy(backend_name, value, sizeof(backend_name)-1);
 			debug("In yogrt.conf: %s=%s\n", key, backend_name);
 		} else if (strcasecmp(key, "fudge_factor") == 0
 			   || strcasecmp(key, "yogrt_fudge_factor") == 0) {
@@ -225,7 +225,7 @@ static inline void read_env_variables(void)
 		}
 	}
 	if ((p = getenv("YOGRT_BACKEND")) != NULL) {
-		strncpy(backend_name, p, 64);
+		strncpy(backend_name, p, sizeof(backend_name)-1);
 		debug("In environment: YOGRT_BACKEND=%s\n", backend_name);
 	}
 	if ((p = getenv("YOGRT_FUDGE_FACTOR")) != NULL) {
