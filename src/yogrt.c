@@ -96,7 +96,7 @@ static inline void read_config_file(void)
 	}
 
 	debug("Reading config file " CONFIGPATH "/yogrt.conf.\n");
-	while (fgets(line, 256, fp)) {
+	while (fgets(line, sizeof(line), fp)) {
 		char *key, *value;
 
 		len = strlen(line);
@@ -246,10 +246,10 @@ static inline int load_backend(void)
 		strcpy(backend_name, "none");
 	}
 
-	snprintf(path, 512, "%s/libyogrt-%s.so", BACKENDDIR, backend_name);
+	snprintf(path, sizeof(path), "%s/libyogrt-%s.so", BACKENDDIR, backend_name);
 	debug3("Testing for %s.\n", path);
 	if (stat(path, st) == -1) {
-		snprintf(path, 512, "%s/libyogrt-%s.a",
+		snprintf(path, sizeof(path), "%s/libyogrt-%s.a",
 			 BACKENDDIR, backend_name);
 		debug3("Testing for %s.\n", path);
 		if (stat(path, st) == -1) {
@@ -263,7 +263,7 @@ static inline int load_backend(void)
 	/* flags = RTLD_NOW|RTLD_GLOBAL|RTLD_MEMBER; */
 	flags = RTLD_NOW|RTLD_MEMBER;
 	/* append the member name to make the AIX loader happy */
-	snprintf(path, 512, "%s/libyogrt-%s.a(libyogrt-%s.so.%s)",
+	snprintf(path, sizeof(path), "%s/libyogrt-%s.a(libyogrt-%s.so.%s)",
 		 BACKENDDIR, backend_name, backend_name, LIBYOGRT_LT_CURRENT);
 #endif
 	debug3("Will use %s.\n", path);
