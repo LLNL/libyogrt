@@ -32,7 +32,7 @@
 #define BOGUS_TIME -1
 
 int jobid_valid = 0;
-int verbosity = 0;
+int _yogrt_verbosity = 0;
 
 static flux_jobid_t jobid = 0;
 
@@ -40,7 +40,7 @@ int internal_init(int verb)
 {
 	char *jobid_str;
 
-	verbosity = verb;
+	_yogrt_verbosity = verb;
 	jobid_valid = 0;
 
 	if ((jobid_str = getenv("FLUX_JOB_ID")) == NULL) {

@@ -30,11 +30,11 @@
 
 static uint32_t jobid = NO_VAL;
 
-int verbosity = 0;
+int _yogrt_verbosity = 0;
 
 int internal_init(int verb)
 {
-	verbosity = verb;
+	_yogrt_verbosity = verb;
 
         if (getenv("SLURM_JOB_ID") != NULL
             || getenv("SLURM_JOBID") != NULL) {

@@ -33,13 +33,13 @@
  *
  * http://publibfp.dhe.ibm.com/epubs/pdf/c2753121.pdf */
 
-int verbosity = 0;
+int _yogrt_verbosity = 0;
 int jobid_valid = 0;
 LS_LONG_INT jobid;
 
 int internal_init(int verb)
 {
-	verbosity = verb;
+	_yogrt_verbosity = verb;
 
 	/* initialize the lsb library */
 	int rc = lsb_init(NULL);

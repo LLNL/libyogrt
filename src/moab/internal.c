@@ -26,11 +26,11 @@
 
 #include "internal_yogrt.h"
 
-int verbosity = 0;
+int _yogrt_verbosity = 0;
 
 int internal_init(int verb)
 {
-	verbosity = verb;
+	_yogrt_verbosity = verb;
 
         /* Don't know how to determine if job is running under Moab.
            Just assume always valid. */

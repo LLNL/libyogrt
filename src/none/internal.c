@@ -46,11 +46,11 @@
  * function and set "verbosity" if they intend to use the debugging helper
  * macros.
  */
-int verbosity = 0;
+int _yogrt_verbosity = 0;
 
 int internal_init(int verb)
 {
-	verbosity = verb;
+	_yogrt_verbosity = verb;
 
         /* internal_init() must return non-zero if the current environment
            is valid for using the implemented resource manager.  If

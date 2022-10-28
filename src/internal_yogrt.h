@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include <time.h>
 
-extern int verbosity;
+extern int _yogrt_verbosity;
 
 int internal_init(int verb);
 
@@ -45,7 +45,7 @@ int internal_fudge(void);
 
 #define __debug_level(level, ...)					\
 	do {								\
-		if (verbosity >= level) {				\
+		if (_yogrt_verbosity >= level) {				\
 			fprintf(stderr, "libyogrt: "__VA_ARGS__);	\
 		}							\
 	} while (0)

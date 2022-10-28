@@ -35,13 +35,13 @@
 #include <fcntl.h>
 #include <errno.h>
 
-int verbosity = 0;
+int _yogrt_verbosity = 0;
 
 static long get_time_from_socket(const char *socket_name);
 
 int internal_init(int verb)
 {
-	verbosity = verb;
+	_yogrt_verbosity = verb;
 
         if ((getenv("SLURM_JOBID") != NULL
              && getenv("SLURM_STEPID") != NULL)

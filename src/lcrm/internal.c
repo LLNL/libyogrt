@@ -27,13 +27,13 @@
 
 #include "internal_yogrt.h"
 
-int verbosity = 0;
+int _yogrt_verbosity = 0;
 
 int internal_init(int verb)
 {
         char *ptr;
 
-	verbosity = verb;
+	_yogrt_verbosity = verb;
 
         if (((ptr = getenv("LRM_ENVIRONMENT")) != NULL)
             && strcmp(ptr, "BATCH") == 0) {
@@ -90,7 +90,7 @@ int internal_get_rank(void)
 
 void internal_set_verbosity(int verb)
 {
-	verbosity = verb;
+	_yogrt_verbosity = verb;
 }
 
 int internal_fudge(void)

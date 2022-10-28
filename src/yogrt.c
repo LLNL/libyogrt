@@ -39,7 +39,7 @@
 #define FAILED_UPDATE_INTERVAL 300
 #define REMAINING(now) (cached_time_rem - ((now) - last_update))
 
-int verbosity = 0;
+int _yogrt_verbosity = 0;
 static int initialized = 0; /* flag */
 static int rank = 0;
 static int valid = 1; /* Is the environment valid for contacting the
@@ -129,8 +129,8 @@ static inline void read_config_file(void)
 
 		if (strcasecmp(key, "debug") == 0
 		    || strcasecmp(key, "yogrt_debug") == 0) {
-			verbosity = (int)atol(value);
-			debug("In yogrt.conf: %s=%d\n", key, verbosity);
+			_yogrt_verbosity = (int)atol(value);
+			debug("In yogrt.conf: %s=%d\n", key, _yogrt_verbosity);
 		} else if (strcasecmp(key, "interval1") == 0
 			   || strcasecmp(key, "yogrt_interval1") == 0) {
 			interval1 = (int)atol(value);
@@ -280,7 +280,7 @@ static inline int load_backend(void)
 	backend.fudge =     dlsym(backend_handle, "internal_fudge");
 
 	if (backend.init != NULL)
-		valid = backend.init(verbosity);
+		valid = backend.init(_yogrt_verbosity);
 	if (backend.rank != NULL)
 		rank = backend.rank();
 	debug("Rank is %d\n", rank);
@@ -313,10 +313,10 @@ static int init_yogrt(void)
 		char *p;
 		initialized = 1;
 		if ((p = getenv("YOGRT_DEBUG")) != NULL) {
-			verbosity = (int)atol(p);
+			_yogrt_verbosity = (int)atol(p);
 			if (p != NULL) {
 				debug("In environment: YOGRT_DEBUG=%d\n",
-				      verbosity);
+				      _yogrt_verbosity);
 			}
 		}
 		read_config_file();
@@ -483,7 +483,7 @@ void yogrt_set_fudge_factor(int seconds)
 
 void yogrt_set_debug(int val)
 {
-        verbosity = val;
+        _yogrt_verbosity = val;
 }
 
 int yogrt_get_interval1(void)
@@ -512,7 +512,7 @@ int yogrt_get_fudge_factor(void)
 
 int yogrt_get_debug(void)
 {
-        return verbosity;
+        return _yogrt_verbosity;
 }
 
 int yogrt_init(void)
