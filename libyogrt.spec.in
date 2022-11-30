@@ -17,14 +17,6 @@ URL: @PACKAGE_URL@
 Packager: Christopher J. Morrone <morrone2@llnl.gov>
 Source0: %{name}-%{tarball_version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-%if %{with flux}
-BuildRequires: flux-core
-Requires: flux-core
-%endif
-%if %{with slurm}
-BuildRequires: slurm slurm-devel
-Requires: slurm
-%endif
 %if %{with lsf}
 BuildRequires: lsf-common
 Requires: lsf-common
@@ -66,8 +58,42 @@ mv $RPM_BUILD_ROOT%{_sysconfdir}/yogrt.conf.example $RPM_BUILD_ROOT%{_sysconfdir
 %{_includedir}/yogrt.h
 %{_libdir}/*.*
 %{_libdir}/libyogrt/*
+%if %{with_slurm}
+%exclude %{_libdir}/libyogrt/libyogrt-slurm*
+%endif
+%if %{with_flux}
+%exclude %{_libdir}/libyogrt/libyogrt-flux*
+%endif
 %{_mandir}/*/*
 %config(noreplace) %{_sysconfdir}/yogrt.conf
+
+%if %{with slurm}
+%package slurm
+Summary: libyogrt plugin for SLURM
+Group: System Environment/Base
+BuildRequires: slurm slurm-devel
+Requires: slurm
+Requires: libyogrt = %{version}
+%description slurm
+SLURM plugin for libyogrt
+%files slurm
+%defattr(-,root,root,-)
+%{_libdir}/libyogrt/libyogrt-slurm*
+%endif
+
+%if %{with flux}
+%package flux
+Summary: libyogrt plugin for Flux
+Group: System Environment/Base
+BuildRequires: flux-core
+Requires: flux-core
+Requires: libyogrt = %{version}
+%description flux
+Flux plugin for libyogrt
+%files flux
+%defattr(-,root,root,-)
+%{_libdir}/libyogrt/libyogrt-flux*
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
