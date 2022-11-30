@@ -5,15 +5,17 @@
 %bcond_without flux
 %bcond_with lsf
 
+%global tarball_version @PACKAGE_VERSION@
+
 Summary: @PACKAGE_NAME@
 Name: @PACKAGE_TARNAME@
-Version: @PACKAGE_VERSION@
+Version: %(echo %{tarball_version} | tr '-' '_')
 Release: 1%{?dist}
 License: Proprietary
 Group: System Environment/Base
 URL: @PACKAGE_URL@
 Packager: Christopher J. Morrone <morrone2@llnl.gov>
-Source0: %{name}-%{version}.tar.gz
+Source0: %{name}-%{tarball_version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 %if %{with flux}
 BuildRequires: flux-core
@@ -40,7 +42,7 @@ A simple wrapper library that provides a unified get-remaining-time
 interface for multiple parallel job scheduling systems.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{tarball_version}
 
 %build
 %configure LDFLAGS=-Wl,--build-id \
