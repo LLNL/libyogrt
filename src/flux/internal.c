@@ -42,21 +42,38 @@ int internal_init(int verb)
 
 	_yogrt_verbosity = verb;
 	jobid_valid = 0;
+	flux_t *h = NULL;
+	flux_error_t error;
 
+	/*
+	 * If the process was run by flux, it has FLUX_JOB_ID set.  If not run
+	 * by flux, but in allocation, we have to ask for the job ID. For example,
+	 *   $flux mini alloc -n1 -t3
+	 *   $./my_app
+	 * would use the flux_attr_get() call.
+	 */
 	if ((jobid_str = getenv("FLUX_JOB_ID")) == NULL) {
-		error("ERROR: FLUX_JOB_ID is not set."
-			  " Remaining time will be a bogus value.\n");
-		return jobid_valid;
+		if (!(h = flux_open_ex(NULL, 0, &error))) {
+			error("ERROR: flux_open() failed with error %s\n", error.text);
+			goto out;
+		}
+		if ((jobid_str = flux_attr_get(h, "jobid")) == NULL) {
+			error("ERROR: Unable to fetch Flux 'jobid' attribute.\n"
+				  " Remaining time will be a bogus value.\n");
+			goto out;
+		}
 	}
 
 	if (flux_job_id_parse(jobid_str, &jobid) < 0) {
-		error("ERROR: Unable to parse FLUX_JOB_ID %s."
+		error("ERROR: Unable to parse FLUX_JOB_ID %s.\n"
 			  " Remaining time will be a bogus value.\n", jobid_str);
-		return jobid_valid;
+		goto out;
 	}
 
 	jobid_valid = 1;
 
+out:
+	flux_close(h);
 	return jobid_valid;
 }
 
@@ -79,7 +96,7 @@ int internal_get_rem_time(time_t now, time_t last_update, int cached)
 		return BOGUS_TIME;
 	}
 
-	if (!(h = flux_open_ex(NULL, 0, &error))) {
+	if ((h = flux_open_ex(NULL, 0, &error)) == NULL) {
 		error("ERROR: flux_open() failed with error %s\n", error.text);
 		goto out;
 	}
