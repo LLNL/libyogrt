@@ -65,82 +65,39 @@ char *internal_backend_name(void)
 	return "FLUX";
 }
 
-static int get_job_expiration(flux_jobid_t id, long int *expiration)
-{
-	flux_t *h = NULL;
-	flux_t *child_handle = NULL;
-	flux_future_t *f;
-	double exp;
-	const char *uri = NULL;
-	int rc = -1;
-
-	if (!(h = flux_open(NULL, 0))) {
-		error("ERROR: flux_open() failed with errno %d\n", errno);
-		goto out;
-	}
-
-	/*
-	 * Determine whether to ask our parent or not
-	 * See https://github.com/flux-framework/flux-core/issues/3817
-	 */
-
-	if (!getenv("FLUX_KVS_NAMESPACE")) {
-		uri = flux_attr_get(h, "parent-uri");
-		if (!uri) {
-			error("ERROR: no FLUX_KVS_NAMESPACE and flux_attr_get failed with "
-				  "errno %d\n", errno);
-			goto out;
-		}
-
-		child_handle = h;
-		h = flux_open(uri, 0);
-		if (!h) {
-			printf("flux_open with parent-uri %s failed with errno %d\n", uri,
-				   errno);
-			goto out;
-		}
-	}
-
-	if (!(f = flux_job_list_id(h, jobid, "[\"expiration\"]"))) {
-		error("ERROR: flux_job_list failed with errno %d.\n", errno);
-		goto out;
-	}
-
-	if (flux_rpc_get_unpack (f, "{s:{s:f}}", "job", "expiration", &exp) < 0) {
-		error("ERROR: flux_rpc_get_unpack failed with errno %d.\n", errno);
-		goto out;
-	}
-
-	*expiration = (long int) exp;
-	rc = 0;
-
-out:
-	flux_future_destroy(f);
-	flux_close(h);
-	flux_close(child_handle);
-
-	return rc;
-}
-
 int internal_get_rem_time(time_t now, time_t last_update, int cached)
 {
 	long int expiration;
 	int remaining_sec = BOGUS_TIME;
+	flux_t *h = NULL;
+	flux_error_t error;
+	double timeleft;
+	int rc = -1;
 
 	if (! jobid_valid) {
 		error("FLUX: No valid jobid to lookup!\n");
 		return BOGUS_TIME;
 	}
 
-	if (get_job_expiration(jobid, &expiration)) {
-		error("FLUX: get_job_expiration failed\n");
+	if (!(h = flux_open_ex(NULL, 0, &error))) {
+		error("ERROR: flux_open() failed with error %s\n", error.text);
 		goto out;
 	}
 
-	remaining_sec = (int) (expiration - time(NULL));
+	if ((flux_job_timeleft (h, &error, &timeleft)) == -1) {
+		error("ERROR: flux_job_timeleft() failed with error %s\n", error.text);
+		goto out;
+	}
+
+	if (timeleft > INT_MAX)
+		remaining_sec = INT_MAX;
+	else
+		remaining_sec = (int) timeleft;
+
 	debug("flux remaining seconds is %ld\n", remaining_sec);
 
 out:
+	flux_close(h);
 	return remaining_sec;
 }
 
