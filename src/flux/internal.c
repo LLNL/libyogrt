@@ -62,6 +62,9 @@ int internal_init(int verb)
 				  " Remaining time will be a bogus value.\n");
 			goto out;
 		}
+		debug("flux_attr_get returned jobid_str=%s\n", jobid_str);
+	} else {
+		debug("Environment contains FLUX_JOB_ID=%s\n", jobid_str);
 	}
 
 	if (flux_job_id_parse(jobid_str, &jobid) < 0) {
@@ -70,6 +73,7 @@ int internal_init(int verb)
 		goto out;
 	}
 
+	debug("flux parsed jobid_str successfully.\n");
 	jobid_valid = 1;
 
 out:
@@ -104,6 +108,8 @@ int internal_get_rem_time(time_t now, time_t last_update, int cached)
 	if ((flux_job_timeleft (h, &error, &timeleft)) == -1) {
 		error("ERROR: flux_job_timeleft() failed with error %s\n", error.text);
 		goto out;
+	} else {
+		debug("flux_job_timeleft returned %f.\n", timeleft);
 	}
 
 	if (timeleft > INT_MAX)
