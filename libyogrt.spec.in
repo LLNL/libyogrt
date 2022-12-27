@@ -85,7 +85,7 @@ SLURM plugin for libyogrt
 %package flux
 Summary: libyogrt plugin for Flux
 Group: System Environment/Base
-BuildRequires: flux-core
+BuildRequires: flux-core >= 0.47.0
 Requires: flux-core
 Requires: libyogrt = %{version}
 %description flux
