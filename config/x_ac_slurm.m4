@@ -50,7 +50,7 @@ AC_DEFUN([X_AC_SLURM], [
             _x_ac_slurm_libs_save="$LIBS"
             LIBS="-L$d/$bit -lslurm -lpthread -lcrypto $LIBS"
             AC_LINK_IFELSE(
-              [AC_LANG_PROGRAM([],[slurm_get_rem_time(0);])],
+              [AC_LANG_PROGRAM([#include <slurm/slurm.h>],[slurm_get_rem_time(0);])],
               [AS_VAR_SET([x_ac_cv_slurm_dir], [$d])
                AS_VAR_SET([x_ac_cv_slurm_libdir], [$d/$bit])]
             )
