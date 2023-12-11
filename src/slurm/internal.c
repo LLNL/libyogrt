@@ -68,6 +68,7 @@ int internal_get_rem_time(time_t now, time_t last_update, int cached)
 	if (jobid == NO_VAL)
 		return -1;
 
+    slurm_init(NULL);
 	rem = (int)slurm_get_rem_time(jobid);
 	debug2("SLURM reports remaining time of %d sec.\n", rem);
 	return rem;
