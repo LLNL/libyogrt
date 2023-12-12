@@ -38,6 +38,7 @@ int internal_init(int verb)
 
         if (getenv("SLURM_JOB_ID") != NULL
             || getenv("SLURM_JOBID") != NULL) {
+                slurm_init(NULL);
                 return 1;
         } else {
                 debug("ERROR: Neither SLURM_JOBID nor SLURM_JOB_ID are set."
